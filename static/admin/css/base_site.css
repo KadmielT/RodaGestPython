@@ -1,0 +1,130 @@
+/* ===== FUNDO GLOBAL ===== */
+html, body {
+    min-height: 100%;
+    background: linear-gradient(120deg, #0b2c1b 0%, #1f5f38 45%, #47a05b 100%);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== TOPO ===== */
+#header {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ===== SIDEBAR ===== */
+#nav-sidebar {
+    background: rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(6px);
+    border-right: 1px solid rgba(255,255,255,0.12);
+}
+
+/* ===== CONTEÚDO PRINCIPAL (CARD EFFECT) ===== */
+#content-main {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.15);
+    
+}
+
+/* ===== BOTÕES ===== */
+.button, input[type=submit], input[type=button], .submit-row input {
+    background: linear-gradient(135deg, #36d399, #1f8f5c);
+    border: none;
+    border-radius: 12px;
+    padding: 8px 18px;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.button:hover,
+input[type=submit]:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* ===== TABELAS ===== */
+.module table {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    
+}
+
+/* ===== INPUTS ===== */
+input, select, textarea {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 6px 10px;
+    color: white;
+}
+
+/* ===== TABELA DO DJANGO ADMIN ===== */
+
+#changelist {
+    background: transparent;
+}
+
+#changelist-form {
+    background: transparent;
+}
+
+/* Container da tabela */
+#changelist .results {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 12px;
+    
+}
+
+/* Tabela */
+#changelist table {
+    background: transparent;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho */
+#changelist table thead th {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Linhas */
+#changelist table tbody tr {
+    background: transparent;
+    transition: 0.2s ease;
+}
+
+/* Hover */
+#changelist table tbody tr:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* ===== BARRA DE BUSCA ===== */
+
+#toolbar {
+    background: transparent;
+}
+
+#toolbar input[type="text"] {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    padding: 6px 10px;
+}
+
+#toolbar input[type="submit"],
+#toolbar button {
+    background: #1abc9c;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 6px 12px;
+}
