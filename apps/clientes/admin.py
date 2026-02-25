@@ -1,5 +1,7 @@
 from django.contrib import admin, messages
+from apps.core.admin import BaseAdmin
 from .models import Cliente, Endereco
+
 
 class EnderecoInline(admin.StackedInline):
     model = Endereco
