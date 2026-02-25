@@ -1,5 +1,13 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 {% extends "admin/base.html" %}
 {% load static %}
+
+{% block title %}
+  RodaGest
+{% endblock %}
 
 {% block extrastyle %}
   {{ block.super }}
@@ -8,6 +16,11 @@
 
 {% block branding %}
   <h1 id="site-name">
-    <a href="{% url 'admin:index' %}">RodaGest</a>
+    <a href="{{ site_url|default:'/' }}">RodaGest - Rodas Cunha</a>
   </h1>
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script src="{% static 'admin/js/selectEscolhas.js' %}"></script>
 {% endblock %}

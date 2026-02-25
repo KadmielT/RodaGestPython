@@ -1,130 +1,356 @@
-/* ===== FUNDO GLOBAL ===== */
-html, body {
-    min-height: 100%;
-    background: linear-gradient(120deg, #0b2c1b 0%, #1f5f38 45%, #47a05b 100%);
-    font-family: 'Segoe UI', sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* ======================================================
+    01) VARIÁVEIS DE ESTILO (cores, tipografia, formas)
+====================================================== */
+:root{
+  /* força o navegador a tratar UI nativa como dark (inputs/scrollbar) */
+  color-scheme: dark;
+
+  /* tipografia */
+  --rg-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* cores base */
+  --rg-bg: #2a2b2a3b;        
+  --rg-sidebar: #262726; 
+
+  /* superfícies (cards/tabela/search) */
+  --rg-surface: rgba(255,255,255,0.04);
+  --rg-surface-hover: rgba(255,255,255,0.06);
+
+  /* bordas */
+  --rg-border: rgba(255,255,255,0.08);
+  --rg-border-strong: rgba(255,255,255,0.14);
+
+  /* texto */
+  --rg-text: rgba(255,255,255,0.92);
+  --rg-muted: rgba(255,255,255,0.60);
+
+  /* cor de destaque (branding) */
+  --rg-accent: #1fb16a;
+  --rg-accent-hover: #1aa65f;
+
+  /* formas */
+  --rg-radius: 14px;
+  --rg-radius-sm: 10px;
+
+  /* sombra padrão */
+  --rg-shadow: 0 18px 60px rgba(0,0,0,0.45);
+
+  /* divisórias da tabela (brancas) */
+  --rg-divider: rgba(233, 233, 233, 0.28);
 }
 
-/* ===== TOPO ===== */
-#header {
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+@media (prefers-color-scheme: light) {
+  :root { color-scheme: dark; }
 }
 
-/* ===== SIDEBAR ===== */
-#nav-sidebar {
-    background: rgba(0, 0, 0, 0.20);
-    backdrop-filter: blur(6px);
-    border-right: 1px solid rgba(255,255,255,0.12);
+/* ======================================================
+   02) BASE GLOBAL
+====================================================== */
+html, body{
+  height: 100%;
+  background: var(--rg-bg) !important;
+  color: var(--rg-text) !important;
+  font-family: var(--rg-font) !important;
 }
 
-/* ===== CONTEÚDO PRINCIPAL (CARD EFFECT) ===== */
-#content-main {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(8px);
-    border-radius: 18px;
-    padding: 25px;
-    border: 1px solid rgba(255,255,255,0.15);
-    
+body, body *{
+  font-family: var(--rg-font) !important;
 }
 
-/* ===== BOTÕES ===== */
-.button, input[type=submit], input[type=button], .submit-row input {
-    background: linear-gradient(135deg, #36d399, #1f8f5c);
-    border: none;
-    border-radius: 12px;
-    padding: 8px 18px;
-    font-weight: bold;
-    color: white;
-    transition: 0.3s ease;
+a, a:visited { color: var(--rg-text); }
+a:hover { color: #ffffff; }
+
+:focus { outline: none !important; }
+
+#changelist,
+#changelist-form,
+#changelist-form .results,
+#changelist .results,
+#changelist .module,
+.module,
+#content,
+#content-main,
+.colMS{
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
-.button:hover,
-input[type=submit]:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+/* contador/rodapé e paginação sem fundo padrão */
+#changelist .changelist-footer,
+#changelist .paginator,
+#changelist .paginator *,
+#changelist .changelist-footer *{
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
-/* ===== TABELAS ===== */
-.module table {
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    
+/* ======================================================
+   HEADER (topo)
+====================================================== */
+#header{
+  background: var(--rg-bg) !important;
+  border-bottom: 1px solid var(--rg-border) !important;
 }
 
-/* ===== INPUTS ===== */
-input, select, textarea {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    padding: 6px 10px;
-    color: white;
+#branding #site-name a{
+  color: var(--rg-text) !important;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
-/* ===== TABELA DO DJANGO ADMIN ===== */
-
-#changelist {
-    background: transparent;
+/* ======================================================
+   SIDEBAR (menu lateral)
+====================================================== */
+#nav-sidebar{
+  background: var(--rg-sidebar) !important;
+  border-right: 1px solid var(--rg-border) !important;
 }
 
-#changelist-form {
-    background: transparent;
+#nav-sidebar a{
+  color: var(--rg-muted) !important;
+  border-radius: var(--rg-radius-sm);
+  padding: 6px 10px;
 }
 
-/* Container da tabela */
-#changelist .results {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 12px;
-    
+#nav-sidebar a:hover{
+  background: var(--rg-surface) !important;
+  color: var(--rg-text) !important;
 }
 
-/* Tabela */
-#changelist table {
-    background: transparent;
-    border-collapse: collapse;
+/* item selecionado */
+#nav-sidebar .current-model a,
+#nav-sidebar .current-app a{
+  background: rgba(31,177,106,0.18) !important;
+  color: #dfffea !important;
+  border: 1px solid rgba(31,177,106,0.30);
 }
 
-/* Cabeçalho */
-#changelist table thead th {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+/* ======================================================
+   CONTEÚDO + TÍTULO
+====================================================== */
+#content{
+  padding-top: 12px;
 }
 
-/* Linhas */
-#changelist table tbody tr {
-    background: transparent;
-    transition: 0.2s ease;
+#content h1{
+  font-size: 34px !important;
+  font-weight: 700;
+  margin: 8px 0 16px !important;
 }
 
-/* Hover */
-#changelist table tbody tr:hover {
-    background: rgba(255,255,255,0.08);
+#content-main{
+  position: relative; /* necessário para posicionar o botão “Adicionar” */
+  background: transparent !important;
+  border-radius: var(--rg-radius);
 }
 
-/* ===== BARRA DE BUSCA ===== */
-
-#toolbar {
-    background: transparent;
+/* ======================================================
+   BOTÃO “ADICIONAR” (object-tools)
+====================================================== */
+#content-main > .object-tools{
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-#toolbar input[type="text"] {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    color: white;
-    padding: 6px 10px;
+#content-main > .object-tools a.addlink{
+  background: var(--rg-accent) !important;
+  border: 1px solid rgba(31,177,106,0.35) !important;
+  color: #ffffff !important;
+
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--rg-radius-sm);
+
+  display: inline-flex;
+  align-items: center;
+
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  transition: 0.2s ease;
 }
 
-#toolbar input[type="submit"],
-#toolbar button {
-    background: #1abc9c;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 6px 12px;
+#content-main > .object-tools a.addlink:hover{
+  background: var(--rg-accent-hover) !important;
+  transform: translateY(-1px);
+}
+
+/* ======================================================
+   SEARCH (barra de busca da listagem)
+====================================================== */
+#changelist #toolbar{
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 12px 0 18px !important;
+}
+
+/* remove label e botão padrão do Django */
+#changelist #toolbar label[for="searchbar"],
+#changelist #toolbar input[type="submit"]{
+  display: none !important;
+}
+
+#changelist #toolbar form#changelist-search > div{
+  position: relative;
+  max-width: 420px;
+}
+
+#changelist #toolbar #searchbar{
+  width: 100% !important;
+  height: 44px !important;
+
+  background: var(--rg-surface) !important;
+  border: 1px solid var(--rg-border-strong) !important;
+  border-radius: 12px !important;
+
+  padding: 0 44px 0 14px !important;
+  color: var(--rg-text) !important;
+
+  box-shadow: 0 10px 24px rgba(0,0,0,0.22) !important;
+}
+
+#changelist #toolbar #searchbar::placeholder{
+  color: var(--rg-muted) !important;
+}
+
+#changelist #toolbar #searchbar:focus{
+  border-color: rgba(31,177,106,0.45) !important;
+  box-shadow:
+    0 0 0 3px rgba(31,177,106,0.12),
+    0 10px 24px rgba(0,0,0,0.22) !important;
+}
+
+/* ícone de lupa dentro do input */
+#changelist #toolbar form#changelist-search > div::after{
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  opacity: 0.7;
+  background: no-repeat center/contain url("/static/admin/img/search.svg");
+}
+
+/* ======================================================
+   TABELA (listagem)
+====================================================== */
+#changelist table{
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0;
+
+  /* “card” da tabela */
+  background: var(--rg-surface) !important;
+  border: 1px solid var(--rg-border) !important;
+  border-radius: var(--rg-radius);
+  overflow: hidden;
+}
+
+/* cabeçalho */
+#changelist table thead th{
+  background: rgba(255,255,255,0.05) !important;
+  color: rgba(255,255,255,0.88) !important;
+  font-weight: 700;
+
+  border-bottom: 1px solid var(--rg-border) !important;
+  padding: 14px 12px !important;
+}
+
+#changelist table tbody tr,
+#changelist table tbody tr:nth-child(odd),
+#changelist table tbody tr:nth-child(even){
+  background: rgba(46, 46, 46, 0.185) !important; /* sua cor única */
+}
+
+/* células */
+#changelist table tbody td,
+#changelist table tbody th{
+  padding: 14px 12px !important;
+  color: rgba(255,255,255,0.82) !important;
+  background: transparent !important;
+}
+
+/* divisória branca entre registros (horizontal) */
+#changelist table tbody tr > th,
+#changelist table tbody tr > td{
+  border-bottom: 1px solid var(--rg-divider) !important;
+}
+
+/* não colocar divisória na última linha */
+#changelist table tbody tr:last-child > th,
+#changelist table tbody tr:last-child > td{
+  border-bottom: none !important;
+}
+
+/* hover discreto */
+#changelist table tbody tr:hover{
+  background: var(--rg-surface-hover) !important;
+}
+
+/* remove bordas laterais padrão */
+#changelist table td,
+#changelist table th{
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+
+/* ======================================================
+PAGINAÇÃO
+====================================================== */
+.paginator{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0 0 !important;
+  color: var(--rg-muted) !important;
+}
+
+.paginator a{
+  background: var(--rg-surface) !important;
+  border: 1px solid var(--rg-border) !important;
+  padding: 8px 12px !important;
+  border-radius: var(--rg-radius-sm) !important;
+  color: var(--rg-text) !important;
+}
+
+.paginator a:hover{
+  border-color: rgba(31,177,106,0.35) !important;
+}
+
+/* ======================================================
+INPUTS / SELECTS (global)
+====================================================== */
+input, select, textarea{
+  background: var(--rg-surface) !important;
+  border: 1px solid var(--rg-border-strong) !important;
+  border-radius: var(--rg-radius-sm) !important;
+  color: var(--rg-text) !important;
+}
+
+input:focus, select:focus, textarea:focus{
+  border-color: rgba(31,177,106,0.45) !important;
+  box-shadow: 0 0 0 3px rgba(31,177,106,0.12) !important;
+}
+
+/* =========================================
+   OCULTAR CONTADOR DE RESULTADOS DO SEARCH
+========================================= */
+
+#changelist #toolbar span.small.quiet {
+  display: none !important;
+}
+/* ======================================================
+REMOVER “ACTIONS” PADRÃO DO DJANGO
+====================================================== */
+.actions{
+  display: none !important;
 }
