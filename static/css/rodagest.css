@@ -1,0 +1,237 @@
+/* static/css/rodagest.css */
+
+/* =========================
+0) BASE (garante que o fundo cubra tudo)
+========================= */
+html, body {
+  height: 100%;
+}
+
+/* =========================
+1) VARIÁVEIS DO TEMA (DARK = padrão)
+========================= */
+:root {
+  --bg: #0f1412;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-2: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.10);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+
+  --green: #24c16b;
+
+  /* cores do degrade (dark) */
+  --grad-1: #143a2a;
+  --grad-2: #0b0f0d;
+}
+
+html[data-theme="light"] {
+  --bg: #e9f1ee;          /* fundo claro suave (sem estourar) */
+  --grad-1: #cfeee0;      /* verde bem leve */
+  --grad-2: #e7ecea;      /* final neutro */
+
+  --panel: rgba(255, 255, 255, 0.65);
+  --panel-2: rgba(255, 255, 255, 0.45);
+
+  --text: #1e2a25;
+  --muted: #5c6b64;
+
+  --border: rgba(0, 0, 0, 0.10);
+
+  --green: #24c16b;
+}
+
+/* =========================
+2) TRANSIÇÃO SUAVE
+(dica: transicionar só o que precisa, evita “lag”)
+========================= */
+html, body, .rg-card, .rg-table, .rg-table th, .rg-table td, .rg-input, .rg-btn, .rg-page {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* =========================
+3) LAYOUT BASE
+========================= */
+.rg-body {
+  margin: 0;
+  min-height: 100vh; /* garante altura mínima da tela */
+
+  background: radial-gradient(
+    1200px 700px at 20% 10%,
+    var(--grad-1) 0%,
+    var(--bg) 55%,
+    var(--grad-2) 100%
+  );
+
+  /* ✅ evita “corte / recomeço” do fundo */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* ✅ OPCIONAL (recomendado):
+   reduz “faixas” no gradiente em alguns monitores (banding) */
+.rg-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035; /* bem baixinho */
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(0, 0, 0, 0.06)
+  );
+  mix-blend-mode: overlay;
+}
+
+.rg-container {
+  max-width: 1100px;
+  margin: 48px auto;
+  padding: 0 18px;
+}
+
+/* =========================
+4) CARD / HEADER
+========================= */
+.rg-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+html[data-theme="light"] .rg-card {
+  box-shadow: 0 12px 40px rgba(10, 40, 25, 0.10);
+}
+
+.rg-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.rg-title {
+  font-size: 34px;
+  margin: 0;
+}
+
+/* =========================
+5) BUSCA
+========================= */
+.rg-search {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.rg-input {
+  width: 320px;
+  max-width: 60vw;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  outline: none;
+}
+
+/* =========================
+6) BOTÕES
+========================= */
+.rg-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(36, 193, 107, 0.35);
+  background: rgba(36, 193, 107, 0.18);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rg-btn:hover {
+  background: rgba(36, 193, 107, 0.26);
+}
+
+.rg-theme-icon {
+  line-height: 1;
+}
+
+/* =========================
+7) TABELA
+========================= */
+.rg-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.rg-table th, .rg-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-size: 14px;
+}
+
+.rg-table th {
+  color: var(--muted);
+  font-weight: 700;
+  background: var(--panel-2);
+}
+
+.rg-table tr:hover td {
+  background: var(--panel-2);
+}
+
+/* =========================
+8) PAGINAÇÃO
+========================= */
+.rg-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: var(--muted);
+}
+
+.rg-page {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.rg-page:hover {
+  filter: brightness(1.05);
+}
+
+.rg-current {
+  border-color: rgba(36, 193, 107, 0.45);
+  background: rgba(36, 193, 107, 0.18);
+}
+
+.rg-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}

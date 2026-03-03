@@ -92,19 +92,15 @@ class Endereco (models.Model):
     def clean(self):
         super().clean()
 
-        #remove máscara do CEP
         if self.cep:
             self.cep = re.sub(r'\D', '', self.cep)
-
             if len(self.cep) != 8:
                 raise ValidationError({'cep': 'CEP deve conter 8 dígitos.'})
-        
-        #UF deve ser maiúscula e conter 2 caracteres
+
         if self.uf:
             self.uf = self.uf.upper()
-
             if len(self.uf) != 2:
                 raise ValidationError({'uf': 'UF deve conter 2 caracteres.'})
-            
-        def __str__(self):
-            return f"{self.cliente.nome} - {self.cidade}/{self.uf}"
+
+    def __str__(self):
+        return f"{self.cliente.nome} - {self.cidade}/{self.uf}"

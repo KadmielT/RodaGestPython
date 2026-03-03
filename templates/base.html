@@ -1,0 +1,47 @@
+<!doctype html> <!-- Diz que o documento é HTML5 -->
+<html lang="pt-br" data-theme="dark"> <!-- Define idioma + tema padrão -->
+
+<head>
+  <meta charset="utf-8"> <!-- Permite acentos corretamente -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Responsivo -->
+  <title>{% block title %}RodaGest{% endblock %}</title>
+
+  {% load static %}
+
+  <!-- 1) Aplica o tema salvo ANTES do CSS carregar (evita piscar) -->
+  <script>
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+  </script>
+
+  <!-- 2) Carrega o CSS -->
+  <link rel="stylesheet" href="{% static 'css/rodagest.css' %}">
+</head>
+
+<body class="rg-body">
+
+  <!-- Barra superior -->
+  <header class="rg-header-bar">
+    <div class="rg-header-inner">
+      <strong>RodaGest</strong>
+
+      <!-- Botão do tema -->
+      <button id="themeToggle" type="button" class="rg-btn" aria-label="Alternar tema">
+        <span class="rg-theme-icon" aria-hidden="true">☀️</span>
+        <span class="rg-theme-text">Modo claro</span>
+      </button>
+      
+    </div>
+  </header>
+
+  <!-- Conteúdo das páginas -->
+  <main class="rg-container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- JS no final do body (boa prática) -->
+  <script src="{% static 'js/theme.js' %}"></script>
+</body>
+</html>

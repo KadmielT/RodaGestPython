@@ -1,5 +1,4 @@
 from django.contrib import admin, messages
-from apps.core.admin import BaseAdmin
 from .models import Cliente, Endereco
 
 
@@ -7,6 +6,7 @@ class EnderecoInline(admin.StackedInline):
     model = Endereco
     extra = 0
     can_delete = False
+
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
@@ -31,7 +31,8 @@ class ClienteAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
         extra_context["title"] = "Clientes"
         return super().changelist_view(request, extra_context=extra_context)
-        
+
+
 @admin.register(Endereco)
 class EnderecoAdmin(admin.ModelAdmin):
     list_display = ("cliente", "cidade", "uf", "cep")
