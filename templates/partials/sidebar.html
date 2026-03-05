@@ -1,0 +1,90 @@
+{# templates/partials/sidebar.html #}
+{% load static %}
+
+<aside class="rg-sidebar">
+
+  <div class="rg-sidebar__brand">
+    <div class="rg-sidebar__logo">RG</div>
+    <div class="rg-sidebar__brand-text">
+      <div class="rg-sidebar__name">RodaGest</div>
+      <div class="rg-sidebar__tag">Painel</div>
+    </div>
+  </div>
+
+  <nav class="rg-sidebar__nav" aria-label="Menu lateral">
+
+    {# ===== GRUPO: CADASTRO ===== #}
+    <details class="rg-group" open>
+      <summary class="rg-group__title">
+        <span class="rg-group__label">Cadastro</span>
+        <span class="rg-group__chev" aria-hidden="true">›</span>
+      </summary>
+
+      <div class="rg-group__items" >
+        <a class="rg-nav-item {% if request.resolver_match.url_name == 'cliente_list' %}is-active{% endif %}"
+           href="{% url 'cliente_list' %}">
+          <span class="rg-nav-item__icon">👥</span>
+          <span class="rg-nav-item__text">Clientes</span>
+        </a>
+
+        <a class="rg-nav-item" href="#">
+          <span class="rg-nav-item__icon">🏠</span>
+          <span class="rg-nav-item__text">Endereços</span>
+        </a>
+      </div>
+    </details>
+
+    {# ===== GRUPO: PROJETOS ===== #}
+    <details class="rg-group">
+      <summary class="rg-group__title">
+        <span class="rg-group__label">Projetos</span>
+        <span class="rg-group__chev" aria-hidden="true">›</span>
+      </summary>
+
+      <div class="rg-group__items">
+        <a class="rg-nav-item" href="#">
+          <span class="rg-nav-item__icon">📊</span>
+          <span class="rg-nav-item__text">Dashboard</span>
+        </a>
+
+        <a class="rg-nav-item" href="#">
+          <span class="rg-nav-item__icon">📁</span>
+          <span class="rg-nav-item__text">Projetos</span>
+        </a>
+
+        <a class="rg-nav-item" href="#">
+          <span class="rg-nav-item__icon">📝</span>
+          <span class="rg-nav-item__text">Tarefas</span>
+        </a>
+
+        <a class="rg-nav-item" href="#">
+          <span class="rg-nav-item__icon">📅</span>
+          <span class="rg-nav-item__text">Calendário</span>
+        </a>
+
+        <a class="rg-nav-item" href="#">
+          <span class="rg-nav-item__icon">🧩</span>
+          <span class="rg-nav-item__text">Modelo de Quadro</span>
+        </a>
+      </div>
+    </details>
+
+    {# ===== ITENS “SEÇÃO” (sem dropdown) ===== #}
+    <a class="rg-nav-item rg-nav-item--section" href="#">
+      <span class="rg-nav-item__text">Florestal</span>
+      <span class="rg-nav-item__chev" aria-hidden="true">›</span>
+    </a>
+
+    <a class="rg-nav-item rg-nav-item--section" href="#">
+      <span class="rg-nav-item__text">Financeiro</span>
+      <span class="rg-nav-item__chev" aria-hidden="true">›</span>
+    </a>
+
+    <a class="rg-nav-item rg-nav-item--section" href="#">
+      <span class="rg-nav-item__text">Jurídico</span>
+      <span class="rg-nav-item__chev" aria-hidden="true">›</span>
+    </a>
+
+  </nav>
+
+</aside>

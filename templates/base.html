@@ -1,47 +1,67 @@
-<!doctype html> <!-- Diz que o documento é HTML5 -->
-<html lang="pt-br" data-theme="dark"> <!-- Define idioma + tema padrão -->
-
+<!doctype html>
+<html lang="pt-br" data-theme="dark">
 <head>
-  <meta charset="utf-8"> <!-- Permite acentos corretamente -->
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Responsivo -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}RodaGest{% endblock %}</title>
 
   {% load static %}
 
-  <!-- 1) Aplica o tema salvo ANTES do CSS carregar (evita piscar) -->
   <script>
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    }
+    if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
   </script>
 
-  <!-- 2) Carrega o CSS -->
   <link rel="stylesheet" href="{% static 'css/rodagest.css' %}">
 </head>
 
 <body class="rg-body">
 
-  <!-- Barra superior -->
-  <header class="rg-header-bar">
-    <div class="rg-header-inner">
-      <strong>RodaGest</strong>
+  <div class="rg-app">
+    {% include "partials/sidebar.html" %}
 
-      <!-- Botão do tema -->
-      <button id="themeToggle" type="button" class="rg-btn" aria-label="Alternar tema">
-        <span class="rg-theme-icon" aria-hidden="true">☀️</span>
-        <span class="rg-theme-text">Modo claro</span>
-      </button>
-      
-    </div>
-  </header>
+    <main class="rg-main">
 
-  <!-- Conteúdo das páginas -->
-  <main class="rg-container">
-    {% block content %}{% endblock %}
-  </main>
+    <header class="rg-topbar">
+      <div class="rg-topbar__left">
+        {% include "partials/breadcrumbs.html" %} 
+      </div>
 
-  <!-- JS no final do body (boa prática) -->
+      <div class="rg-topbar__right">
+        <div class="rg-user-menu">
+          <button class="rg-user-menu__btn" type="button" id="userMenuBtn" aria-expanded="false">
+            <span class="rg-user__avatar">
+              {{ request.user.get_short_name|default:request.user.username|slice:":2"|upper }}
+            </span>
+
+            <div class="rg-user__meta">
+              <span class="rg-user__name">
+                {{ request.user.get_full_name|default:request.user.username }}
+              </span>
+              <span class="rg-user__role">Painel</span>
+            </div>
+
+            <span class="rg-user-menu__chev">▾</span>
+          </button>
+
+          <div class="rg-user-menu__dropdown" id="userMenuDropdown" hidden>
+            <button type="button" class="rg-user-menu__item" id="themeToggle">
+              <span class="rg-theme-icon" aria-hidden="true">🌙</span>
+              <span class="rg-theme-text">Modo escuro</span>
+            </button>
+
+            <a class="rg-user-menu__item" href="#">👤 Perfil</a>
+            <a class="rg-user-menu__item" href="#">🚪 Sair</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
   <script src="{% static 'js/theme.js' %}"></script>
+  <script src="{% static 'js/user_menu.js' %}"></script>
 </body>
 </html>

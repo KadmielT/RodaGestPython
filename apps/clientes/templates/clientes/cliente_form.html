@@ -1,0 +1,10 @@
+<h1>Novo Cliente</h1>
+
+<form method="post">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  <button type="submit">Salvar</button>
+  <a href="{% url 'cliente_list' %}">Cancelar</a>
+</form>

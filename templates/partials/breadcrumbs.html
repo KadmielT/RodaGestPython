@@ -1,0 +1,21 @@
+{# templates/partials/breadcrumbs.html #}
+
+{% if breadcrumbs %}
+  <nav class="rg-breadcrumb" aria-label="Breadcrumb">
+    <ol class="rg-breadcrumb__list">
+      {% for item in breadcrumbs %}
+        <li class="rg-breadcrumb__item">
+          {% if item.url and not forloop.last %}
+            <a class="rg-breadcrumb__link" href="{{ item.url }}">{{ item.label }}</a>
+          {% else %}
+            <span class="rg-breadcrumb__current">{{ item.label }}</span>
+          {% endif %}
+        </li>
+
+        {% if not forloop.last %}
+          <li class="rg-breadcrumb__sep" aria-hidden="true">›</li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+{% endif %}

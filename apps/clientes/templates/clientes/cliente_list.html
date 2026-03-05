@@ -4,25 +4,26 @@
 {% block content %}
 <div class="rg-card">
 
-  {# Cabeçalho: título + busca #}
   <div class="rg-header">
     <h1 class="rg-title">Clientes</h1>
 
-    {# Form GET: envia pela URL (?q=...) e reseta page=1 ao buscar #}
-    <form class="rg-search" method="get">
-      <input
-        class="rg-input"
-        type="text"
-        name="q"
-        placeholder="Buscar cliente..."
-        value="{{ q }}"
-      >
-      <input type="hidden" name="page" value="1">
-      <button class="rg-btn" type="submit">Buscar</button>
-    </form>
+    <div class="rg-card-actions">
+      <a class="rg-btn rg-btn-primary" href="{% url 'cliente_create' %}">Adicionar cliente +</a>
+
+      <form class="rg-search" method="get">
+        <input
+          class="rg-input"
+          type="text"
+          name="q"
+          placeholder="Buscar cliente..."
+          value="{{ q }}"
+        >
+        <input type="hidden" name="page" value="1">
+        <button class="rg-btn" type="submit">Buscar</button>
+      </form>
+    </div>
   </div>
 
-  {# Tabela de clientes #}
   <table class="rg-table">
     <thead>
       <tr>
@@ -32,7 +33,6 @@
         <th>Email</th>
       </tr>
     </thead>
-
     <tbody>
       {% for c in clientes %}
         <tr>
@@ -42,63 +42,40 @@
           <td>{{ c.email|default:"-" }}</td>
         </tr>
       {% empty %}
-        <tr>
-          <td colspan="4">Nenhum cliente cadastrado.</td>
-        </tr>
+        <tr><td colspan="4">Nenhum cliente cadastrado.</td></tr>
       {% endfor %}
     </tbody>
   </table>
 
-  {# Paginação só aparece se tiver mais de 1 página #}
   {% if is_paginated %}
     <div class="rg-pagination">
       <span>Total ({{ page_obj.paginator.count }})</span>
 
-      {# Botão Anterior #}
       {% if page_obj.has_previous %}
         <a class="rg-page" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">‹ Anterior</a>
       {% else %}
         <span class="rg-page rg-disabled">‹ Anterior</span>
       {% endif %}
 
-      {# Página 1 sempre aparece #}
-      {% if page_obj.number == 1 %}
-        <span class="rg-page rg-current">1</span>
-      {% else %}
-        <a class="rg-page" href="?q={{ q }}&page=1">1</a>
-      {% endif %}
-
-      {# Reticências no começo se estiver longe do 1 #}
-      {% if page_obj.number > 4 %}
-        <span class="rg-page rg-disabled">…</span>
-      {% endif %}
-
-      {# Páginas ao redor da atual: (atual-1, atual, atual+1) #}
       {% for n in page_obj.paginator.page_range %}
-        {% if n >= page_obj.number|add:"-1" and n <= page_obj.number|add:"1" and n != 1 and n != page_obj.paginator.num_pages %}
+        {% with left=page_obj.number|add:"-1" right=page_obj.number|add:"1" %}
           {% if n == page_obj.number %}
             <span class="rg-page rg-current">{{ n }}</span>
-          {% else %}
+          {% elif n <= 2 %}
             <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+          {% elif n > page_obj.paginator.num_pages|add:"-2" %}
+            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+          {% elif n >= left and n <= right %}
+            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+          {% elif n == 3 and page_obj.number > 4 %}
+            <span class="rg-page rg-disabled">…</span>
+          {% elif n == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+            <span class="rg-page rg-disabled">…</span>
           {% endif %}
-        {% endif %}
+
+        {% endwith %}
       {% endfor %}
 
-      {# Reticências no fim se estiver longe da última #}
-      {% if page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
-        <span class="rg-page rg-disabled">…</span>
-      {% endif %}
-
-      {# Última página (se existir mais de 1) #}
-      {% if page_obj.paginator.num_pages > 1 %}
-        {% if page_obj.number == page_obj.paginator.num_pages %}
-          <span class="rg-page rg-current">{{ page_obj.paginator.num_pages }}</span>
-        {% else %}
-          <a class="rg-page" href="?q={{ q }}&page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-        {% endif %}
-      {% endif %}
-
-      {# Botão Próximo #}
       {% if page_obj.has_next %}
         <a class="rg-page" href="?q={{ q }}&page={{ page_obj.next_page_number }}">Próximo ›</a>
       {% else %}
