@@ -1,0 +1,16 @@
+.rg-search {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.rg-input {
+  width: 320px;
+  max-width: 60vw;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  outline: none;
+}

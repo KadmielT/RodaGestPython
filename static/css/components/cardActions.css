@@ -1,0 +1,23 @@
+.rg-card-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.rg-card-actions{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.rg-btn--primary{
+  border-color: rgba(36, 193, 107, 0.45);
+  background: rgba(36, 193, 107, 0.22);
+}
+
+.rg-btn--primary:hover{
+  background: rgba(36, 193, 107, 0.30);
+}

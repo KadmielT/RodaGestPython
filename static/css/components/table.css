@@ -1,0 +1,24 @@
+.rg-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.rg-table th, .rg-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-size: 14px;
+}
+
+.rg-table th {
+  color: var(--muted);
+  font-weight: 700;
+  background: var(--panel-2);
+}
+
+.rg-table tr:hover td {
+  background: var(--panel-2);
+}

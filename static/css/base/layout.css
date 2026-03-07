@@ -1,0 +1,43 @@
+.rg-body {
+  margin: 0;
+  min-height: 100vh; 
+
+  background: radial-gradient(
+    1200px 700px at 20% 10%,
+    var(--grad-1) 0%,
+    var(--bg) 55%,
+    var(--grad-2) 100%
+  );
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.rg-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(0, 0, 0, 0.06)
+  );
+  mix-blend-mode: overlay;
+}
+
+.rg-container {
+  max-width: 1100px;
+  margin: 48px auto;
+  padding: 0 18px;
+}
+
+.rg-main{
+  padding: 28px 36px; 
+  width: auto;
+}

@@ -1,0 +1,26 @@
+.rg-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+html[data-theme="light"] .rg-card {
+  box-shadow: 0 12px 40px rgba(10, 40, 25, 0.10);
+}
+
+.rg-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.rg-title {
+  font-size: 34px;
+  margin: 0;
+}

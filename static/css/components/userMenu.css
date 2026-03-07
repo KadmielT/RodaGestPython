@@ -1,0 +1,122 @@
+.rg-user-menu{
+  position: relative;
+}
+
+.rg-user-menu__btn{
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 10px;
+  border-radius: 12px;
+
+  border: transparent;
+  background: transparent;
+  color: var(--text);
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.rg-user-menu__btn:hover{
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.10);
+}
+
+.rg-user__avatar{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+
+  display: grid;
+  place-items: center;
+
+  font-weight: 800;
+  letter-spacing: .4px;
+
+  color: #0b2c1b;
+  background: rgba(36, 193, 107, 0.95);
+}
+
+.rg-user__meta{
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-align: left;
+}
+
+.rg-user__name{
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.rg-user__role{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.rg-user-menu__chev{
+  margin-left: 8px;
+  color: var(--muted);
+  font-weight: 900;
+  transition: transform .15s ease, color .15s ease;
+}
+
+.rg-user-menu__btn[aria-expanded="true"] .rg-user-menu__chev{
+  transform: rotate(180deg);
+  color: var(--text);
+}
+
+.rg-user-menu__dropdown{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+
+  min-width: 220px;
+  padding: 8px;
+
+  background: rgba(20, 25, 22, 0.92);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  z-index: 50;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .rg-user-menu__dropdown{
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 18px 40px rgba(10, 40, 25, 0.12);
+}
+
+.rg-user-menu__item{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 10px;
+  border-radius: 12px;
+
+  color: var(--text);
+  text-decoration: none;
+
+  background: transparent;
+  border: 1px solid transparent;
+
+  cursor: pointer;
+  font-weight: 650;
+
+  box-sizing: border-box;
+}
+
+.rg-user-menu__item:hover{
+  background: rgba(36, 193, 107, 0.14);
+  border-color: rgba(36, 193, 107, 0.20);
+}

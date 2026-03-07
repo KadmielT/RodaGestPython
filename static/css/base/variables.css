@@ -1,0 +1,33 @@
+html, body {
+  height: 100%;
+}
+
+:root {
+  --bg: #0f1412;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-2: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.10);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+
+  --green: #24c16b;
+
+  --grad-1: #143a2a;
+  --grad-2: #0b0f0d;
+}
+
+html[data-theme="light"] {
+  --bg: #e9f1ee;
+  --grad-1: #cfeee0;
+  --grad-2: #e7ecea;
+
+  --panel: rgba(255, 255, 255, 0.65);
+  --panel-2: rgba(255, 255, 255, 0.45);
+
+  --text: #1e2a25;
+  --muted: #5c6b64;
+
+  --border: rgba(0, 0, 0, 0.10);
+
+  --green: #24c16b;
+}
