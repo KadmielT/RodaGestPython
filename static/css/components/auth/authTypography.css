@@ -1,0 +1,14 @@
+.rg-auth-title {
+  margin: 0 0 10px;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.rg-auth-subtitle {
+  margin: 0 0 28px;
+  color: rgba(226, 232, 240, 0.78);
+  font-size: 1rem;
+  line-height: 1.5;
+}

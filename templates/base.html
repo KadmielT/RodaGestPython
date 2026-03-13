@@ -13,6 +13,7 @@
   </script>
 
   <link rel="stylesheet" href="{% static 'css/rodagest.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
 </head>
 
 <body class="rg-body">
@@ -22,40 +23,44 @@
 
     <main class="rg-main">
 
-    <header class="rg-topbar">
-      <div class="rg-topbar__left">
-        {% include "partials/breadcrumbs.html" %} 
-      </div>
+      <header class="rg-topbar">
+        <div class="rg-topbar__left">
+          {% include "partials/breadcrumbs.html" %}
+        </div>
 
-      <div class="rg-topbar__right">
-        <div class="rg-user-menu">
-          <button class="rg-user-menu__btn" type="button" id="userMenuBtn" aria-expanded="false">
-            <span class="rg-user__avatar">
-              {{ request.user.get_short_name|default:request.user.username|slice:":2"|upper }}
-            </span>
-
-            <div class="rg-user__meta">
-              <span class="rg-user__name">
-                {{ request.user.get_full_name|default:request.user.username }}
+        <div class="rg-topbar__right">
+          <div class="rg-user-menu">
+            <button class="rg-user-menu__btn" type="button" id="userMenuBtn" aria-expanded="false">
+              <span class="rg-user__avatar">
+                {{ request.user.get_short_name|default:request.user.username|slice:":2"|upper }}
               </span>
-              <span class="rg-user__role">Painel</span>
-            </div>
 
-            <span class="rg-user-menu__chev">▾</span>
-          </button>
+              <div class="rg-user__meta">
+                <span class="rg-user__name">
+                  {{ request.user.get_full_name|default:request.user.username }}
+                </span>
+                <span class="rg-user__role">Painel</span>
+              </div>
 
-          <div class="rg-user-menu__dropdown" id="userMenuDropdown" hidden>
-            <button type="button" class="rg-user-menu__item" id="themeToggle">
-              <span class="rg-theme-icon" aria-hidden="true">🌙</span>
-              <span class="rg-theme-text">Modo escuro</span>
+              <span class="rg-user-menu__chev">▾</span>
             </button>
 
-            <a class="rg-user-menu__item" href="#">👤 Perfil</a>
-            <a class="rg-user-menu__item" href="#">🚪 Sair</a>
+            <div class="rg-user-menu__dropdown" id="userMenuDropdown" hidden>
+              <button type="button" class="rg-user-menu__item" id="themeToggle">
+                <span class="rg-theme-icon" aria-hidden="true">🌙</span>
+                <span class="rg-theme-text">Modo escuro</span>
+              </button>
+
+             <form method="post" action="{% url 'usuarios:logout' %}" class="rg-user-menu__form">
+                {% csrf_token %}
+                <button type="submit" class="rg-user-menu__item rg-user-menu__item--button">
+                  🚪 Sair
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
 
       {% block content %}{% endblock %}
     </main>
@@ -63,5 +68,10 @@
 
   <script src="{% static 'js/theme.js' %}"></script>
   <script src="{% static 'js/user_menu.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+  <script src="{% static 'js/form_selects.js' %}"></script>
+  <script src="{% static 'js/modal.js' %}"></script>
+
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

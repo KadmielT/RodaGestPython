@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | RodaGest</title>
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme) {
+                document.documentElement.setAttribute("data-theme", savedTheme);
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="{% static 'css/rodagest.css' %}">
+</head>
+<body>
+    <main class="rg-auth-page">
+        <section class="rg-auth-panel">
+            <div class="rg-auth-card">
+
+                <h1 class="rg-auth-title">Login</h1>
+                <p class="rg-auth-subtitle">Acesse sua conta para continuar no RodaGest.</p>
+
+                {% if messages %}
+                    <div class="rg-auth-messages" id="authMessages">
+                        {% for message in messages %}
+                            <div class="rg-alert rg-alert--{{ message.tags }} rg-alert--dismissible">
+                                <span class="rg-alert__text">{{ message }}</span>
+                                <button
+                                    type="button"
+                                    class="rg-alert__close"
+                                    aria-label="Fechar notificação" > ×
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="post" class="rg-auth-form">
+                    {% csrf_token %}
+
+                    <div class="rg-auth-field">
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        <div class="rg-auth-input-wrap">
+                            {{ form.email }}
+                        </div>
+                        {% if form.email.errors %}
+                            <div class="rg-form-error">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="rg-auth-field">
+                        <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                        <div class="rg-auth-input-wrap">
+                            {{ form.password }}
+
+                            <button
+                                type="button"
+                                class="rg-auth-toggle-password"
+                                id="togglePassword"
+                                aria-label="Mostrar senha"
+                                aria-pressed="false"
+                            >
+                                👁
+                            </button>
+                        </div>
+                        {% if form.password.errors %}
+                            <div class="rg-form-error">{{ form.password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="rg-auth-actions">
+                        <a href="{% url 'usuarios:password_reset' %}" class="rg-auth-link">Esqueceu sua senha?</a>
+                    </div>
+
+                    <button type="submit" class="rg-btn rg-btn--primary rg-auth-submit">
+                        Entrar
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="rg-auth-showcase">
+            <div class="rg-auth-showcase-content">
+                <h2 class="rg-auth-showcase-title">
+                    Transforme a gestão da sua empresa com mais controle e organização
+                </h2>
+                <p class="rg-auth-showcase-text">
+                    O RodaGest centraliza informações, agiliza processos e ajuda sua operação
+                    a funcionar com mais clareza, produtividade e segurança.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const togglePasswordBtn = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("id_password");
+
+        if (togglePasswordBtn && passwordInput) {
+            togglePasswordBtn.addEventListener("click", function () {
+                const isPassword = passwordInput.type === "password";
+
+                passwordInput.type = isPassword ? "text" : "password";
+                togglePasswordBtn.textContent = isPassword ? "👁" : "👁";
+                togglePasswordBtn.setAttribute(
+                    "aria-label",
+                    isPassword ? "Ocultar senha" : "Mostrar senha"
+                );
+                togglePasswordBtn.setAttribute(
+                    "aria-pressed",
+                    isPassword ? "true" : "false"
+                );
+            });
+        }
+
+        const alerts = document.querySelectorAll(".rg-alert--dismissible");
+
+        function hideAlert(alert) {
+            if (!alert || alert.classList.contains("rg-alert--hiding")) return;
+
+            alert.classList.add("rg-alert--hiding");
+
+            setTimeout(() => {
+                alert.remove();
+            }, 350);
+        }
+
+        alerts.forEach((alert) => {
+            const closeBtn = alert.querySelector(".rg-alert__close");
+
+            if (closeBtn) {
+                closeBtn.addEventListener("click", () => hideAlert(alert));
+            }
+
+            setTimeout(() => hideAlert(alert), 4000);
+        });
+    </script>
+</body>
+</html>

@@ -1,19 +1,191 @@
-/* =========================
- BUSCA
-========================= */
-.rg-search {
+.rg-form{
   display: flex;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.rg-input {
-  width: 320px;
-  max-width: 60vw;
-  padding: 10px 12px;
-  border-radius: 10px;
+.rg-form-section{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rg-form-section__title{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.rg-form-grid{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 18px 16px;
+}
+
+.rg-form-field{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rg-form-field label{
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.rg-form-field--full{
+  grid-column: 1 / -1;
+}
+
+.rg-form-field--span-3{
+  grid-column: span 3;
+}
+
+.rg-form-field--span-4{
+  grid-column: span 4;
+}
+
+.rg-form-field--span-5{
+  grid-column: span 5;
+}
+
+.rg-form-field--span-6{
+  grid-column: span 6;
+}
+
+.rg-form-field--span-8{
+  grid-column: span 8;
+}
+
+.rg-form-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.rg-form-field ul.errorlist{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #ff7b7b;
+  font-size: 13px;
+}
+
+.rg-form-section + .rg-form-section{
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.rg-form textarea.rg-input{
+  min-height: 110px;
+  resize: vertical;
+}
+
+.rg-form select.rg-input,
+.rg-form input.rg-input,
+.rg-form textarea.rg-input{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px){
+  .rg-form-field--span-3,
+  .rg-form-field--span-4,
+  .rg-form-field--span-5,
+  .rg-form-field--span-6,
+  .rg-form-field--span-8{
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 700px){
+  .rg-form-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .rg-form-field--span-3,
+  .rg-form-field--span-4,
+  .rg-form-field--span-5,
+  .rg-form-field--span-6,
+  .rg-form-field--span-8,
+  .rg-form-field--full{
+    grid-column: 1 / -1;
+  }
+
+  .rg-form-actions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.rg-input{
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+
   border: 1px solid var(--border);
+  border-radius: 12px;
+
   background: var(--panel-2);
   color: var(--text);
+
+  box-sizing: border-box;
   outline: none;
+
+  font-size: 15px;
+}
+
+.rg-input::placeholder{
+  color: var(--muted);
+}
+
+.rg-input:focus{
+  border-color: rgba(36, 193, 107, 0.45);
+  box-shadow: 0 0 0 2px rgba(36, 193, 107, 0.08);
+}
+
+/* textarea precisa ser mais alta */
+textarea.rg-input{
+  min-height: 110px;
+  padding: 14px;
+  resize: vertical;
+}
+
+select.rg-input{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.rg-form textarea.rg-input{
+  min-height: 120px;
+  padding: 14px;
+  resize: vertical;
+  width: 100%;
+  max-width: 100%;
+  height: 71px;
+}
+
+/* =========================
+ SELECT / OPTIONS
+========================= */
+.rg-form select.rg-input{
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* opções do dropdown */
+.rg-form select.rg-input option{
+  background: #1b221f;
+  color: #ffffff;
+}
+
+/* opção vazia / placeholder */
+.rg-form select.rg-input option[value=""]{
+  color: rgba(255,255,255,0.65);
 }

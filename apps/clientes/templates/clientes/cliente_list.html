@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load client_filters %}
 {% block title %}Clientes | RodaGest{% endblock %}
 
 {% block content %}
@@ -8,7 +9,7 @@
     <h1 class="rg-title">Clientes</h1>
 
     <div class="rg-card-actions">
-      <a class="rg-btn rg-btn-primary" href="{% url 'cliente_create' %}">Adicionar cliente +</a>
+      <a class="rg-btn rg-btn-primary" href="{% url 'clientes:cliente_create' %}">Adicionar cliente +</a>
 
       <form class="rg-search" method="get">
         <input
@@ -29,23 +30,90 @@
       <tr>
         <th>Nome</th>
         <th>Tipo</th>
-        <th>Documento</th>
+        <th>CPF/CNPJ</th>
+        <th>Telefone</th>
         <th>Email</th>
+        <th>Ações</th>
       </tr>
     </thead>
+
     <tbody>
       {% for c in clientes %}
         <tr>
           <td>{{ c.nome }}</td>
           <td>{{ c.get_tipo_display }}</td>
-          <td>{{ c.documento }}</td>
+          <td>{{ c.documento|format_documento }}</td>
+          <td>{{ c.telefone|format_telefone }}</td>
           <td>{{ c.email|default:"-" }}</td>
+          <td>
+            <div class="rg-table-actions">
+              <a href="{% url 'clientes:cliente_detail' c.pk %}" class="rg-action-icon" title="Visualizar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </a>
+
+              <a href="{% url 'clientes:cliente_update' c.pk %}" class="rg-action-icon" title="Editar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                </svg>
+              </a>
+
+              <button
+                type="button"
+                class="rg-action-icon rg-action-icon--danger rg-action-icon-btn"
+                title="Excluir"
+                data-modal-target="deleteModal{{ c.pk }}"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14H6L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4h6v2"/>
+                </svg>
+              </button>
+            </div>
+          </td>
         </tr>
       {% empty %}
-        <tr><td colspan="4">Nenhum cliente cadastrado.</td></tr>
+        <tr>
+          <td colspan="6">Nenhum cliente cadastrado.</td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  {% for c in clientes %}
+    <div class="rg-modal" id="deleteModal{{ c.pk }}" hidden>
+      <div class="rg-modal__backdrop" data-modal-close></div>
+
+      <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle{{ c.pk }}">
+        <div class="rg-modal__header">
+          <h3 class="rg-modal__title" id="deleteModalTitle{{ c.pk }}">Excluir cliente</h3>
+          <button type="button" class="rg-modal__close" data-modal-close aria-label="Fechar">×</button>
+        </div>
+
+        <div class="rg-modal__body">
+          <p>Tem certeza que deseja excluir o cliente <strong>{{ c.nome }}</strong>?</p>
+          <p class="rg-modal__warning">Essa ação não poderá ser desfeita.</p>
+        </div>
+
+        <div class="rg-modal__footer">
+          <button type="button" class="rg-page" data-modal-close>Cancelar</button>
+
+          <form method="post" action="{% url 'clientes:cliente_delete' c.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="rg-btn rg-btn--primary rg-btn--danger">
+              Excluir
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 
   {% if is_paginated %}
     <div class="rg-pagination">
@@ -72,7 +140,6 @@
           {% elif n == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
             <span class="rg-page rg-disabled">…</span>
           {% endif %}
-
         {% endwith %}
       {% endfor %}
 

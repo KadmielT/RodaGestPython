@@ -35,5 +35,5 @@ class ClienteAdmin(admin.ModelAdmin):
 
 @admin.register(Endereco)
 class EnderecoAdmin(admin.ModelAdmin):
-    list_display = ("cliente", "cidade", "uf", "cep")
-    search_fields = ("cliente__nome", "cidade", "bairro", "cep")
+    list_display = ("cliente", "municipio", "estado", "cep")
+    search_fields = ("cliente__nome", "municipio", "bairro", "cep")

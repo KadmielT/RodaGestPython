@@ -4,6 +4,7 @@
 
 @import url("./components/card.css");
 @import url("./components/search.css");
+@import url("./components/forms.css");
 @import url("./components/buttons.css");
 @import url("./components/table.css");
 @import url("./components/pagination.css");
@@ -11,3 +12,6 @@
 @import url("./components/topbarBreadcrumb.css");
 @import url("./components/userMenu.css");
 @import url("./components/cardActions.css");
+@import url("./components/formSelects.css");
+@import url("./components/modal.css");
+@import url("./components/auth.css");

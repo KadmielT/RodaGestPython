@@ -1,10 +1,125 @@
-<h1>Novo Cliente</h1>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Novo Cliente | RodaGest{% endblock %}
 
-<form method="post">
-  {% csrf_token %}
+{% block content %}
+<div class="rg-card">
 
-  {{ form.as_p }}
+  <div class="rg-card-head">
+    <h1 class="rg-title">
+      {% if modo_edicao %}Editar Cliente{% else %}Novo Cliente{% endif %}
+    </h1>
 
-  <button type="submit">Salvar</button>
-  <a href="{% url 'cliente_list' %}">Cancelar</a>
-</form>
+    <div class="rg-card-actions">
+      <a href="{% url 'clientes:cliente_list' %}" class="rg-page">Voltar</a>
+    </div>
+  </div>
+
+  <form method="post" class="rg-form">
+    {% csrf_token %}
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Dados do cliente</h2>
+
+      <div class="rg-form-grid">
+        <div class="rg-form-field rg-form-field--span-3">
+          <label for="{{ cliente_form.tipo.id_for_label }}">Tipo *</label>
+          {{ cliente_form.tipo }}
+          {{ cliente_form.tipo.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ cliente_form.documento.id_for_label }}">CPF / CNPJ *</label>
+          {{ cliente_form.documento }}
+          {{ cliente_form.documento.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-5">
+          <label for="{{ cliente_form.nome.id_for_label }}">Nome / Nome fantasia *</label>
+          {{ cliente_form.nome }}
+          {{ cliente_form.nome.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ cliente_form.telefone.id_for_label }}">Telefone</label>
+          {{ cliente_form.telefone }}
+          {{ cliente_form.telefone.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-8">
+          <label for="{{ cliente_form.email.id_for_label }}">E-mail</label>
+          {{ cliente_form.email }}
+          {{ cliente_form.email.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--full">
+          <label for="{{ cliente_form.observacoes.id_for_label }}">Observações</label>
+          {{ cliente_form.observacoes }}
+          {{ cliente_form.observacoes.errors }}
+        </div>
+      </div>
+    </section>
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Endereço</h2>
+
+      <div class="rg-form-grid">
+        <div class="rg-form-field rg-form-field--span-3">
+          <label for="{{ endereco_form.cep.id_for_label }}">CEP</label>
+          {{ endereco_form.cep }}
+          {{ endereco_form.cep.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ endereco_form.logradouro.id_for_label }}">Logradouro</label>
+          {{ endereco_form.logradouro }}
+          {{ endereco_form.logradouro.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-3">
+          <label for="{{ endereco_form.numero.id_for_label }}">Número</label>
+          {{ endereco_form.numero }}
+          {{ endereco_form.numero.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ endereco_form.complemento.id_for_label }}">Complemento</label>
+          {{ endereco_form.complemento }}
+          {{ endereco_form.complemento.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-8">
+          <label for="{{ endereco_form.bairro.id_for_label }}">Bairro</label>
+          {{ endereco_form.bairro }}
+          {{ endereco_form.bairro.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-8">
+          <label for="{{ endereco_form.municipio.id_for_label }}">Município</label>
+          {{ endereco_form.municipio }}
+          {{ endereco_form.municipio.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ endereco_form.estado.id_for_label }}">Estado</label>
+          {{ endereco_form.estado }}
+          {{ endereco_form.estado.errors }}
+        </div>
+      </div>
+    </section>
+
+    <div class="rg-form-actions">
+      <a href="{% url 'clientes:cliente_list' %}" class="rg-page">Cancelar</a>
+      <button type="submit" class="rg-btn rg-btn--primary">
+        {% if modo_edicao %}Salvar alterações{% else %}Salvar cliente{% endif %}
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'clientes/js/cepLookup.js' %}"></script>
+  <script src="{% static 'clientes/js/documentMask.js' %}"></script>
+  <script src="{% static 'clientes/js/phoneMask.js' %}"></script>
+{% endblock %}

@@ -1,4 +1,3 @@
-{# templates/partials/sidebar.html #}
 {% load static %}
 
 <aside class="rg-sidebar">
@@ -13,16 +12,15 @@
 
   <nav class="rg-sidebar__nav" aria-label="Menu lateral">
 
-    {# ===== GRUPO: CADASTRO ===== #}
     <details class="rg-group" open>
       <summary class="rg-group__title">
         <span class="rg-group__label">Cadastro</span>
         <span class="rg-group__chev" aria-hidden="true">›</span>
       </summary>
 
-      <div class="rg-group__items" >
+      <div class="rg-group__items">
         <a class="rg-nav-item {% if request.resolver_match.url_name == 'cliente_list' %}is-active{% endif %}"
-           href="{% url 'cliente_list' %}">
+           href="{% url 'clientes:cliente_list' %}">
           <span class="rg-nav-item__icon">👥</span>
           <span class="rg-nav-item__text">Clientes</span>
         </a>
@@ -34,7 +32,6 @@
       </div>
     </details>
 
-    {# ===== GRUPO: PROJETOS ===== #}
     <details class="rg-group">
       <summary class="rg-group__title">
         <span class="rg-group__label">Projetos</span>
@@ -69,7 +66,6 @@
       </div>
     </details>
 
-    {# ===== ITENS “SEÇÃO” (sem dropdown) ===== #}
     <a class="rg-nav-item rg-nav-item--section" href="#">
       <span class="rg-nav-item__text">Florestal</span>
       <span class="rg-nav-item__chev" aria-hidden="true">›</span>

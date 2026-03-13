@@ -1,60 +1,133 @@
 from django.views.generic import ListView
 from django.db.models import Q
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Cliente
-from .forms import ClienteForm
+from .models import Cliente, Endereco
+from .forms import ClienteForm, EnderecoForm
 
 
-class ClienteListView(ListView):
+class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
     template_name = "clientes/cliente_list.html"
     context_object_name = "clientes"
     paginate_by = 10
 
     def get_queryset(self):
-        # Aqui a gente pega todos os clientes ordenados do mais novo pro mais antigo
         queryset = Cliente.objects.order_by("-data_cadastro")
-
-        # Pega o valor digitado no input de busca (?q=...)
         busca = self.request.GET.get("q", "").strip()
 
-        # Se tiver algo digitado, aplica filtro (nome, documento ou email)
         if busca:
             queryset = queryset.filter(
                 Q(nome__icontains=busca) |
                 Q(documento__icontains=busca) |
                 Q(email__icontains=busca)
             )
-
         return queryset
 
     def get_context_data(self, **kwargs):
-        # Contexto padrão do ListView (clientes, page_obj, is_paginated, etc.)
         context = super().get_context_data(**kwargs)
-
-        # Mantém o valor da busca no input após pesquisar
         context["q"] = self.request.GET.get("q", "")
-
-        # ✅ Aqui é o breadcrumb que o template "partials/breadcrumbs.html" espera
         context["breadcrumbs"] = [
             {"label": "Registros", "url": "#"},
             {"label": "Clientes", "url": None},
         ]
-
         return context
 
 
+@login_required
 def cliente_create(request):
     if request.method == "POST":
-        form = ClienteForm(request.POST)
+        cliente_form = ClienteForm(request.POST)
+        endereco_form = EnderecoForm(request.POST)
 
-        if form.is_valid():
-            form.save()
+        if cliente_form.is_valid() and endereco_form.is_valid():
+            cliente = cliente_form.save()
+
+            endereco = endereco_form.save(commit=False)
+            endereco.cliente = cliente
+            endereco.save()
+
             messages.success(request, "Cliente criado com sucesso!")
-            return redirect("cliente_list")
+            return redirect("clientes:cliente_list")
     else:
-        form = ClienteForm()
+        cliente_form = ClienteForm()
+        endereco_form = EnderecoForm()
 
-    return render(request, "clientes/cliente_form.html", {"form": form})
+    context = {
+        "cliente_form": cliente_form,
+        "endereco_form": endereco_form,
+        "breadcrumbs": [
+            {"label": "Registros", "url": "#"},
+            {"label": "Clientes", "url": "/clientes/"},
+            {"label": "Novo cliente", "url": None},
+        ]
+    }
+
+    return render(request, "clientes/cliente_form.html", context)
+
+
+@login_required
+def cliente_detail(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    endereco = getattr(cliente, "endereco", None)
+
+    context = {
+        "cliente": cliente,
+        "endereco": endereco,
+        "breadcrumbs": [
+            {"label": "Registros", "url": "#"},
+            {"label": "Clientes", "url": "/clientes/"},
+            {"label": "Visualizar cliente", "url": None},
+        ],
+    }
+    return render(request, "clientes/cliente_detail.html", context)
+
+
+@login_required
+def cliente_update(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    endereco = getattr(cliente, "endereco", None)
+
+    if request.method == "POST":
+        cliente_form = ClienteForm(request.POST, instance=cliente)
+        endereco_form = EnderecoForm(request.POST, instance=endereco)
+
+        if cliente_form.is_valid() and endereco_form.is_valid():
+            cliente = cliente_form.save()
+            endereco = endereco_form.save(commit=False)
+            endereco.cliente = cliente
+            endereco.save()
+
+            messages.success(request, "Cliente atualizado com sucesso!")
+            return redirect("clientes:cliente_list")
+    else:
+        cliente_form = ClienteForm(instance=cliente)
+        endereco_form = EnderecoForm(instance=endereco)
+
+    context = {
+        "cliente_form": cliente_form,
+        "endereco_form": endereco_form,
+        "modo_edicao": True,
+        "cliente": cliente,
+        "breadcrumbs": [
+            {"label": "Registros", "url": "#"},
+            {"label": "Clientes", "url": "/clientes/"},
+            {"label": "Editar cliente", "url": None},
+        ],
+    }
+    return render(request, "clientes/cliente_form.html", context)
+
+
+@login_required
+def cliente_delete(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+
+    if request.method == "POST":
+        cliente.delete()
+        messages.success(request, "Cliente excluído com sucesso!")
+        return redirect("clientes:cliente_list")
+
+    return redirect("clientes:cliente_list")

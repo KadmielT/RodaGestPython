@@ -1,0 +1,53 @@
+.rg-auth-showcase {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.rg-auth-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.48)),
+    url("/static/img/login-truck.jpg") center/cover no-repeat;
+  transform: scale(1.02);
+}
+
+.rg-auth-showcase::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 30%),
+    linear-gradient(90deg, rgba(3, 8, 6, 0.15) 0%, rgba(3, 8, 6, 0.55) 100%);
+}
+
+.rg-auth-showcase-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  padding: 80px 72px;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rg-auth-showcase-title {
+  margin: 0 0 24px;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1.08;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.rg-auth-showcase-text {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.5vw, 1.8rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.94);
+  max-width: 520px;
+}

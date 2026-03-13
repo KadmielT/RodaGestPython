@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Excluir Cliente | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <h1 class="rg-title">Excluir Cliente</h1>
+  </div>
+
+  <p>Tem certeza que deseja excluir o cliente <strong>{{ cliente.nome }}</strong>?</p>
+  <p>Essa ação não poderá ser desfeita.</p>
+
+  <form method="post" class="rg-form-actions">
+    {% csrf_token %}
+    <a href="{% url 'cliente_list' %}" class="rg-page">Cancelar</a>
+    <button type="submit" class="rg-btn rg-btn--primary">Excluir cliente</button>
+  </form>
+
+</div>
+{% endblock %}

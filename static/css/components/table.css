@@ -6,11 +6,13 @@
   border: 1px solid var(--border);
 }
 
-.rg-table th, .rg-table td {
+.rg-table th,
+.rg-table td {
   padding: 12px 12px;
   border-bottom: 1px solid var(--border);
   text-align: left;
   font-size: 14px;
+  vertical-align: middle;
 }
 
 .rg-table th {
@@ -21,4 +23,87 @@
 
 .rg-table tr:hover td {
   background: var(--panel-2);
+}
+
+.rg-table th:last-child,
+.rg-table td:last-child {
+  width: 120px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.rg-table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.rg-action-link {
+  color: var(--green);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.rg-action-link:hover {
+  text-decoration: underline;
+}
+
+.rg-action-link--danger {
+  color: #ff7b7b;
+}
+
+.rg-action-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--green);
+  text-decoration: none;
+  transition: 0.2s ease;
+  flex: 0 0 auto;
+}
+
+.rg-action-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.rg-action-icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.rg-action-icon--danger {
+  color: #ff7b7b;
+}
+
+.rg-input--textarea-readonly {
+  min-height: 120px;
+  padding: 14px;
+  display: flex;
+  align-items: flex-start;
+  white-space: pre-wrap;
+  max-width: none;
+}
+
+.rg-form-field .rg-input {
+  display: flex;
+  align-items: center;
+}
+
+.rg-empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.rg-action-icon-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
 }

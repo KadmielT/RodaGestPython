@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load client_filters %}
+{% block title %}Visualizar Cliente | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <h1 class="rg-title">Visualizar Cliente</h1>
+
+    <div class="rg-card-actions">
+      <a href="{% url 'clientes:cliente_list' %}" class="rg-page">Voltar</a>
+      <a href="{% url 'clientes:cliente_update' cliente.pk %}" class="rg-btn rg-btn--primary">Editar</a>
+    </div>
+  </div>
+
+  <section class="rg-form-section">
+    <h2 class="rg-form-section__title">Dados do cliente</h2>
+
+    <div class="rg-form-grid">
+      <div class="rg-form-field rg-form-field--span-3">
+        <label>Tipo</label>
+        <div class="rg-input">{{ cliente.get_tipo_display }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>CPF / CNPJ</label>
+        <div class="rg-input">{{ cliente.documento|format_documento }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-5">
+        <label>Nome / Nome fantasia</label>
+        <div class="rg-input">{{ cliente.nome }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Telefone</label>
+        <div class="rg-input">{{ cliente.telefone|format_telefone }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-8">
+        <label>E-mail</label>
+        <div class="rg-input">{{ cliente.email|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--full">
+        <label>Observações</label>
+        <div class="rg-input rg-input--textarea-readonly">
+          {% if cliente.observacoes %}
+            {{ cliente.observacoes }}
+          {% else %}
+            <span class="rg-empty">Nenhuma observação cadastrada</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rg-form-section">
+    <h2 class="rg-form-section__title">Endereço</h2>
+
+    <div class="rg-form-grid">
+      <div class="rg-form-field rg-form-field--span-3">
+        <label>CEP</label>
+        <div class="rg-input">{{ endereco.cep|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-6">
+        <label>Logradouro</label>
+        <div class="rg-input">{{ endereco.logradouro|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-3">
+        <label>Número</label>
+        <div class="rg-input">{{ endereco.numero|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Complemento</label>
+        <div class="rg-input">{{ endereco.complemento|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-8">
+        <label>Bairro</label>
+        <div class="rg-input">{{ endereco.bairro|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-8">
+        <label>Município</label>
+        <div class="rg-input">{{ endereco.municipio|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Estado</label>
+        <div class="rg-input">{{ endereco.estado|default:"-" }}</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

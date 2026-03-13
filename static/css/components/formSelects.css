@@ -1,0 +1,92 @@
+.ts-control {
+  background: var(--panel-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  color: var(--text) !important;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.ts-dropdown {
+  background: #18201c !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  color: var(--text) !important;
+}
+
+.ts-dropdown .option {
+  color: var(--text) !important;
+}
+
+.ts-dropdown .option.active {
+  background: rgba(36, 193, 107, 0.16) !important;
+}
+
+/* =========================
+16) TOM SELECT
+========================= */
+.ts-wrapper{
+  width: 100%;
+}
+
+.ts-wrapper.single .ts-control,
+.ts-wrapper .ts-control{
+  background: var(--panel-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  color: var(--text) !important;
+  min-height: 44px !important;
+  padding: 0 12px !important;
+  box-shadow: none !important;
+
+  display: flex;
+  align-items: center;
+}
+
+.ts-wrapper.focus .ts-control{
+  border-color: rgba(36, 193, 107, 0.45) !important;
+  box-shadow: 0 0 0 2px rgba(36, 193, 107, 0.08) !important;
+}
+
+.ts-wrapper.single .ts-control input,
+.ts-wrapper .ts-control input{
+  color: var(--text) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.ts-wrapper.single .ts-control .item{
+  color: var(--text) !important;
+}
+
+.ts-wrapper .ts-dropdown{
+  margin-top: 6px !important;
+  background: #18201c !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 16px 30px rgba(0,0,0,.22) !important;
+  overflow: hidden;
+}
+
+.ts-wrapper .ts-dropdown .option{
+  color: var(--text) !important;
+  padding: 10px 12px !important;
+}
+
+.ts-wrapper .ts-dropdown .option:hover,
+.ts-wrapper .ts-dropdown .active{
+  background: rgba(36, 193, 107, 0.14) !important;
+  color: var(--text) !important;
+}
+
+.ts-wrapper .ts-control::after{
+  border-color: var(--muted) transparent transparent transparent !important;
+}
+
+.ts-wrapper.dropdown-active .ts-control::after{
+  border-color: transparent transparent var(--muted) transparent !important;
+}

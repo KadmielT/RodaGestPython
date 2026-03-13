@@ -1,0 +1,84 @@
+.rg-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rg-auth-field label,
+.rg-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: rgba(226, 232, 240, 0.82);
+  font-weight: 500;
+}
+
+.rg-auth-input-wrap {
+  position: relative;
+}
+
+.rg-auth-input-wrap .rg-input {
+  width: 100%;
+  min-height: 52px;
+  padding-right: 48px;
+}
+
+.rg-auth-toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #22c55e;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.rg-auth-toggle-password:hover {
+  opacity: 0.85;
+}
+
+.rg-auth-toggle-password:focus-visible {
+  outline: 2px solid rgba(34, 197, 94, 0.45);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.rg-auth-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.rg-auth-link {
+  color: #22c55e;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.rg-auth-link:hover {
+  text-decoration: underline;
+}
+
+.rg-auth-submit {
+  width: 100%;
+  min-height: 30px;
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rg-form-error {
+  margin-top: 8px;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
