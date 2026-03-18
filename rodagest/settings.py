@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     "apps.clientes.apps.ClientesConfig",
     "apps.usuarios.apps.UsuariosConfig",
+    'apps.estoque_rodas.apps.EstoqueRodasConfig',
 ]
 
 

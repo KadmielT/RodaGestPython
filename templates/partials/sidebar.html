@@ -25,9 +25,10 @@
           <span class="rg-nav-item__text">Clientes</span>
         </a>
 
-        <a class="rg-nav-item" href="#">
-          <span class="rg-nav-item__icon">🏠</span>
-          <span class="rg-nav-item__text">Endereços</span>
+        <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_rodas' %}is-active{% endif %}"
+          href="{% url 'estoque_rodas:roda_list' %}">
+          <span class="rg-nav-item__icon">🛞</span>
+          <span class="rg-nav-item__text">Estoque de rodas</span>
         </a>
       </div>
     </details>

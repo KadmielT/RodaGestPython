@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Estoque de rodas | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-header">
+    <h1 class="rg-title">Estoque de rodas</h1>
+
+    <div class="rg-card-actions">
+      <a class="rg-btn rg-btn-primary" href="{% url 'estoque_rodas:roda_create' %}">
+        Adicionar roda +
+      </a>
+
+      <form class="rg-search" method="get">
+        <input
+          class="rg-input"
+          type="text"
+          name="q"
+          placeholder="Buscar roda..."
+          value="{{ q }}"
+        >
+        <input type="hidden" name="page" value="1">
+        <button class="rg-btn" type="submit">Buscar</button>
+      </form>
+    </div>
+  </div>
+
+  <table class="rg-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Código</th>
+        <th>Estado</th>
+        <th>Quantidade disponível</th>
+        <th>Valor por unidade</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for roda in rodas %}
+        <tr>
+          <td>{{ roda.nome }}</td>
+          <td>{{ roda.codigo|default:"-" }}</td>
+          <td>{{ roda.get_estado_display }}</td>
+          <td>{{ roda.quantidade }}</td>
+          <td>R$ {{ roda.valor_unitario }}</td>
+          <td>
+            <div class="rg-table-actions">
+              <a href="{% url 'estoque_rodas:roda_detail' roda.pk %}" class="rg-action-icon" title="Visualizar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </a>
+
+              <a href="{% url 'estoque_rodas:roda_update' roda.pk %}" class="rg-action-icon" title="Editar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                </svg>
+              </a>
+
+              <a href="{% url 'estoque_rodas:movimentar_roda' roda.pk %}" class="rg-action-icon" title="Movimentar estoque">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M17 1l4 4-4 4"/>
+                  <path d="M3 11V9a4 4 0 014-4h14"/>
+                  <path d="M7 23l-4-4 4-4"/>
+                  <path d="M21 13v2a4 4 0 01-4 4H3"/>
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">Nenhuma roda cadastrada.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+    <div class="rg-pagination">
+      <span>Total ({{ page_obj.paginator.count }})</span>
+
+      {% if page_obj.has_previous %}
+        <a class="rg-page" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">‹ Anterior</a>
+      {% else %}
+        <span class="rg-page rg-disabled">‹ Anterior</span>
+      {% endif %}
+
+      {% for n in page_obj.paginator.page_range %}
+        {% with left=page_obj.number|add:"-1" right=page_obj.number|add:"1" %}
+          {% if n == page_obj.number %}
+            <span class="rg-page rg-current">{{ n }}</span>
+          {% elif n <= 2 %}
+            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+          {% elif n > page_obj.paginator.num_pages|add:"-2" %}
+            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+          {% elif n >= left and n <= right %}
+            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+          {% elif n == 3 and page_obj.number > 4 %}
+            <span class="rg-page rg-disabled">…</span>
+          {% elif n == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+            <span class="rg-page rg-disabled">…</span>
+          {% endif %}
+        {% endwith %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="rg-page" href="?q={{ q }}&page={{ page_obj.next_page_number }}">Próximo ›</a>
+      {% else %}
+        <span class="rg-page rg-disabled">Próximo ›</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

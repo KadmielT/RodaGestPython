@@ -40,6 +40,14 @@
   grid-column: 1 / -1;
 }
 
+.rg-form-field--full .rg-input{
+  width: 100%;
+}
+
+.rg-form-field--span-2{
+  grid-column: span 2;
+}
+
 .rg-form-field--span-3{
   grid-column: span 3;
 }
@@ -81,8 +89,12 @@
 }
 
 .rg-form textarea.rg-input{
-  min-height: 110px;
+  min-height: 120px;
+  padding: 14px;
   resize: vertical;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .rg-form select.rg-input,
@@ -90,9 +102,11 @@
 .rg-form textarea.rg-input{
   width: 100%;
   box-sizing: border-box;
+  max-width: 100%;
 }
 
 @media (max-width: 1100px){
+  .rg-form-field--span-2,
   .rg-form-field--span-3,
   .rg-form-field--span-4,
   .rg-form-field--span-5,
@@ -107,6 +121,7 @@
     grid-template-columns: 1fr;
   }
 
+  .rg-form-field--span-2,
   .rg-form-field--span-3,
   .rg-form-field--span-4,
   .rg-form-field--span-5,
@@ -126,16 +141,12 @@
   width: 100%;
   min-height: 46px;
   padding: 0 14px;
-
   border: 1px solid var(--border);
   border-radius: 12px;
-
   background: var(--panel-2);
   color: var(--text);
-
   box-sizing: border-box;
   outline: none;
-
   font-size: 15px;
 }
 
@@ -148,7 +159,6 @@
   box-shadow: 0 0 0 2px rgba(36, 193, 107, 0.08);
 }
 
-/* textarea precisa ser mais alta */
 textarea.rg-input{
   min-height: 110px;
   padding: 14px;
@@ -161,31 +171,17 @@ select.rg-input{
   -moz-appearance: none;
 }
 
-.rg-form textarea.rg-input{
-  min-height: 120px;
-  padding: 14px;
-  resize: vertical;
-  width: 100%;
-  max-width: 100%;
-  height: 71px;
-}
-
-/* =========================
- SELECT / OPTIONS
-========================= */
 .rg-form select.rg-input{
   background: var(--panel-2);
   color: var(--text);
   border: 1px solid var(--border);
 }
 
-/* opções do dropdown */
 .rg-form select.rg-input option{
   background: #1b221f;
   color: #ffffff;
 }
 
-/* opção vazia / placeholder */
 .rg-form select.rg-input option[value=""]{
   color: rgba(255,255,255,0.65);
 }

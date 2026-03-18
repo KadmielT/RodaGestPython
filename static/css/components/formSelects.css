@@ -90,3 +90,13 @@
 .ts-wrapper.dropdown-active .ts-control::after{
   border-color: transparent transparent var(--muted) transparent !important;
 }
+
+.ts-wrapper.single,
+.ts-wrapper.single .ts-control {
+  width: 100%;
+}
+
+.ts-wrapper.single .ts-control {
+  min-height: 46px !important;
+  border-radius: 12px !important;
+}

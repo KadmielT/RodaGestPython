@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 from .models import Cliente, Endereco
 from .forms import ClienteForm, EnderecoForm
@@ -31,8 +32,8 @@ class ClienteListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["q"] = self.request.GET.get("q", "")
         context["breadcrumbs"] = [
-            {"label": "Registros", "url": "#"},
-            {"label": "Clientes", "url": None},
+            {"label": "Cadastro"},
+            {"label": "Clientes"},
         ]
         return context
 
@@ -60,9 +61,9 @@ def cliente_create(request):
         "cliente_form": cliente_form,
         "endereco_form": endereco_form,
         "breadcrumbs": [
-            {"label": "Registros", "url": "#"},
-            {"label": "Clientes", "url": "/clientes/"},
-            {"label": "Novo cliente", "url": None},
+            {"label": "Cadastro"},
+            {"label": "Clientes", "url": reverse("clientes:cliente_list")},
+            {"label": "Novo cliente"},
         ]
     }
 
@@ -78,9 +79,9 @@ def cliente_detail(request, pk):
         "cliente": cliente,
         "endereco": endereco,
         "breadcrumbs": [
-            {"label": "Registros", "url": "#"},
-            {"label": "Clientes", "url": "/clientes/"},
-            {"label": "Visualizar cliente", "url": None},
+            {"label": "Cadastro"},
+            {"label": "Clientes", "url": reverse("clientes:cliente_list")},
+            {"label": cliente.nome},
         ],
     }
     return render(request, "clientes/cliente_detail.html", context)
@@ -113,9 +114,10 @@ def cliente_update(request, pk):
         "modo_edicao": True,
         "cliente": cliente,
         "breadcrumbs": [
-            {"label": "Registros", "url": "#"},
-            {"label": "Clientes", "url": "/clientes/"},
-            {"label": "Editar cliente", "url": None},
+            {"label": "Cadastro"},
+            {"label": "Clientes", "url": reverse("clientes:cliente_list")},
+            {"label": cliente.nome, "url": reverse("clientes:cliente_detail", kwargs={"pk": cliente.pk})},
+            {"label": "Editar"},
         ],
     }
     return render(request, "clientes/cliente_form.html", context)

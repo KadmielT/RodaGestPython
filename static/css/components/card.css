@@ -1,6 +1,5 @@
 .rg-card {
   background: var(--panel);
-  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 18px;
   backdrop-filter: blur(14px);
