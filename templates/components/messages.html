@@ -1,0 +1,41 @@
+{% if messages %}
+  <div class="rg-toast-stack" aria-live="polite" aria-atomic="true">
+    {% for message in messages %}
+      <div class="rg-toast rg-toast--{{ message.tags|default:'info' }}" data-toast>
+        <div class="rg-toast__icon">
+          {% if 'success' in message.tags %}
+            ✓
+          {% elif 'error' in message.tags %}
+            !
+          {% elif 'warning' in message.tags %}
+            !
+          {% else %}
+            i
+          {% endif %}
+        </div>
+
+        <div class="rg-toast__content">
+          <strong class="rg-toast__title">
+            {% if 'success' in message.tags %}
+              Sucesso
+            {% elif 'error' in message.tags %}
+              Erro
+            {% elif 'warning' in message.tags %}
+              Atenção
+            {% else %}
+              Informação
+            {% endif %}
+          </strong>
+
+          <div class="rg-toast__message">
+            {{ message }}
+          </div>
+        </div>
+
+        <button type="button" class="rg-toast__close" data-toast-close aria-label="Fechar">
+          ×
+        </button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

@@ -1,11 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import ListView
-from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.db.models import Q
+from django.views.generic import ListView
 
 from .forms import MovimentacaoRodaForm, RodaForm
 from .models import MovimentacaoRoda, Roda
@@ -24,7 +24,8 @@ class RodaListView(ListView):
 
         if q:
             queryset = queryset.filter(
-                Q(nome__icontains=q) | Q(codigo__icontains=q)
+                Q(nome__icontains=q) |
+                Q(codigo__icontains=q)
             )
 
         return queryset
@@ -38,15 +39,18 @@ class RodaListView(ListView):
         ]
         return context
 
+
 @login_required
 def roda_create(request):
     if request.method == 'POST':
         form = RodaForm(request.POST)
 
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Roda cadastrada com sucesso.')
+            roda = form.save()
+            messages.success(request, f'Roda "{roda.nome}" foi criada com sucesso.')
             return redirect('estoque_rodas:roda_list')
+
+        messages.error(request, 'Não foi possível criar a roda. Revise os campos informados.')
     else:
         form = RodaForm()
 
@@ -61,6 +65,7 @@ def roda_create(request):
         ],
     }
     return render(request, 'estoque_rodas/roda_form.html', context)
+
 
 @login_required
 def roda_detail(request, pk):
@@ -78,6 +83,7 @@ def roda_detail(request, pk):
     }
     return render(request, 'estoque_rodas/roda_detail.html', context)
 
+
 @login_required
 def roda_update(request, pk):
     roda = get_object_or_404(Roda, pk=pk)
@@ -86,9 +92,11 @@ def roda_update(request, pk):
         form = RodaForm(request.POST, instance=roda)
 
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Roda atualizada com sucesso.')
+            roda = form.save()
+            messages.success(request, f'Roda "{roda.nome}" foi atualizada com sucesso.')
             return redirect('estoque_rodas:roda_list')
+
+        messages.error(request, f'Não foi possível salvar as alterações da roda "{roda.nome}".')
     else:
         form = RodaForm(instance=roda)
 
@@ -100,11 +108,12 @@ def roda_update(request, pk):
         'breadcrumbs': [
             {'label': 'Cadastro'},
             {'label': 'Estoque de rodas', 'url': reverse('estoque_rodas:roda_list')},
-            {'label': roda.nome, 'url': reverse('estoque_rodas:roda_detail', kwargs={'pk': roda.pk})},
+            {'label': roda.nome},
             {'label': 'Editar'},
         ],
     }
     return render(request, 'estoque_rodas/roda_form.html', context)
+
 
 @login_required
 def movimentar_roda(request, pk):
@@ -130,8 +139,16 @@ def movimentar_roda(request, pk):
                     movimentacao.full_clean()
                     roda.save()
                     movimentacao.save()
-                    messages.success(request, 'Movimentação registrada com sucesso.')
+                    messages.success(
+                        request,
+                        f'Movimentação da roda "{roda.nome}" registrada com sucesso.'
+                    )
                     return redirect('estoque_rodas:roda_list')
+
+        messages.error(
+            request,
+            f'Não foi possível registrar a movimentação da roda "{roda.nome}".'
+        )
     else:
         form = MovimentacaoRodaForm()
 
@@ -143,7 +160,7 @@ def movimentar_roda(request, pk):
         'breadcrumbs': [
             {'label': 'Cadastro'},
             {'label': 'Estoque de rodas', 'url': reverse('estoque_rodas:roda_list')},
-            {'label': roda.nome, 'url': reverse('estoque_rodas:roda_detail', kwargs={'pk': roda.pk})},
+            {'label': roda.nome},
             {'label': 'Movimentar estoque'},
         ],
     }

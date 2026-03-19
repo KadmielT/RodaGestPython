@@ -51,8 +51,10 @@ def cliente_create(request):
             endereco.cliente = cliente
             endereco.save()
 
-            messages.success(request, "Cliente criado com sucesso!")
+            messages.success(request, f'Cliente "{cliente.nome}" foi criado com sucesso.')
             return redirect("clientes:cliente_list")
+
+        messages.error(request, "Não foi possível criar o cliente. Revise os campos informados.")
     else:
         cliente_form = ClienteForm()
         endereco_form = EnderecoForm()
@@ -102,8 +104,10 @@ def cliente_update(request, pk):
             endereco.cliente = cliente
             endereco.save()
 
-            messages.success(request, "Cliente atualizado com sucesso!")
+            messages.success(request, f'Cliente "{cliente.nome}" foi atualizado com sucesso.')
             return redirect("clientes:cliente_list")
+
+        messages.error(request, f'Não foi possível salvar as alterações do cliente "{cliente.nome}".')
     else:
         cliente_form = ClienteForm(instance=cliente)
         endereco_form = EnderecoForm(instance=endereco)
@@ -128,8 +132,9 @@ def cliente_delete(request, pk):
     cliente = get_object_or_404(Cliente, pk=pk)
 
     if request.method == "POST":
+        nome_cliente = cliente.nome
         cliente.delete()
-        messages.success(request, "Cliente excluído com sucesso!")
+        messages.success(request, f'Cliente "{nome_cliente}" foi excluído com sucesso.')
         return redirect("clientes:cliente_list")
 
     return redirect("clientes:cliente_list")

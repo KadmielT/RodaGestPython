@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="pt-br" data-theme="dark">
 <head>
@@ -5,23 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}RodaGest{% endblock %}</title>
 
-  {% load static %}
-
   <script>
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme) {
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
   </script>
 
   <link rel="stylesheet" href="{% static 'css/rodagest.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
+  <link rel="stylesheet" href="{% static 'css/components/toasts.css' %}">
 </head>
 
 <body class="rg-body">
-
   <div class="rg-app">
     {% include "partials/sidebar.html" %}
 
     <main class="rg-main">
+      {% include "components/messages.html" %}
 
       <header class="rg-topbar">
         <div class="rg-topbar__left">
@@ -30,7 +32,12 @@
 
         <div class="rg-topbar__right">
           <div class="rg-user-menu">
-            <button class="rg-user-menu__btn" type="button" id="userMenuBtn" aria-expanded="false">
+            <button
+              class="rg-user-menu__btn"
+              type="button"
+              id="userMenuBtn"
+              aria-expanded="false"
+            >
               <span class="rg-user__avatar">
                 {{ request.user.get_short_name|default:request.user.username|slice:":2"|upper }}
               </span>
@@ -51,7 +58,7 @@
                 <span class="rg-theme-text">Modo escuro</span>
               </button>
 
-             <form method="post" action="{% url 'usuarios:logout' %}" class="rg-user-menu__form">
+              <form method="post" action="{% url 'usuarios:logout' %}" class="rg-user-menu__form">
                 {% csrf_token %}
                 <button type="submit" class="rg-user-menu__item rg-user-menu__item--button">
                   🚪 Sair
@@ -71,6 +78,7 @@
   <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
   <script src="{% static 'js/form_selects.js' %}"></script>
   <script src="{% static 'js/modal.js' %}"></script>
+  <script src="{% static 'js/toasts.js' %}"></script>
 
   {% block extra_js %}{% endblock %}
 </body>
