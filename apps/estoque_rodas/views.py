@@ -46,7 +46,11 @@ def roda_create(request):
         form = RodaForm(request.POST)
 
         if form.is_valid():
-            roda = form.save()
+            with transaction.atomic():
+                roda = form.save(commit=False)
+                roda.quantidade_inicial = form.cleaned_data['quantidade']
+                roda.save()
+
             messages.success(request, f'Roda "{roda.nome}" foi criada com sucesso.')
             return redirect('estoque_rodas:roda_list')
 
@@ -92,8 +96,12 @@ def roda_update(request, pk):
         form = RodaForm(request.POST, instance=roda)
 
         if form.is_valid():
-            roda = form.save()
-            messages.success(request, f'Roda "{roda.nome}" foi atualizada com sucesso.')
+            roda_atualizada = form.save(commit=False)
+            roda_atualizada.quantidade = roda.quantidade
+            roda_atualizada.quantidade_inicial = roda.quantidade_inicial
+            roda_atualizada.save()
+
+            messages.success(request, f'Roda "{roda_atualizada.nome}" foi atualizada com sucesso.')
             return redirect('estoque_rodas:roda_list')
 
         messages.error(request, f'Não foi possível salvar as alterações da roda "{roda.nome}".')
@@ -105,6 +113,7 @@ def roda_update(request, pk):
         'titulo': 'Editar roda',
         'botao_submit': 'Salvar alterações',
         'roda': roda,
+        'modo_edicao': True,
         'breadcrumbs': [
             {'label': 'Cadastro'},
             {'label': 'Estoque de rodas', 'url': reverse('estoque_rodas:roda_list')},
@@ -165,3 +174,16 @@ def movimentar_roda(request, pk):
         ],
     }
     return render(request, 'estoque_rodas/movimentacao_form.html', context)
+
+
+@login_required
+def roda_delete(request, pk):
+    roda = get_object_or_404(Roda, pk=pk)
+
+    if request.method == 'POST':
+        nome_roda = roda.nome
+        roda.delete()
+        messages.success(request, f'Roda "{nome_roda}" foi excluída com sucesso.')
+        return redirect('estoque_rodas:roda_list')
+
+    return redirect('estoque_rodas:roda_list')

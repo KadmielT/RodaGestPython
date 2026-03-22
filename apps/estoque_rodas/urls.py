@@ -4,6 +4,7 @@ from .views import (
     RodaListView,
     movimentar_roda,
     roda_create,
+    roda_delete,
     roda_detail,
     roda_update,
 )
@@ -16,4 +17,5 @@ urlpatterns = [
     path('<int:pk>/', roda_detail, name='roda_detail'),
     path('<int:pk>/editar/', roda_update, name='roda_update'),
     path('<int:pk>/movimentar/', movimentar_roda, name='movimentar_roda'),
+    path('<int:pk>/excluir/', roda_delete, name='roda_delete'),
 ]

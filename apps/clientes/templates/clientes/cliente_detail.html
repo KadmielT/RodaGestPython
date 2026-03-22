@@ -15,37 +15,36 @@
   </div>
 
   <section class="rg-form-section">
-    <h2 class="rg-form-section__title">Dados do cliente</h2>
 
     <div class="rg-form-grid">
       <div class="rg-form-field rg-form-field--span-3">
         <label>Tipo</label>
-        <div class="rg-input">{{ cliente.get_tipo_display }}</div>
+        <div class="rg-input rg-input--readonly">{{ cliente.get_tipo_display }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-4">
         <label>CPF / CNPJ</label>
-        <div class="rg-input">{{ cliente.documento|format_documento }}</div>
+        <div class="rg-input rg-input--readonly">{{ cliente.documento|format_documento }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-5">
         <label>Nome / Nome fantasia</label>
-        <div class="rg-input">{{ cliente.nome }}</div>
+        <div class="rg-input rg-input--readonly">{{ cliente.nome }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-4">
         <label>Telefone</label>
-        <div class="rg-input">{{ cliente.telefone|format_telefone }}</div>
+        <div class="rg-input rg-input--readonly">{{ cliente.telefone|format_telefone }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-8">
         <label>E-mail</label>
-        <div class="rg-input">{{ cliente.email|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ cliente.email|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--full">
         <label>Observações</label>
-        <div class="rg-input rg-input--textarea-readonly">
+        <div class="rg-input rg-input--readonly rg-input--textarea-readonly">
           {% if cliente.observacoes %}
             {{ cliente.observacoes }}
           {% else %}
@@ -62,37 +61,37 @@
     <div class="rg-form-grid">
       <div class="rg-form-field rg-form-field--span-3">
         <label>CEP</label>
-        <div class="rg-input">{{ endereco.cep|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.cep|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-6">
         <label>Logradouro</label>
-        <div class="rg-input">{{ endereco.logradouro|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.logradouro|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-3">
         <label>Número</label>
-        <div class="rg-input">{{ endereco.numero|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.numero|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-4">
         <label>Complemento</label>
-        <div class="rg-input">{{ endereco.complemento|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.complemento|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-8">
         <label>Bairro</label>
-        <div class="rg-input">{{ endereco.bairro|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.bairro|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-8">
         <label>Município</label>
-        <div class="rg-input">{{ endereco.municipio|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.municipio|default:"-" }}</div>
       </div>
 
       <div class="rg-form-field rg-form-field--span-4">
         <label>Estado</label>
-        <div class="rg-input">{{ endereco.estado|default:"-" }}</div>
+        <div class="rg-input rg-input--readonly">{{ endereco.estado|default:"-" }}</div>
       </div>
     </div>
   </section>

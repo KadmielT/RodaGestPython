@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -11,7 +13,8 @@ class Roda(models.Model):
     nome = models.CharField(max_length=150)
     codigo = models.CharField(max_length=50, blank=True, null=True, unique=True)
     quantidade = models.PositiveIntegerField(default=0)
-    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    quantidade_inicial = models.PositiveIntegerField(default=0)
+    valor_unitario = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     estado = models.CharField(
         max_length=20,
         choices=EstadoChoices.choices
@@ -35,6 +38,11 @@ class Roda(models.Model):
         if self.quantidade < 0:
             raise ValidationError({
                 'quantidade': 'A quantidade não pode ser negativa.'
+            })
+
+        if self.quantidade_inicial < 0:
+            raise ValidationError({
+                'quantidade_inicial': 'A quantidade inicial não pode ser negativa.'
             })
 
         if self.valor_unitario < 0:

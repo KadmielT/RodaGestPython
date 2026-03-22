@@ -115,41 +115,39 @@
     </div>
   {% endfor %}
 
-  {% if is_paginated %}
-    <div class="rg-pagination">
-      <span>Total ({{ page_obj.paginator.count }})</span>
+  <div class="rg-pagination">
+    <span>Total ({{ page_obj.paginator.count }})</span>
 
-      {% if page_obj.has_previous %}
-        <a class="rg-page" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">‹ Anterior</a>
-      {% else %}
-        <span class="rg-page rg-disabled">‹ Anterior</span>
-      {% endif %}
+    {% if page_obj.has_previous %}
+      <a class="rg-page" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">‹ Anterior</a>
+    {% else %}
+      <span class="rg-page rg-disabled">‹ Anterior</span>
+    {% endif %}
 
-      {% for n in page_obj.paginator.page_range %}
-        {% with left=page_obj.number|add:"-1" right=page_obj.number|add:"1" %}
-          {% if n == page_obj.number %}
-            <span class="rg-page rg-current">{{ n }}</span>
-          {% elif n <= 2 %}
-            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
-          {% elif n > page_obj.paginator.num_pages|add:"-2" %}
-            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
-          {% elif n >= left and n <= right %}
-            <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
-          {% elif n == 3 and page_obj.number > 4 %}
-            <span class="rg-page rg-disabled">…</span>
-          {% elif n == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
-            <span class="rg-page rg-disabled">…</span>
-          {% endif %}
-        {% endwith %}
-      {% endfor %}
+    {% for n in page_obj.paginator.page_range %}
+      {% with left=page_obj.number|add:"-1" right=page_obj.number|add:"1" %}
+        {% if n == page_obj.number %}
+          <span class="rg-page rg-current">{{ n }}</span>
+        {% elif n <= 2 %}
+          <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+        {% elif n > page_obj.paginator.num_pages|add:"-2" %}
+          <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+        {% elif n >= left and n <= right %}
+          <a class="rg-page" href="?q={{ q }}&page={{ n }}">{{ n }}</a>
+        {% elif n == 3 and page_obj.number > 4 %}
+          <span class="rg-page rg-disabled">…</span>
+        {% elif n == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+          <span class="rg-page rg-disabled">…</span>
+        {% endif %}
+      {% endwith %}
+    {% endfor %}
 
-      {% if page_obj.has_next %}
-        <a class="rg-page" href="?q={{ q }}&page={{ page_obj.next_page_number }}">Próximo ›</a>
-      {% else %}
-        <span class="rg-page rg-disabled">Próximo ›</span>
-      {% endif %}
-    </div>
-  {% endif %}
+    {% if page_obj.has_next %}
+      <a class="rg-page" href="?q={{ q }}&page={{ page_obj.next_page_number }}">Próximo ›</a>
+    {% else %}
+      <span class="rg-page rg-disabled">Próximo ›</span>
+    {% endif %}
+  </div>
 
 </div>
 {% endblock %}

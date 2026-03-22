@@ -33,9 +33,19 @@
         </div>
 
         <div class="rg-form-field rg-form-field--span-2">
-          <label for="{{ form.quantidade.id_for_label }}">Quantidade</label>
-          {{ form.quantidade }}
-          {{ form.quantidade.errors }}
+          <label for="{{ form.quantidade.id_for_label }}">
+            {% if modo_edicao %}Quantidade atual{% else %}Quantidade{% endif %}
+          </label>
+
+          {% if modo_edicao %}
+            <div class="rg-input rg-input--readonly">{{ roda.quantidade }}</div>
+            <small style="color: var(--muted);">
+              A quantidade só pode ser alterada por movimentação de estoque.
+            </small>
+          {% else %}
+            {{ form.quantidade }}
+            {{ form.quantidade.errors }}
+          {% endif %}
         </div>
 
         <div class="rg-form-field rg-form-field--span-3">
@@ -87,4 +97,5 @@
     });
   </script>
   <script src="{% static 'estoque_rodas/js/valorUnitarioMask.js' %}"></script>
+  <script src="{% static 'estoque_rodas/js/onlyInteger.js' %}"></script>
 {% endblock %}

@@ -26,9 +26,11 @@ class RodaForm(forms.ModelForm):
                 'style': 'width: 100%;',
             }),
             'quantidade': forms.NumberInput(attrs={
-                'class': 'rg-input',
+                'class': 'rg-input js-only-integer',
                 'min': 0,
+                'step': 1,
                 'placeholder': 'Digite a quantidade inicial',
+                'inputmode': 'numeric',
             }),
             'estado': forms.Select(attrs={
                 'class': 'js-tom-select',
@@ -106,7 +108,6 @@ class RodaForm(forms.ModelForm):
 
         return valor_decimal
 
-
 class MovimentacaoRodaForm(forms.ModelForm):
     class Meta:
         model = MovimentacaoRoda
@@ -116,9 +117,11 @@ class MovimentacaoRodaForm(forms.ModelForm):
                 'class': 'js-tom-select',
             }),
             'quantidade': forms.NumberInput(attrs={
-                'class': 'rg-input',
+                'class': 'rg-input js-only-integer',
                 'min': 1,
+                'step': 1,
                 'placeholder': 'Digite a quantidade',
+                'inputmode': 'numeric',
             }),
             'observacao': forms.Textarea(attrs={
                 'class': 'rg-input',
