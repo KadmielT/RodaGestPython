@@ -30,6 +30,12 @@
           <span class="rg-nav-item__icon">🛞</span>
           <span class="rg-nav-item__text">Estoque de rodas</span>
         </a>
+
+        <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_insumos' %}is-active{% endif %}"
+          href="{% url 'estoque_insumos:insumo_list' %}">
+          <span class="rg-nav-item__icon">🧪</span>
+          <span class="rg-nav-item__text">Estoque de insumos</span>
+        </a>
       </div>
     </details>
 

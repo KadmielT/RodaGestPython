@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}{{ insumo.nome }} | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <h1 class="rg-title">Visualizar Insumo</h1>
+
+    <div class="rg-card-actions">
+      <a href="{% url 'estoque_insumos:insumo_list' %}" class="rg-page">Voltar</a>
+      <a href="{% url 'estoque_insumos:insumo_update' insumo.pk %}" class="rg-btn rg-btn--primary">Editar</a>
+
+      <button
+        type="button"
+        class="rg-btn rg-btn--primary rg-btn--danger"
+        data-modal-target="deleteModal{{ insumo.pk }}"
+      >
+        Excluir
+      </button>
+    </div>
+  </div>
+
+  <section class="rg-form-section">
+    <div class="rg-form-grid">
+      <div class="rg-form-field rg-form-field--full">
+        <label>Nome</label>
+        <div class="rg-input rg-input--readonly">{{ insumo.nome }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-2">
+        <label>Quantidade</label>
+        <div class="rg-input rg-input--readonly">{{ insumo.quantidade }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-3">
+        <label>Valor por unidade</label>
+        <div class="rg-input rg-input--readonly">R$ {{ insumo.valor_unitario }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-3">
+        <label>Unidade</label>
+        <div class="rg-input rg-input--readonly">{{ insumo.get_unidade_medida_display }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Código</label>
+        <div class="rg-input rg-input--readonly">{{ insumo.codigo|default:"-" }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--full">
+        <label>Descrição</label>
+        <div class="rg-input rg-input--readonly" style="min-height: 120px; padding: 14px;">
+          {{ insumo.descricao|default:"-" }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rg-form-section">
+    <div class="rg-card-head">
+      <h2 class="rg-form-section__title">Histórico de movimentações</h2>
+
+      <div class="rg-card-actions">
+        <a href="{% url 'estoque_insumos:movimentar_insumo' insumo.pk %}" class="rg-btn rg-btn--primary">
+          Movimentar estoque
+        </a>
+      </div>
+    </div>
+
+    <table class="rg-table">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Tipo</th>
+          <th>Quantidade</th>
+          <th>Observação</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>{{ insumo.data_cadastro|date:"d/m/Y H:i" }}</td>
+          <td><span class="rg-badge rg-badge--info">Cadastro</span></td>
+          <td>{{ insumo.quantidade_inicial }}</td>
+          <td>Insumo cadastrado no sistema.</td>
+        </tr>
+
+        {% for movimentacao in movimentacoes %}
+          <tr>
+            <td>{{ movimentacao.data_cadastro|date:"d/m/Y H:i" }}</td>
+            <td>
+              {% if movimentacao.tipo_movimentacao == 'entrada' %}
+                <span class="rg-badge rg-badge--success">{{ movimentacao.get_tipo_movimentacao_display }}</span>
+              {% elif movimentacao.tipo_movimentacao == 'saida' %}
+                <span class="rg-badge rg-badge--danger">{{ movimentacao.get_tipo_movimentacao_display }}</span>
+              {% else %}
+                {{ movimentacao.get_tipo_movimentacao_display }}
+              {% endif %}
+            </td>
+            <td>{{ movimentacao.quantidade }}</td>
+            <td>{{ movimentacao.observacao|default:"-" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<div class="rg-modal" id="deleteModal{{ insumo.pk }}" hidden>
+  <div class="rg-modal__backdrop" data-modal-close></div>
+
+  <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle{{ insumo.pk }}">
+    <div class="rg-modal__header">
+      <h3 class="rg-modal__title" id="deleteModalTitle{{ insumo.pk }}">Excluir insumo</h3>
+      <button type="button" class="rg-modal__close" data-modal-close aria-label="Fechar">×</button>
+    </div>
+
+    <div class="rg-modal__body">
+      <p>Tem certeza que deseja excluir o insumo <strong>{{ insumo.nome }}</strong>?</p>
+      <p class="rg-modal__warning">Essa ação não poderá ser desfeita.</p>
+    </div>
+
+    <div class="rg-modal__footer">
+      <button type="button" class="rg-page" data-modal-close>Cancelar</button>
+
+      <form method="post" action="{% url 'estoque_insumos:insumo_delete' insumo.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="rg-btn rg-btn--primary rg-btn--danger">
+          Excluir
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
