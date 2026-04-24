@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ titulo }} | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <h1 class="rg-title">{{ titulo }}</h1>
+
+    <div class="rg-card-actions">
+      <a href="{% url 'servicos:servico_list' %}" class="rg-page">Voltar</a>
+    </div>
+  </div>
+
+  <form method="post" class="rg-form" novalidate enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="rg-alert rg-alert--error">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Dados do serviço</h2>
+
+      <div class="rg-form-grid">
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ form.cliente.id_for_label }}">Cliente</label>
+          {{ form.cliente }}
+          {{ form.cliente.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ form.status.id_for_label }}">Status</label>
+          {{ form.status }}
+          {{ form.status.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--full">
+          <label for="{{ form.nome.id_for_label }}">Nome do serviço</label>
+          {{ form.nome }}
+          {{ form.nome.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ form.valor_total.id_for_label }}">Valor total</label>
+          {{ form.valor_total }}
+          {{ form.valor_total.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--full">
+          <label for="{{ form.descricao.id_for_label }}">Descrição</label>
+          {{ form.descricao }}
+          {{ form.descricao.errors }}
+        </div>
+      </div>
+    </section>
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Rodas vinculadas</h2>
+
+      <div id="rodas-wrapper" class="rg-form-grid"></div>
+
+      <div class="rg-form-actions" style="justify-content: flex-start; gap: 12px;">
+        <button type="button" class="rg-btn" id="add-roda-btn">Adicionar roda +</button>
+        <button type="button" class="rg-btn rg-btn--danger" id="remove-roda-btn">Remover última</button>
+      </div>
+    </section>
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Insumos vinculados</h2>
+
+      <div id="insumos-wrapper" class="rg-form-grid"></div>
+
+      <div class="rg-form-actions" style="justify-content: flex-start; gap: 12px;">
+        <button type="button" class="rg-btn" id="add-insumo-btn">Adicionar insumo +</button>
+        <button type="button" class="rg-btn rg-btn--danger" id="remove-insumo-btn">Remover última</button>
+      </div>
+    </section>
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Imagens do serviço</h2>
+
+      <div class="rg-form-grid">
+        <div class="rg-form-field rg-form-field--full">
+          <label for="id_imagens">Selecionar novas imagens</label>
+
+          <input
+            type="file"
+            name="imagens"
+            id="id_imagens"
+            class="rg-file-input"
+            accept="image/*"
+            multiple
+            hidden
+          >
+
+          <label for="id_imagens" class="rg-file-upload">
+            <span class="rg-file-upload__button">Selecionar imagens</span>
+            <span class="rg-file-upload__text" id="id_imagens_text">Nenhum arquivo selecionado.</span>
+          </label>
+
+          <small style="display:block; margin-top:8px; opacity:.8;">
+            O serviço pode ter até 10 imagens no total.
+          </small>
+        </div>
+      </div>
+
+      <div id="imagens-wrapper" class="rg-form-grid" style="margin-top: 16px;">
+        {% if imagens_existentes %}
+          {% for imagem in imagens_existentes %}
+            <div class="rg-form-field rg-form-field--span-3 js-existing-image-card" data-image-id="{{ imagem.id }}">
+              <div style="border: 1px solid var(--border-color, #2f2f2f); border-radius: 14px; padding: 10px;">
+                <img
+                  src="{{ imagem.imagem.url }}"
+                  alt="Imagem do serviço"
+                  style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; display: block; margin-bottom: 10px;"
+                >
+
+                <div style="font-size: 13px; opacity: .85; margin-bottom: 10px;">
+                  {{ imagem.imagem.name|cut:"servicos/"|default:"Imagem do serviço" }}
+                </div>
+
+                <input
+                  type="hidden"
+                  name="remover_imagens"
+                  value="{{ imagem.id }}"
+                  class="js-remove-existing-image-input"
+                  disabled
+                >
+
+                <button
+                  type="button"
+                  class="rg-btn rg-btn--danger js-remove-existing-image-btn"
+                  data-image-id="{{ imagem.id }}"
+                  style="width: 100%;"
+                >
+                  Remover
+                </button>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </section>
+
+    <div class="rg-form-actions">
+      <a href="{% url 'servicos:servico_list' %}" class="rg-page">Cancelar</a>
+      <button type="submit" class="rg-btn rg-btn--primary">
+        {{ botao_submit }}
+      </button>
+    </div>
+  </form>
+</div>
+
+<template id="roda-row-template">
+  <div class="item-row rg-form-field rg-form-field--full">
+    <div class="rg-form-grid">
+      <div class="rg-form-field rg-form-field--span-8">
+        <label>Roda</label>
+        <select name="roda_id[]" class="js-tom-select">
+          <option value="">Selecione uma roda</option>
+          {% for roda in rodas_disponiveis %}
+            <option value="{{ roda.id }}">{{ roda.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Quantidade</label>
+        <input
+          type="number"
+          name="roda_quantidade[]"
+          class="rg-input js-only-integer"
+          min="1"
+          step="1"
+          placeholder="Digite a quantidade"
+        >
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="insumo-row-template">
+  <div class="item-row rg-form-field rg-form-field--full">
+    <div class="rg-form-grid">
+      <div class="rg-form-field rg-form-field--span-8">
+        <label>Insumo</label>
+        <select name="insumo_id[]" class="js-tom-select">
+          <option value="">Selecione um insumo</option>
+          {% for insumo in insumos_disponiveis %}
+            <option value="{{ insumo.id }}">{{ insumo.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Quantidade</label>
+        <input
+          type="number"
+          name="insumo_quantidade[]"
+          class="rg-input js-only-integer"
+          min="1"
+          step="1"
+          placeholder="Digite a quantidade"
+        >
+      </div>
+    </div>
+  </div>
+</template>
+
+{{ rodas_iniciais_json|json_script:"rodas-iniciais-data" }}
+{{ insumos_iniciais_json|json_script:"insumos-iniciais-data" }}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'servicos/js/valorUnitarioMask.js' %}"></script>
+  <script src="{% static 'servicos/js/onlyInteger.js' %}"></script>
+  <script src="{% static 'servicos/js/dynamicItems.js' %}"></script>
+  <script src="{% static 'servicos/js/imagePreview.js' %}"></script>
+  <script src="{% static 'servicos/js/servicoForm.js' %}"></script>
+{% endblock %}

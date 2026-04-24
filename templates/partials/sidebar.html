@@ -26,13 +26,13 @@
         </a>
 
         <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_rodas' %}is-active{% endif %}"
-          href="{% url 'estoque_rodas:roda_list' %}">
+           href="{% url 'estoque_rodas:roda_list' %}">
           <span class="rg-nav-item__icon">🛞</span>
           <span class="rg-nav-item__text">Estoque de rodas</span>
         </a>
 
         <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_insumos' %}is-active{% endif %}"
-          href="{% url 'estoque_insumos:insumo_list' %}">
+           href="{% url 'estoque_insumos:insumo_list' %}">
           <span class="rg-nav-item__icon">🧪</span>
           <span class="rg-nav-item__text">Estoque de insumos</span>
         </a>
@@ -41,52 +41,18 @@
 
     <details class="rg-group">
       <summary class="rg-group__title">
-        <span class="rg-group__label">Projetos</span>
+        <span class="rg-group__label">Operações</span>
         <span class="rg-group__chev" aria-hidden="true">›</span>
       </summary>
 
       <div class="rg-group__items">
-        <a class="rg-nav-item" href="#">
-          <span class="rg-nav-item__icon">📊</span>
-          <span class="rg-nav-item__text">Dashboard</span>
-        </a>
-
-        <a class="rg-nav-item" href="#">
-          <span class="rg-nav-item__icon">📁</span>
-          <span class="rg-nav-item__text">Projetos</span>
-        </a>
-
-        <a class="rg-nav-item" href="#">
-          <span class="rg-nav-item__icon">📝</span>
-          <span class="rg-nav-item__text">Tarefas</span>
-        </a>
-
-        <a class="rg-nav-item" href="#">
-          <span class="rg-nav-item__icon">📅</span>
-          <span class="rg-nav-item__text">Calendário</span>
-        </a>
-
-        <a class="rg-nav-item" href="#">
-          <span class="rg-nav-item__icon">🧩</span>
-          <span class="rg-nav-item__text">Modelo de Quadro</span>
+        <a class="rg-nav-item {% if request.resolver_match.namespace == 'servicos' %}is-active{% endif %}"
+           href="{% url 'servicos:servico_list' %}">
+          <span class="rg-nav-item__icon">🛠️</span>
+          <span class="rg-nav-item__text">Serviços</span>
         </a>
       </div>
     </details>
-
-    <a class="rg-nav-item rg-nav-item--section" href="#">
-      <span class="rg-nav-item__text">Florestal</span>
-      <span class="rg-nav-item__chev" aria-hidden="true">›</span>
-    </a>
-
-    <a class="rg-nav-item rg-nav-item--section" href="#">
-      <span class="rg-nav-item__text">Financeiro</span>
-      <span class="rg-nav-item__chev" aria-hidden="true">›</span>
-    </a>
-
-    <a class="rg-nav-item rg-nav-item--section" href="#">
-      <span class="rg-nav-item__text">Jurídico</span>
-      <span class="rg-nav-item__chev" aria-hidden="true">›</span>
-    </a>
 
   </nav>
 

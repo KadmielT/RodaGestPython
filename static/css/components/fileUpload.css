@@ -1,0 +1,42 @@
+.rg-file-upload {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-2);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+}
+
+.rg-file-upload:hover {
+  border-color: rgba(46, 204, 113, 0.45);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.rg-file-upload__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(46, 204, 113, 0.14);
+  border: 1px solid rgba(46, 204, 113, 0.35);
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rg-file-upload__text {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

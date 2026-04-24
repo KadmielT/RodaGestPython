@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     "apps.usuarios.apps.UsuariosConfig",
     'apps.estoque_rodas.apps.EstoqueRodasConfig',
     "apps.estoque_insumos.apps.EstoqueInsumosConfig",
+    "apps.servicos.apps.ServicosConfig",
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -144,3 +144,6 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = "RodaGest <rodagest@gmail.com>"
 
 PASSWORD_RESET_TIMEOUT = 1800
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
