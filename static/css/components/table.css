@@ -185,3 +185,86 @@
   background: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.35);
 }
+
+.rg-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.rg-status-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+.rg-status-badge--orcamento {
+  color: #7dd3fc;
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.45);
+}
+
+.rg-status-badge--reservada_nao_paga {
+  color: #facc15;
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.45);
+}
+
+.rg-status-badge--reservada_paga {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.rg-status-badge--aguardando_pagamento {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 241, 11, 0.45);
+}
+
+.rg-status-badge--paga_aguardando_retirada {
+  color: #f1e649;
+  background: rgba(211, 198, 14, 0.12);
+  border-color: rgba(160, 184, 20, 0.45);
+}
+
+.rg-status-badge--paga_aguardando_entrega {
+  color: #2384f3;
+  background: rgba(38, 104, 211, 0.12);
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+.rg-status-badge--finalizada_retirada {
+  color: #4adea5;
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.rg-status-badge--finalizada_entregue {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.55);
+}
+
+.rg-status-badge--cancelada {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.rg-status-badge--finalizada_aguardando_cliente {
+  color: #764ade;
+  background: rgba(34, 37, 197, 0.12);
+  border-color: rgba(34, 110, 197, 0.45);
+}

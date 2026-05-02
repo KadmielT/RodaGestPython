@@ -9,6 +9,8 @@ class Servico(models.Model):
         ABERTO = 'aberto', 'Aberto'
         EM_ANDAMENTO = 'em_andamento', 'Em andamento'
         CONCLUIDO = 'concluido', 'Concluído'
+        FINALIZADA_AGUARDANDO_CLIENTE = 'finalizada_aguardando_cliente', 'Finalizado - aguardando cliente'
+        FINALIZADA_ENTREGUE = 'finalizada_entregue', 'Finalizado - entregue'
         CANCELADO = 'cancelado', 'Cancelado'
 
     cliente = models.ForeignKey(
@@ -20,7 +22,7 @@ class Servico(models.Model):
     descricao = models.TextField(blank=True, null=True)
     valor_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     status = models.CharField(
-        max_length=20,
+        max_length=40,
         choices=StatusChoices.choices,
         default=StatusChoices.ABERTO
     )

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.estoque_rodas.apps.EstoqueRodasConfig',
     "apps.estoque_insumos.apps.EstoqueInsumosConfig",
     "apps.servicos.apps.ServicosConfig",
+    "apps.vendas.apps.VendasConfig",
 ]
 
 MIDDLEWARE = [

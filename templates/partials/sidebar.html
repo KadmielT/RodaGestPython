@@ -39,7 +39,7 @@
       </div>
     </details>
 
-    <details class="rg-group">
+    <details class="rg-group" open>
       <summary class="rg-group__title">
         <span class="rg-group__label">Operações</span>
         <span class="rg-group__chev" aria-hidden="true">›</span>
@@ -50,6 +50,12 @@
            href="{% url 'servicos:servico_list' %}">
           <span class="rg-nav-item__icon">🛠️</span>
           <span class="rg-nav-item__text">Serviços</span>
+        </a>
+
+        <a class="rg-nav-item {% if request.resolver_match.namespace == 'vendas' %}is-active{% endif %}"
+           href="{% url 'vendas:venda_list' %}">
+          <span class="rg-nav-item__icon">🛒</span>
+          <span class="rg-nav-item__text">Vendas</span>
         </a>
       </div>
     </details>
