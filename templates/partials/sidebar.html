@@ -60,6 +60,20 @@
       </div>
     </details>
 
+    <details class="rg-group" open>
+      <summary class="rg-group__title">
+        <span class="rg-group__label">Financeiro</span>
+        <span class="rg-group__chev" aria-hidden="true">›</span>
+      </summary>
+
+      <div class="rg-group__items">
+        <a class="rg-nav-item {% if request.resolver_match.namespace == 'despesas' %}is-active{% endif %}"
+          href="{% url 'despesas:despesa_list' %}">
+          <span class="rg-nav-item__icon">💸</span>
+          <span class="rg-nav-item__text">Despesas</span>
+        </a>
+      </div>
+    </details>
   </nav>
 
 </aside>

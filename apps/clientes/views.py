@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from django.db.models import Q
+from django.db.models.deletion import ProtectedError
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -26,6 +27,7 @@ class ClienteListView(LoginRequiredMixin, ListView):
                 Q(documento__icontains=busca) |
                 Q(email__icontains=busca)
             )
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -35,6 +37,7 @@ class ClienteListView(LoginRequiredMixin, ListView):
             {"label": "Cadastro"},
             {"label": "Clientes"},
         ]
+
         return context
 
 
@@ -86,6 +89,7 @@ def cliente_detail(request, pk):
             {"label": cliente.nome},
         ],
     }
+
     return render(request, "clientes/cliente_detail.html", context)
 
 
@@ -100,6 +104,7 @@ def cliente_update(request, pk):
 
         if cliente_form.is_valid() and endereco_form.is_valid():
             cliente = cliente_form.save()
+
             endereco = endereco_form.save(commit=False)
             endereco.cliente = cliente
             endereco.save()
@@ -124,6 +129,7 @@ def cliente_update(request, pk):
             {"label": "Editar"},
         ],
     }
+
     return render(request, "clientes/cliente_form.html", context)
 
 
@@ -133,8 +139,47 @@ def cliente_delete(request, pk):
 
     if request.method == "POST":
         nome_cliente = cliente.nome
-        cliente.delete()
-        messages.success(request, f'Cliente "{nome_cliente}" foi excluído com sucesso.')
+
+        from apps.servicos.models import Servico
+        from apps.vendas.models import Venda
+
+        servicos_vinculados = Servico.objects.filter(cliente=cliente).count()
+        vendas_vinculadas = Venda.objects.filter(cliente=cliente).count()
+
+        if servicos_vinculados > 0 or vendas_vinculadas > 0:
+            vinculos = []
+
+            if servicos_vinculados > 0:
+                vinculos.append(f"{servicos_vinculados} serviço(s)")
+
+            if vendas_vinculadas > 0:
+                vinculos.append(f"{vendas_vinculadas} venda(s)")
+
+            texto_vinculos = " e ".join(vinculos)
+
+            messages.error(
+                request,
+                f'Não foi possível excluir o cliente "{nome_cliente}", '
+                f'pois ele possui {texto_vinculos} vinculado(s).'
+            )
+
+            return redirect("clientes:cliente_list")
+
+        try:
+            cliente.delete()
+
+            messages.success(
+                request,
+                f'Cliente "{nome_cliente}" foi excluído com sucesso.'
+            )
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Não foi possível excluir o cliente "{nome_cliente}", '
+                'pois ele possui registros vinculados no sistema.'
+            )
+
         return redirect("clientes:cliente_list")
 
     return redirect("clientes:cliente_list")

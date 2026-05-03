@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "apps.estoque_insumos.apps.EstoqueInsumosConfig",
     "apps.servicos.apps.ServicosConfig",
     "apps.vendas.apps.VendasConfig",
+    "apps.despesas.apps.DespesasConfig",
 ]
 
 MIDDLEWARE = [

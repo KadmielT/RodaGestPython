@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Vendas | RodaGest{% endblock %}
 
@@ -42,15 +43,40 @@
     <tbody>
       {% for venda in vendas %}
         <tr>
-          <td>{{ venda.nome }}</td>
-          <td>{{ venda.cliente.nome }}</td>
+          <td>
+            <span
+              class="rg-pop-hover"
+              data-pop-hover="{{ venda.nome }}"
+              tabindex="0"
+            >
+              <span class="rg-pop-hover__text">
+                {{ venda.nome }}
+              </span>
+            </span>
+          </td>
+
+          <td>
+            <span
+              class="rg-pop-hover"
+              data-pop-hover="{{ venda.cliente.nome }}"
+              tabindex="0"
+            >
+              <span class="rg-pop-hover__text">
+                {{ venda.cliente.nome }}
+              </span>
+            </span>
+          </td>
+
           <td>
             <span class="rg-status-badge rg-status-badge--{{ venda.status }}">
               {{ venda.get_status_display }}
             </span>
           </td>
+
           <td>R$ {{ venda.valor_total }}</td>
+
           <td>{{ venda.data_cadastro|date:"d/m/Y H:i" }}</td>
+
           <td>
             <div class="rg-table-actions">
               <a href="{% url 'vendas:venda_detail' venda.pk %}" class="rg-action-icon" title="Visualizar">
@@ -67,22 +93,20 @@
                 </svg>
               </a>
 
-              <form method="post" action="{% url 'vendas:venda_delete' venda.pk %}" style="display:inline;">
-                {% csrf_token %}
-                <button
-                  type="submit"
-                  class="rg-action-icon rg-action-icon--danger rg-action-icon-btn"
-                  title="Excluir"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6l-1 14H6L5 6"/>
-                    <path d="M10 11v6"/>
-                    <path d="M14 11v6"/>
-                    <path d="M9 6V4h6v2"/>
-                  </svg>
-                </button>
-              </form>
+              <button
+                type="button"
+                class="rg-action-icon rg-action-icon--danger rg-action-icon-btn"
+                title="Excluir"
+                data-modal-target="deleteModal{{ venda.pk }}"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14H6L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4h6v2"/>
+                </svg>
+              </button>
             </div>
           </td>
         </tr>
@@ -93,6 +117,37 @@
       {% endfor %}
     </tbody>
   </table>
+
+  {% for venda in vendas %}
+    <div class="rg-modal" id="deleteModal{{ venda.pk }}" hidden>
+      <div class="rg-modal__backdrop" data-modal-close></div>
+
+      <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle{{ venda.pk }}">
+        <div class="rg-modal__header">
+          <h3 class="rg-modal__title" id="deleteModalTitle{{ venda.pk }}">Excluir venda</h3>
+          <button type="button" class="rg-modal__close" data-modal-close aria-label="Fechar">×</button>
+        </div>
+
+        <div class="rg-modal__body">
+          <p>Tem certeza que deseja excluir a venda <strong>{{ venda.nome }}</strong>?</p>
+          <p class="rg-modal__warning">
+            Essa ação não poderá ser desfeita. As rodas vendidas serão devolvidas ao estoque.
+          </p>
+        </div>
+
+        <div class="rg-modal__footer">
+          <button type="button" class="rg-page" data-modal-close>Cancelar</button>
+
+          <form method="post" action="{% url 'vendas:venda_delete' venda.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="rg-btn rg-btn--primary rg-btn--danger">
+              Excluir
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 
   <div class="rg-pagination">
     <span>Total ({{ page_obj.paginator.count }})</span>
@@ -129,4 +184,8 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/popHover.js' %}"></script>
 {% endblock %}

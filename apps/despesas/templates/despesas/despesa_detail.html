@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block title %}{{ despesa.descricao }} | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <h1 class="rg-title">Visualizar despesa</h1>
+
+    <div class="rg-card-actions">
+      <a href="{% url 'despesas:despesa_list' %}" class="rg-page">Voltar</a>
+      <a href="{% url 'despesas:despesa_update' despesa.pk %}" class="rg-btn rg-btn--primary">Editar</a>
+
+      <button
+        type="button"
+        class="rg-btn rg-btn--primary rg-btn--danger"
+        data-modal-target="deleteModal{{ despesa.pk }}"
+      >
+        Excluir
+      </button>
+    </div>
+  </div>
+
+  <section class="rg-form-section">
+    <h2 class="rg-form-section__title">Dados da despesa</h2>
+
+    <div class="rg-form-grid">
+      <div class="rg-form-field rg-form-field--full">
+        <label>Descrição</label>
+        <div class="rg-input rg-input--readonly">{{ despesa.descricao }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Categoria</label>
+        <div class="rg-input rg-input--readonly">{{ despesa.get_categoria_display }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Status</label>
+        <div class="rg-input rg-input--readonly">{{ despesa.get_status_display }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Forma de pagamento</label>
+        <div class="rg-input rg-input--readonly">{{ despesa.get_forma_pagamento_display }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Valor</label>
+        <div class="rg-input rg-input--readonly">R$ {{ despesa.valor }}</div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Data de vencimento</label>
+        <div class="rg-input rg-input--readonly">
+          {{ despesa.data_vencimento|date:"d/m/Y"|default:"-" }}
+        </div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-4">
+        <label>Data de pagamento</label>
+        <div class="rg-input rg-input--readonly">
+          {{ despesa.data_pagamento|date:"d/m/Y"|default:"-" }}
+        </div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--span-6">
+        <label>Data de cadastro</label>
+        <div class="rg-input rg-input--readonly">
+          {{ despesa.data_cadastro|date:"d/m/Y H:i" }}
+        </div>
+      </div>
+
+      <div class="rg-form-field rg-form-field--full">
+        <label>Observações</label>
+        <div class="rg-input rg-input--readonly" style="min-height: 120px; padding: 14px;">
+          {{ despesa.observacoes|default:"-" }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rg-form-section">
+    <h2 class="rg-form-section__title">Arquivos da despesa</h2>
+
+    {% if arquivos %}
+      <div class="rg-form-grid">
+        {% for arquivo in arquivos %}
+          {% if arquivo.eh_imagem %}
+            <div class="rg-form-field rg-form-field--span-3">
+              <button
+                type="button"
+                class="js-despesa-lightbox-trigger"
+                data-image-url="{{ arquivo.arquivo.url }}"
+                data-image-name="{{ arquivo.nome_arquivo }}"
+                style="
+                  width: 100%;
+                  padding: 0;
+                  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+                  border-radius: 14px;
+                  background: rgba(255, 255, 255, 0.02);
+                  overflow: hidden;
+                  cursor: pointer;
+                  text-align: left;
+                "
+              >
+                <img
+                  src="{{ arquivo.arquivo.url }}"
+                  alt="{{ arquivo.nome_arquivo }}"
+                  style="
+                    width: 100%;
+                    height: 190px;
+                    object-fit: cover;
+                    display: block;
+                    border-radius: 14px 14px 0 0;
+                  "
+                >
+
+                <div
+                  style="
+                    padding: 10px 12px;
+                    font-size: 13px;
+                    color: var(--text);
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  {{ arquivo.nome_arquivo }}
+                </div>
+              </button>
+            </div>
+          {% else %}
+            <div class="rg-form-field rg-form-field--span-3">
+              <div
+                style="
+                  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+                  border-radius: 14px;
+                  padding: 12px;
+                  min-height: 190px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  gap: 10px;
+                  background: rgba(255, 255, 255, 0.02);
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 90px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    font-weight: 700;
+                    background: rgba(255, 255, 255, 0.06);
+                    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+                  "
+                >
+                  {{ arquivo.extensao }}
+                </div>
+
+                <div
+                  style="
+                    font-size: 13px;
+                    color: var(--text);
+                    word-break: break-word;
+                  "
+                >
+                  {{ arquivo.nome_arquivo }}
+                </div>
+
+                <a
+                  href="{{ arquivo.arquivo.url }}"
+                  target="_blank"
+                  class="rg-btn rg-btn--primary"
+                  style="width: 100%; justify-content: center;"
+                >
+                  Abrir arquivo
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="rg-input rg-input--readonly">
+        Nenhum arquivo anexado a esta despesa.
+      </div>
+    {% endif %}
+  </section>
+
+</div>
+
+<div class="rg-modal" id="deleteModal{{ despesa.pk }}" hidden>
+  <div class="rg-modal__backdrop" data-modal-close></div>
+
+  <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle{{ despesa.pk }}">
+    <div class="rg-modal__header">
+      <h3 class="rg-modal__title" id="deleteModalTitle{{ despesa.pk }}">Excluir despesa</h3>
+      <button type="button" class="rg-modal__close" data-modal-close aria-label="Fechar">×</button>
+    </div>
+
+    <div class="rg-modal__body">
+      <p>Tem certeza que deseja excluir a despesa <strong>{{ despesa.descricao }}</strong>?</p>
+      <p class="rg-modal__warning">Essa ação não poderá ser desfeita.</p>
+    </div>
+
+    <div class="rg-modal__footer">
+      <button type="button" class="rg-page" data-modal-close>Cancelar</button>
+
+      <form method="post" action="{% url 'despesas:despesa_delete' despesa.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="rg-btn rg-btn--primary rg-btn--danger">
+          Excluir
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  id="despesaLightbox"
+  hidden
+  style="
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.88);
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  "
+>
+  <button
+    type="button"
+    id="despesaLightboxClose"
+    aria-label="Fechar imagem"
+    style="
+      position: fixed;
+      top: 22px;
+      right: 22px;
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 100000;
+    "
+  >
+    ×
+  </button>
+
+  <div
+    id="despesaLightboxBackdrop"
+    style="
+      position: absolute;
+      inset: 0;
+    "
+  ></div>
+
+  <div
+    style="
+      position: relative;
+      z-index: 100000;
+      max-width: 82vw;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    "
+  >
+    <img
+      id="despesaLightboxImg"
+      src=""
+      alt=""
+      style="
+        max-width: 82vw;
+        max-height: 72vh;
+        object-fit: contain;
+        border-radius: 16px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65);
+      "
+    >
+
+    <div
+      id="despesaLightboxCaption"
+      style="
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        max-width: 82vw;
+        word-break: break-word;
+      "
+    ></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.getElementById('despesaLightbox');
+    const lightboxImg = document.getElementById('despesaLightboxImg');
+    const lightboxCaption = document.getElementById('despesaLightboxCaption');
+    const closeButton = document.getElementById('despesaLightboxClose');
+    const backdrop = document.getElementById('despesaLightboxBackdrop');
+    const triggers = document.querySelectorAll('.js-despesa-lightbox-trigger');
+
+    function openLightbox(imageUrl, imageName) {
+      if (!lightbox || !lightboxImg || !lightboxCaption) {
+        return;
+      }
+
+      lightboxImg.src = imageUrl;
+      lightboxImg.alt = imageName || 'Imagem da despesa';
+      lightboxCaption.textContent = imageName || 'Imagem da despesa';
+
+      lightbox.hidden = false;
+      lightbox.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (!lightbox || !lightboxImg || !lightboxCaption) {
+        return;
+      }
+
+      lightbox.hidden = true;
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+      lightboxImg.alt = '';
+      lightboxCaption.textContent = '';
+      document.body.style.overflow = '';
+    }
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        openLightbox(
+          trigger.dataset.imageUrl,
+          trigger.dataset.imageName
+        );
+      });
+    });
+
+    if (closeButton) {
+      closeButton.addEventListener('click', closeLightbox);
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', closeLightbox);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightbox && !lightbox.hidden) {
+        closeLightbox();
+      }
+    });
+  });
+</script>
+{% endblock %}

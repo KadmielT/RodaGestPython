@@ -268,3 +268,27 @@
   background: rgba(34, 37, 197, 0.12);
   border-color: rgba(34, 110, 197, 0.45);
 }
+
+.rg-status-badge--pendente {
+  color: #facc15;
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.45);
+}
+
+.rg-status-badge--paga {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.rg-status-badge--atrasada {
+  color: #fb7185;
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.45);
+}
+
+.rg-status-badge--cancelada {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.45);
+}

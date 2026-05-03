@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Estoque de insumos | RodaGest{% endblock %}
 
 {% block content %}
@@ -41,8 +43,26 @@
     <tbody>
       {% for insumo in insumos %}
         <tr>
-          <td>{{ insumo.nome }}</td>
-          <td>{{ insumo.codigo|default:"-" }}</td>
+          <td>
+            <span class="rg-pop-hover" data-pop-hover="{{ insumo.nome }}" tabindex="0">
+              <span class="rg-pop-hover__text">
+                {{ insumo.nome }}
+              </span>
+            </span>
+          </td>
+
+          <td>
+            {% if insumo.codigo %}
+              <span class="rg-pop-hover" data-pop-hover="{{ insumo.codigo }}" tabindex="0">
+                <span class="rg-pop-hover__text">
+                  {{ insumo.codigo }}
+                </span>
+              </span>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+
           <td>{{ insumo.get_unidade_medida_display }}</td>
           <td>{{ insumo.quantidade }}</td>
           <td>R$ {{ insumo.valor_unitario }}</td>
@@ -160,4 +180,8 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/popHover.js' %}"></script>
 {% endblock %}

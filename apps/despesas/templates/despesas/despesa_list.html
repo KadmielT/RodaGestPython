@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Serviços | RodaGest{% endblock %}
+{% block title %}Despesas | RodaGest{% endblock %}
 
 {% block content %}
 <div class="rg-card">
 
   <div class="rg-header">
-    <h1 class="rg-title">Serviços</h1>
+    <h1 class="rg-title">Despesas</h1>
 
     <div class="rg-card-actions">
-      <a class="rg-btn rg-btn-primary" href="{% url 'servicos:servico_create' %}">
-        Adicionar serviço +
+      <a class="rg-btn rg-btn-primary" href="{% url 'despesas:despesa_create' %}">
+        Adicionar despesa +
       </a>
 
       <form class="rg-search" method="get">
@@ -19,7 +19,7 @@
           class="rg-input"
           type="text"
           name="q"
-          placeholder="Buscar serviço..."
+          placeholder="Buscar despesa..."
           value="{{ q }}"
         >
         <input type="hidden" name="page" value="1">
@@ -31,53 +31,51 @@
   <table class="rg-table">
     <thead>
       <tr>
-        <th>Serviço</th>
-        <th>Cliente</th>
+        <th>Descrição</th>
+        <th>Categoria</th>
         <th>Status</th>
-        <th>Valor total</th>
-        <th>Data de cadastro</th>
+        <th>Valor</th>
+        <th>Vencimento</th>
+        <th>Pagamento</th>
         <th>Ações</th>
       </tr>
     </thead>
 
     <tbody>
-      {% for servico in servicos %}
+      {% for despesa in despesas %}
         <tr>
           <td>
-            <span class="rg-pop-hover" data-pop-hover="{{ servico.nome }}" tabindex="0">
+            <span class="rg-pop-hover" data-pop-hover="{{ despesa.descricao }}" tabindex="0">
               <span class="rg-pop-hover__text">
-                {{ servico.nome }}
+                {{ despesa.descricao }}
               </span>
             </span>
           </td>
 
+          <td>{{ despesa.get_categoria_display }}</td>
+
           <td>
-            <span class="rg-pop-hover" data-pop-hover="{{ servico.cliente.nome }}" tabindex="0">
-              <span class="rg-pop-hover__text">
-                {{ servico.cliente.nome }}
-              </span>
+            <span class="rg-status-badge rg-status-badge--{{ despesa.status }}">
+              {{ despesa.get_status_display }}
             </span>
           </td>
 
-          <td>
-            <span class="rg-status-badge rg-status-badge--{{ servico.status }}">
-              {{ servico.get_status_display }}
-            </span>
-          </td>
+          <td>R$ {{ despesa.valor }}</td>
 
-          <td>R$ {{ servico.valor_total }}</td>
-          <td>{{ servico.data_cadastro|date:"d/m/Y H:i" }}</td>
+          <td>{{ despesa.data_vencimento|date:"d/m/Y"|default:"-" }}</td>
+
+          <td>{{ despesa.data_pagamento|date:"d/m/Y"|default:"-" }}</td>
 
           <td>
             <div class="rg-table-actions">
-              <a href="{% url 'servicos:servico_detail' servico.pk %}" class="rg-action-icon" title="Visualizar">
+              <a href="{% url 'despesas:despesa_detail' despesa.pk %}" class="rg-action-icon" title="Visualizar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
                   <circle cx="12" cy="12" r="3"/>
                 </svg>
               </a>
 
-              <a href="{% url 'servicos:servico_update' servico.pk %}" class="rg-action-icon" title="Editar">
+              <a href="{% url 'despesas:despesa_update' despesa.pk %}" class="rg-action-icon" title="Editar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path d="M12 20h9"/>
                   <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/>
@@ -88,7 +86,7 @@
                 type="button"
                 class="rg-action-icon rg-action-icon--danger rg-action-icon-btn"
                 title="Excluir"
-                data-modal-target="deleteModal{{ servico.pk }}"
+                data-modal-target="deleteModal{{ despesa.pk }}"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <polyline points="3 6 5 6 21 6"/>
@@ -103,31 +101,31 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="6">Nenhum serviço cadastrado.</td>
+          <td colspan="7">Nenhuma despesa cadastrada.</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  {% for servico in servicos %}
-    <div class="rg-modal" id="deleteModal{{ servico.pk }}" hidden>
+  {% for despesa in despesas %}
+    <div class="rg-modal" id="deleteModal{{ despesa.pk }}" hidden>
       <div class="rg-modal__backdrop" data-modal-close></div>
 
-      <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle{{ servico.pk }}">
+      <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle{{ despesa.pk }}">
         <div class="rg-modal__header">
-          <h3 class="rg-modal__title" id="deleteModalTitle{{ servico.pk }}">Excluir serviço</h3>
+          <h3 class="rg-modal__title" id="deleteModalTitle{{ despesa.pk }}">Excluir despesa</h3>
           <button type="button" class="rg-modal__close" data-modal-close aria-label="Fechar">×</button>
         </div>
 
         <div class="rg-modal__body">
-          <p>Tem certeza que deseja excluir o serviço <strong>{{ servico.nome }}</strong>?</p>
+          <p>Tem certeza que deseja excluir a despesa <strong>{{ despesa.descricao }}</strong>?</p>
           <p class="rg-modal__warning">Essa ação não poderá ser desfeita.</p>
         </div>
 
         <div class="rg-modal__footer">
           <button type="button" class="rg-page" data-modal-close>Cancelar</button>
 
-          <form method="post" action="{% url 'servicos:servico_delete' servico.pk %}">
+          <form method="post" action="{% url 'despesas:despesa_delete' despesa.pk %}">
             {% csrf_token %}
             <button type="submit" class="rg-btn rg-btn--primary rg-btn--danger">
               Excluir

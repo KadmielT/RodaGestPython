@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Estoque de rodas | RodaGest{% endblock %}
 
 {% block content %}
@@ -41,8 +43,26 @@
     <tbody>
       {% for roda in rodas %}
         <tr>
-          <td>{{ roda.nome }}</td>
-          <td>{{ roda.codigo|default:"-" }}</td>
+          <td>
+            <span class="rg-pop-hover" data-pop-hover="{{ roda.nome }}" tabindex="0">
+              <span class="rg-pop-hover__text">
+                {{ roda.nome }}
+              </span>
+            </span>
+          </td>
+
+          <td>
+            {% if roda.codigo %}
+              <span class="rg-pop-hover" data-pop-hover="{{ roda.codigo }}" tabindex="0">
+                <span class="rg-pop-hover__text">
+                  {{ roda.codigo }}
+                </span>
+              </span>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+
           <td>{{ roda.get_estado_display }}</td>
           <td>{{ roda.quantidade }}</td>
           <td>R$ {{ roda.valor_unitario }}</td>
@@ -160,4 +180,8 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/popHover.js' %}"></script>
 {% endblock %}

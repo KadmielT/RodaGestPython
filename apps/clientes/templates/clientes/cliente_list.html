@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
 {% load client_filters %}
+
 {% block title %}Clientes | RodaGest{% endblock %}
 
 {% block content %}
@@ -40,11 +42,30 @@
     <tbody>
       {% for c in clientes %}
         <tr>
-          <td>{{ c.nome }}</td>
+          <td>
+            <span class="rg-pop-hover" data-pop-hover="{{ c.nome }}" tabindex="0">
+              <span class="rg-pop-hover__text">
+                {{ c.nome }}
+              </span>
+            </span>
+          </td>
+
           <td>{{ c.get_tipo_display }}</td>
           <td>{{ c.documento|format_documento }}</td>
           <td>{{ c.telefone|format_telefone }}</td>
-          <td>{{ c.email|default:"-" }}</td>
+
+          <td>
+            {% if c.email %}
+              <span class="rg-pop-hover" data-pop-hover="{{ c.email }}" tabindex="0">
+                <span class="rg-pop-hover__text">
+                  {{ c.email }}
+                </span>
+              </span>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+
           <td>
             <div class="rg-table-actions">
               <a href="{% url 'clientes:cliente_detail' c.pk %}" class="rg-action-icon" title="Visualizar">
@@ -150,4 +171,8 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/popHover.js' %}"></script>
 {% endblock %}
