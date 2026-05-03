@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Meu perfil | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <div>
+      <h1 class="rg-title">Meu perfil</h1>
+      <p style="color: var(--muted); margin-top: 6px;">
+        Visualize seus dados de acesso e altere suas informações pessoais.
+      </p>
+    </div>
+
+    <div class="rg-card-actions">
+      <a href="{% url 'clientes:cliente_list' %}" class="rg-page">Voltar</a>
+    </div>
+  </div>
+
+  <form method="post" class="rg-form" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="acao" value="atualizar_perfil">
+
+    {% if perfil_form.non_field_errors %}
+      <div class="rg-alert rg-alert--error">
+        {{ perfil_form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Dados do perfil</h2>
+
+      <div class="rg-form-grid">
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ perfil_form.first_name.id_for_label }}">Nome completo</label>
+          {{ perfil_form.first_name }}
+          {{ perfil_form.first_name.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ perfil_form.email.id_for_label }}">E-mail</label>
+          {{ perfil_form.email }}
+          {{ perfil_form.email.errors }}
+          <small style="color: var(--muted);">
+            Este e-mail é usado para acessar o sistema.
+          </small>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Informações da conta</h2>
+
+      <div class="rg-form-grid">
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label>Data de cadastro</label>
+          <div class="rg-input rg-input--readonly">
+            {{ usuario.date_joined|date:"d/m/Y H:i" }}
+          </div>
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label>Último login</label>
+          <div class="rg-input rg-input--readonly">
+            {% if usuario.last_login %}
+              {{ usuario.last_login|date:"d/m/Y H:i" }}
+            {% else %}
+              Nenhum login registrado.
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="rg-form-actions">
+      <a href="{% url 'clientes:cliente_list' %}" class="rg-page">Cancelar</a>
+
+      <button type="submit" class="rg-btn rg-btn--primary">
+        Salvar perfil
+      </button>
+    </div>
+  </form>
+
+</div>
+
+<div class="rg-card" style="margin-top: 22px;">
+
+  <div class="rg-card-head">
+    <div>
+      <h2 class="rg-title" style="font-size: 22px;">Alterar senha</h2>
+      <p style="color: var(--muted); margin-top: 6px;">
+        Atualize sua senha de acesso ao sistema.
+      </p>
+    </div>
+  </div>
+
+  <form
+    method="post"
+    class="rg-form"
+    novalidate
+    data-password-change-form
+  >
+    {% csrf_token %}
+    <input type="hidden" name="acao" value="alterar_senha">
+
+    <div
+      class="rg-alert rg-alert--error"
+      data-password-feedback
+      hidden
+    ></div>
+
+    {% if senha_form.non_field_errors %}
+      <div class="rg-alert rg-alert--error">
+        {{ senha_form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <section class="rg-form-section">
+      <div class="rg-form-grid">
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ senha_form.old_password.id_for_label }}">Senha atual</label>
+
+          <div class="rg-auth-input-wrap">
+            {{ senha_form.old_password }}
+
+            <button
+              type="button"
+              class="rg-auth-toggle-password"
+              id="toggleOldPassword"
+              aria-label="Mostrar senha atual"
+              aria-pressed="false"
+            >
+              👁
+            </button>
+          </div>
+
+          {% if senha_form.old_password.errors %}
+            <div class="rg-form-error" data-password-error="old_password">
+              {{ senha_form.old_password.errors.0 }}
+            </div>
+          {% else %}
+            <div class="rg-form-error" data-password-error="old_password" hidden></div>
+          {% endif %}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ senha_form.new_password1.id_for_label }}">Nova senha</label>
+
+          <div class="rg-auth-input-wrap">
+            {{ senha_form.new_password1 }}
+
+            <button
+              type="button"
+              class="rg-auth-toggle-password"
+              id="toggleNewPassword1"
+              aria-label="Mostrar nova senha"
+              aria-pressed="false"
+            >
+              👁
+            </button>
+          </div>
+
+          {% if senha_form.new_password1.errors %}
+            <div class="rg-form-error" data-password-error="new_password1">
+              {{ senha_form.new_password1.errors.0 }}
+            </div>
+          {% else %}
+            <div class="rg-form-error" data-password-error="new_password1" hidden></div>
+          {% endif %}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
+          <label for="{{ senha_form.new_password2.id_for_label }}">Confirmar nova senha</label>
+
+          <div class="rg-auth-input-wrap">
+            {{ senha_form.new_password2 }}
+
+            <button
+              type="button"
+              class="rg-auth-toggle-password"
+              id="toggleNewPassword2"
+              aria-label="Mostrar confirmação da senha"
+              aria-pressed="false"
+            >
+              👁
+            </button>
+          </div>
+
+          {% if senha_form.new_password2.errors %}
+            <div class="rg-form-error" data-password-error="new_password2">
+              {{ senha_form.new_password2.errors.0 }}
+            </div>
+          {% else %}
+            <div class="rg-form-error" data-password-error="new_password2" hidden></div>
+          {% endif %}
+        </div>
+
+      </div>
+    </section>
+
+    <div class="rg-form-actions">
+      <button type="submit" class="rg-btn rg-btn--primary">
+        Alterar senha
+      </button>
+    </div>
+  </form>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'usuarios/js/passwordToggle.js' %}"></script>
+{% endblock %}

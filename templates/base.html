@@ -58,6 +58,10 @@
                 <span class="rg-theme-text">Modo escuro</span>
               </button>
 
+              <a href="{% url 'usuarios:perfil' %}" class="rg-user-menu__item">
+                👤 Meu perfil
+              </a>
+
               <form method="post" action="{% url 'usuarios:logout' %}" class="rg-user-menu__form">
                 {% csrf_token %}
                 <button type="submit" class="rg-user-menu__item rg-user-menu__item--button">
