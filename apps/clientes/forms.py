@@ -27,7 +27,9 @@ class ClienteForm(forms.ModelForm):
                 "class": "rg-input",
                 "placeholder": "Digite o nome ou nome fantasia",
             }),
-            "tipo": forms.Select(),
+            "tipo": forms.Select(attrs={
+                "class": "rg-input js-tom-select",
+            }),
             "documento": forms.TextInput(attrs={
                 "class": "rg-input",
                 "placeholder": "Digite o CPF ou CNPJ",
@@ -58,7 +60,7 @@ class ClienteForm(forms.ModelForm):
         if queryset.exists():
             raise forms.ValidationError("Já existe um cliente cadastrado com este CPF/CNPJ.")
 
-        return documento_limpo  
+        return documento_limpo
 
 
 class EnderecoForm(forms.ModelForm):

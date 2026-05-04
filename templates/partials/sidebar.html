@@ -12,68 +12,114 @@
 
   <nav class="rg-sidebar__nav" aria-label="Menu lateral">
 
-    <details class="rg-group" open>
-      <summary class="rg-group__title">
-        <span class="rg-group__label">Cadastro</span>
-        <span class="rg-group__chev" aria-hidden="true">›</span>
-      </summary>
+    {% with p=request.rg_permissoes %}
 
-      <div class="rg-group__items">
-        <a class="rg-nav-item {% if request.resolver_match.url_name == 'cliente_list' %}is-active{% endif %}"
-           href="{% url 'clientes:cliente_list' %}">
-          <span class="rg-nav-item__icon">👥</span>
-          <span class="rg-nav-item__text">Clientes</span>
-        </a>
+      {% if request.user.is_superuser or p.acesso_clientes or p.acesso_estoque_rodas or p.acesso_estoque_insumos %}
+        <details class="rg-group" open>
+          <summary class="rg-group__title">
+            <span class="rg-group__label">Cadastro</span>
+            <span class="rg-group__chev" aria-hidden="true">›</span>
+          </summary>
 
-        <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_rodas' %}is-active{% endif %}"
-           href="{% url 'estoque_rodas:roda_list' %}">
-          <span class="rg-nav-item__icon">🛞</span>
-          <span class="rg-nav-item__text">Estoque de rodas</span>
-        </a>
+          <div class="rg-group__items">
 
-        <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_insumos' %}is-active{% endif %}"
-           href="{% url 'estoque_insumos:insumo_list' %}">
-          <span class="rg-nav-item__icon">🧪</span>
-          <span class="rg-nav-item__text">Estoque de insumos</span>
-        </a>
-      </div>
-    </details>
+            {% if request.user.is_superuser or p.acesso_clientes %}
+              <a class="rg-nav-item {% if request.resolver_match.url_name == 'cliente_list' %}is-active{% endif %}"
+                 href="{% url 'clientes:cliente_list' %}">
+                <span class="rg-nav-item__icon">👥</span>
+                <span class="rg-nav-item__text">Clientes</span>
+              </a>
+            {% endif %}
 
-    <details class="rg-group" open>
-      <summary class="rg-group__title">
-        <span class="rg-group__label">Operações</span>
-        <span class="rg-group__chev" aria-hidden="true">›</span>
-      </summary>
+            {% if request.user.is_superuser or p.acesso_estoque_rodas %}
+              <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_rodas' %}is-active{% endif %}"
+                 href="{% url 'estoque_rodas:roda_list' %}">
+                <span class="rg-nav-item__icon">🛞</span>
+                <span class="rg-nav-item__text">Estoque de rodas</span>
+              </a>
+            {% endif %}
 
-      <div class="rg-group__items">
-        <a class="rg-nav-item {% if request.resolver_match.namespace == 'servicos' %}is-active{% endif %}"
-           href="{% url 'servicos:servico_list' %}">
-          <span class="rg-nav-item__icon">🛠️</span>
-          <span class="rg-nav-item__text">Serviços</span>
-        </a>
+            {% if request.user.is_superuser or p.acesso_estoque_insumos %}
+              <a class="rg-nav-item {% if request.resolver_match.namespace == 'estoque_insumos' %}is-active{% endif %}"
+                 href="{% url 'estoque_insumos:insumo_list' %}">
+                <span class="rg-nav-item__icon">🧪</span>
+                <span class="rg-nav-item__text">Estoque de insumos</span>
+              </a>
+            {% endif %}
 
-        <a class="rg-nav-item {% if request.resolver_match.namespace == 'vendas' %}is-active{% endif %}"
-           href="{% url 'vendas:venda_list' %}">
-          <span class="rg-nav-item__icon">🛒</span>
-          <span class="rg-nav-item__text">Vendas</span>
-        </a>
-      </div>
-    </details>
+          </div>
+        </details>
+      {% endif %}
 
-    <details class="rg-group" open>
-      <summary class="rg-group__title">
-        <span class="rg-group__label">Financeiro</span>
-        <span class="rg-group__chev" aria-hidden="true">›</span>
-      </summary>
+      {% if request.user.is_superuser or p.acesso_servicos or p.acesso_vendas %}
+        <details class="rg-group" open>
+          <summary class="rg-group__title">
+            <span class="rg-group__label">Operações</span>
+            <span class="rg-group__chev" aria-hidden="true">›</span>
+          </summary>
 
-      <div class="rg-group__items">
-        <a class="rg-nav-item {% if request.resolver_match.namespace == 'despesas' %}is-active{% endif %}"
-          href="{% url 'despesas:despesa_list' %}">
-          <span class="rg-nav-item__icon">💸</span>
-          <span class="rg-nav-item__text">Despesas</span>
-        </a>
-      </div>
-    </details>
+          <div class="rg-group__items">
+
+            {% if request.user.is_superuser or p.acesso_servicos %}
+              <a class="rg-nav-item {% if request.resolver_match.namespace == 'servicos' %}is-active{% endif %}"
+                 href="{% url 'servicos:servico_list' %}">
+                <span class="rg-nav-item__icon">🛠️</span>
+                <span class="rg-nav-item__text">Serviços</span>
+              </a>
+            {% endif %}
+
+            {% if request.user.is_superuser or p.acesso_vendas %}
+              <a class="rg-nav-item {% if request.resolver_match.namespace == 'vendas' %}is-active{% endif %}"
+                 href="{% url 'vendas:venda_list' %}">
+                <span class="rg-nav-item__icon">🛒</span>
+                <span class="rg-nav-item__text">Vendas</span>
+              </a>
+            {% endif %}
+
+          </div>
+        </details>
+      {% endif %}
+
+      {% if request.user.is_superuser or p.acesso_despesas %}
+        <details class="rg-group" open>
+          <summary class="rg-group__title">
+            <span class="rg-group__label">Financeiro</span>
+            <span class="rg-group__chev" aria-hidden="true">›</span>
+          </summary>
+
+          <div class="rg-group__items">
+
+            {% if request.user.is_superuser or p.acesso_despesas %}
+              <a class="rg-nav-item {% if request.resolver_match.namespace == 'despesas' %}is-active{% endif %}"
+                href="{% url 'despesas:despesa_list' %}">
+                <span class="rg-nav-item__icon">💸</span>
+                <span class="rg-nav-item__text">Despesas</span>
+              </a>
+            {% endif %}
+
+          </div>
+        </details>
+      {% endif %}
+
+      {% if request.user.is_superuser or p.acesso_usuarios %}
+        <details class="rg-group" open>
+          <summary class="rg-group__title">
+            <span class="rg-group__label">Administração</span>
+            <span class="rg-group__chev" aria-hidden="true">›</span>
+          </summary>
+
+          <div class="rg-group__items">
+            <a class="rg-nav-item {% if request.resolver_match.url_name == 'usuario_admin_list' or request.resolver_match.url_name == 'usuario_admin_create' or request.resolver_match.url_name == 'usuario_admin_update' or request.resolver_match.url_name == 'usuario_admin_password_update' %}is-active{% endif %}"
+               href="{% url 'usuarios:usuario_admin_list' %}">
+              <span class="rg-nav-item__icon">🔐</span>
+              <span class="rg-nav-item__text">Usuários</span>
+            </a>
+          </div>
+        </details>
+      {% endif %}
+
+    {% endwith %}
+
   </nav>
 
 </aside>

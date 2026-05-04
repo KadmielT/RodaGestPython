@@ -1,10 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const campoTipo = document.querySelector("#id_tipo");
-
-  if (campoTipo) {
-    new TomSelect(campoTipo, {
-      create: false,
-      allowEmptyOption: true
-    });
+  if (typeof TomSelect === "undefined") {
+    return;
   }
+
+  const selects = document.querySelectorAll(".js-tom-select");
+
+  selects.forEach(function (select) {
+    if (select.tomselect) {
+      return;
+    }
+
+    new TomSelect(select, {
+      create: false,
+      allowEmptyOption: true,
+      maxOptions: null,
+      sortField: {
+        field: "$order",
+        direction: "asc"
+      }
+    });
+  });
 });

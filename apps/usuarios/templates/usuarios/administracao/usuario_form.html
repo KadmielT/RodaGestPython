@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  {% if modo_edicao %}Editar usuário{% else %}Novo usuário{% endif %} | RodaGest
+{% endblock %}
+
+{% block content %}
+<div class="rg-card">
+
+  <div class="rg-card-head">
+    <h1 class="rg-title">
+      {% if modo_edicao %}Editar usuário{% else %}Novo usuário{% endif %}
+    </h1>
+
+    <div class="rg-card-actions">
+      <a href="{% url 'usuarios:usuario_admin_list' %}" class="rg-page">Voltar</a>
+    </div>
+  </div>
+
+  <form method="post" class="rg-form" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="rg-alert rg-alert--error">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    {% if permissao_form and permissao_form.non_field_errors %}
+      <div class="rg-alert rg-alert--error">
+        {{ permissao_form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <section class="rg-form-section">
+      <h2 class="rg-form-section__title">Dados de acesso</h2>
+
+      <div class="rg-form-grid">
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ form.first_name.id_for_label }}">Nome completo *</label>
+          {{ form.first_name }}
+          {{ form.first_name.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-6">
+          <label for="{{ form.email.id_for_label }}">E-mail *</label>
+          {{ form.email }}
+          {{ form.email.errors }}
+        </div>
+
+        {% if not modo_edicao %}
+          <div class="rg-form-field rg-form-field--span-4">
+            <label for="{{ form.status.id_for_label }}">Status *</label>
+            {{ form.status }}
+            {{ form.status.errors }}
+          </div>
+        {% endif %}
+
+      </div>
+    </section>
+
+    {% if not modo_edicao %}
+      <section class="rg-form-section">
+        <h2 class="rg-form-section__title">Senha inicial</h2>
+
+        <div class="rg-form-grid">
+
+          <div class="rg-form-field rg-form-field--span-6">
+            <label for="{{ form.password1.id_for_label }}">Senha inicial *</label>
+
+            <div class="rg-auth-input-wrap">
+              {{ form.password1 }}
+
+              <button
+                type="button"
+                class="rg-auth-toggle-password"
+                id="toggleNewPassword1"
+                aria-label="Mostrar senha inicial"
+                aria-pressed="false"
+              >
+                👁
+              </button>
+            </div>
+
+            {{ form.password1.errors }}
+          </div>
+
+          <div class="rg-form-field rg-form-field--span-6">
+            <label for="{{ form.password2.id_for_label }}">Confirmar senha *</label>
+
+            <div class="rg-auth-input-wrap">
+              {{ form.password2 }}
+
+              <button
+                type="button"
+                class="rg-auth-toggle-password"
+                id="toggleNewPassword2"
+                aria-label="Mostrar confirmação da senha"
+                aria-pressed="false"
+              >
+                👁
+              </button>
+            </div>
+
+            {{ form.password2.errors }}
+          </div>
+
+        </div>
+      </section>
+    {% endif %}
+
+    {% if permissao_form %}
+      <section class="rg-form-section">
+        <h2 class="rg-form-section__title">Permissões de acesso</h2>
+
+        <p class="rg-permissions-helper">
+          Marque os módulos que este usuário poderá acessar no sistema.
+        </p>
+
+        <div class="rg-permissions-grid">
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_clientes }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">👥</span>
+                <span class="rg-permission-card__title">Clientes</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite acessar o cadastro e a gestão de clientes.
+              </span>
+            </span>
+          </label>
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_estoque_rodas }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">🛞</span>
+                <span class="rg-permission-card__title">Estoque de rodas</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite acessar o estoque e as movimentações de rodas.
+              </span>
+            </span>
+          </label>
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_estoque_insumos }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">🧪</span>
+                <span class="rg-permission-card__title">Estoque de insumos</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite acessar o estoque e as movimentações de insumos.
+              </span>
+            </span>
+          </label>
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_servicos }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">🛠️</span>
+                <span class="rg-permission-card__title">Serviços</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite cadastrar e gerenciar os serviços do sistema.
+              </span>
+            </span>
+          </label>
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_vendas }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">🛒</span>
+                <span class="rg-permission-card__title">Vendas</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite acessar o módulo de vendas e seus registros.
+              </span>
+            </span>
+          </label>
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_despesas }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">💸</span>
+                <span class="rg-permission-card__title">Despesas</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite acessar o módulo financeiro de despesas.
+              </span>
+            </span>
+          </label>
+
+          <label class="rg-permission-card">
+            {{ permissao_form.acesso_usuarios }}
+
+            <span class="rg-permission-card__content">
+              <span class="rg-permission-card__top">
+                <span class="rg-permission-card__icon">🔐</span>
+                <span class="rg-permission-card__title">Administração de usuários</span>
+              </span>
+
+              <span class="rg-permission-card__desc">
+                Permite gerenciar usuários internos e seus acessos.
+              </span>
+            </span>
+          </label>
+
+        </div>
+
+        {{ permissao_form.acesso_clientes.errors }}
+        {{ permissao_form.acesso_estoque_rodas.errors }}
+        {{ permissao_form.acesso_estoque_insumos.errors }}
+        {{ permissao_form.acesso_servicos.errors }}
+        {{ permissao_form.acesso_vendas.errors }}
+        {{ permissao_form.acesso_despesas.errors }}
+        {{ permissao_form.acesso_usuarios.errors }}
+
+      </section>
+    {% elif modo_edicao and usuario_alvo.is_superuser %}
+      <section class="rg-form-section">
+        <h2 class="rg-form-section__title">Permissões de acesso</h2>
+
+        <p style="color: var(--muted);">
+          O ADM MASTER possui acesso completo a todos os módulos do sistema.
+        </p>
+      </section>
+    {% endif %}
+
+    <div class="rg-form-actions">
+      <a href="{% url 'usuarios:usuario_admin_list' %}" class="rg-page">Cancelar</a>
+
+      <button type="submit" class="rg-btn rg-btn--primary">
+        {% if modo_edicao %}Salvar alterações{% else %}Salvar usuário{% endif %}
+      </button>
+    </div>
+  </form>
+
+</div>
+
+{% if modo_edicao %}
+  <div class="rg-card" style="margin-top: 22px;">
+
+    <div class="rg-card-head">
+      <div>
+        <h2 class="rg-title" style="font-size: 22px;">Ações administrativas</h2>
+        <p style="color: var(--muted); margin-top: 6px;">
+          Gerencie o acesso deste usuário ao sistema.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 18px;">
+      <p style="color: var(--muted); margin: 0;">
+        Status atual:
+        <strong>
+          {% if usuario_alvo.is_active %}
+            Ativo
+          {% else %}
+            Inativo
+          {% endif %}
+        </strong>
+      </p>
+    </div>
+
+    {% if usuario_alvo.is_superuser %}
+      <p style="color: var(--muted);">
+        O ADM MASTER não pode ser inativado pela administração.
+      </p>
+    {% elif usuario_alvo.pk == request.user.pk %}
+      <p style="color: var(--muted);">
+        Você não pode inativar o próprio usuário logado.
+      </p>
+    {% else %}
+      <div class="rg-form-actions" style="justify-content: flex-start;">
+        <button
+          type="button"
+          class="rg-btn {% if usuario_alvo.is_active %}rg-btn--danger{% else %}rg-btn--primary{% endif %}"
+          data-modal-target="statusModal{{ usuario_alvo.pk }}"
+        >
+          {% if usuario_alvo.is_active %}
+            Inativar usuário
+          {% else %}
+            Ativar usuário
+          {% endif %}
+        </button>
+      </div>
+    {% endif %}
+
+  </div>
+
+  {% if not usuario_alvo.is_superuser and usuario_alvo.pk != request.user.pk %}
+    <div class="rg-modal" id="statusModal{{ usuario_alvo.pk }}" hidden>
+      <div class="rg-modal__backdrop" data-modal-close></div>
+
+      <div class="rg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="statusModalTitle{{ usuario_alvo.pk }}">
+        <div class="rg-modal__header">
+          <h3 class="rg-modal__title" id="statusModalTitle{{ usuario_alvo.pk }}">
+            {% if usuario_alvo.is_active %}Inativar usuário{% else %}Ativar usuário{% endif %}
+          </h3>
+          <button type="button" class="rg-modal__close" data-modal-close aria-label="Fechar">×</button>
+        </div>
+
+        <div class="rg-modal__body">
+          <p>
+            Tem certeza que deseja
+            {% if usuario_alvo.is_active %}inativar{% else %}ativar{% endif %}
+            o usuário <strong>{{ usuario_alvo.first_name|default:usuario_alvo.username }}</strong>?
+          </p>
+
+          {% if usuario_alvo.is_active %}
+            <p class="rg-modal__warning">
+              Usuários inativos não conseguem acessar o sistema.
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="rg-modal__footer">
+          <button type="button" class="rg-page" data-modal-close>Cancelar</button>
+
+          <form method="post" action="{% url 'usuarios:usuario_admin_toggle_active' usuario_alvo.pk %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="rg-btn {% if usuario_alvo.is_active %}rg-btn--primary rg-btn--danger{% else %}rg-btn--primary{% endif %}"
+            >
+              {% if usuario_alvo.is_active %}
+                Inativar
+              {% else %}
+                Ativar
+              {% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  {% if not modo_edicao %}
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+    <script src="{% static 'js/form_selects.js' %}"></script>
+    <script src="{% static 'usuarios/js/passwordToggle.js' %}"></script>
+  {% endif %}
+{% endblock %}
