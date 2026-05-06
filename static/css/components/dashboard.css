@@ -1,0 +1,439 @@
+/* =========================
+   DASHBOARD / HOME INTERNA
+========================= */
+
+.rg-dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rg-dashboard-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* =========================
+   CARDS KPI
+========================= */
+
+.rg-kpi-card {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 116px;
+  padding: 16px 18px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
+    var(--panel);
+
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.13);
+}
+
+.rg-kpi-card::before {
+  content: "";
+  position: absolute;
+  inset: -66px -70px auto auto;
+
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+
+  opacity: 0.32;
+  filter: blur(1px);
+}
+
+.rg-kpi-card--purple::before {
+  background: #d855ff;
+}
+
+.rg-kpi-card--cyan::before {
+  background: #22d3ee;
+}
+
+.rg-kpi-card--green::before {
+  background: #24c16b;
+}
+
+.rg-kpi-card--blue::before {
+  background: #3b82f6;
+}
+
+.rg-kpi-card--pink::before {
+  background: #ff2fcf;
+}
+
+.rg-kpi-card--orange::before {
+  background: #fb923c;
+}
+
+.rg-kpi-card__top {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rg-kpi-card__label {
+  color: #f4f7f5;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.rg-kpi-card__icon {
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.08);
+
+  font-size: 17px;
+}
+
+.rg-kpi-card__value {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+  margin-top: 16px;
+
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.rg-kpi-card__value--money {
+  font-size: 25px;
+  letter-spacing: -0.04em;
+}
+
+.rg-kpi-card__hint {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+  margin-top: 8px;
+
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* =========================
+   LAYOUT DOS GRÁFICOS
+========================= */
+
+.rg-dashboard-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.rg-chart-card {
+  min-width: 0;
+  padding: 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.033), rgba(255, 255, 255, 0.01)),
+    var(--panel);
+
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.13);
+}
+
+.rg-chart-card--full {
+  grid-column: 1 / -1;
+}
+
+.rg-chart-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+
+  margin-bottom: 14px;
+}
+
+.rg-chart-card__header h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.rg-chart-card__header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.rg-chart-card__canvas {
+  position: relative;
+  height: 240px;
+}
+
+.rg-chart-card__canvas--medium {
+  height: 300px;
+}
+
+.rg-chart-card__canvas--large {
+  height: 360px;
+}
+
+/* =========================
+   FILTROS DO DASHBOARD
+========================= */
+
+.rg-dashboard-filter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+/* =========================
+   FILTROS COM TOM SELECT
+========================= */
+
+.rg-dashboard-filter .ts-wrapper {
+  width: 150px !important;
+  min-width: 150px !important;
+  max-width: 150px !important;
+  flex: 0 0 150px !important;
+}
+
+.rg-dashboard-filter .ts-wrapper:nth-of-type(2) {
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  flex: 0 0 100px !important;
+}
+
+.rg-dashboard-filter .ts-wrapper.single .ts-control {
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: 0 34px 0 12px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  border: 1px solid rgba(34, 211, 238, 0.28) !important;
+  border-radius: 12px !important;
+
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+    var(--panel-2) !important;
+
+  color: var(--text) !important;
+
+  font-size: 13px !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.rg-dashboard-filter .ts-wrapper.focus .ts-control {
+  border-color: rgba(34, 211, 238, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.10) !important;
+}
+
+.rg-dashboard-filter .ts-wrapper.single .ts-control::after {
+  border-color: rgba(255, 255, 255, 0.75) transparent transparent transparent !important;
+  right: 13px !important;
+}
+
+.rg-dashboard-filter .ts-control input {
+  display: none !important;
+}
+
+.rg-dashboard-filter .ts-dropdown {
+  margin-top: 6px !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0 0 12px 12px !important;
+
+  background: #101a14 !important;
+  color: #ffffff !important;
+
+  overflow: hidden !important;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.32) !important;
+}
+
+.rg-dashboard-filter .ts-dropdown .option {
+  padding: 10px 12px !important;
+
+  background: #101a14 !important;
+  color: #ffffff !important;
+
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+
+.rg-dashboard-filter .ts-dropdown .option.active,
+.rg-dashboard-filter .ts-dropdown .option:hover {
+  background: #123d25 !important;
+  color: #ffffff !important;
+}
+
+.rg-dashboard-filter .ts-dropdown .option.selected {
+  background: #0f2f1f !important;
+  color: #ffffff !important;
+}
+
+.rg-dashboard-filter__button {
+  min-height: 38px;
+  height: 38px;
+  padding: 0 14px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.rg-dashboard-filter__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(34, 211, 238, 0.13);
+}
+
+/* =========================
+   ALERTAS / LISTAS
+========================= */
+
+.rg-dashboard-alert-block {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.rg-dashboard-alert-group h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.rg-dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rg-dashboard-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.rg-dashboard-list span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+  color: var(--text);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rg-dashboard-list strong {
+  color: #7ee7ff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.rg-dashboard-empty {
+  margin: 0;
+  padding: 14px;
+
+  border: 1px dashed rgba(255, 255, 255, 0.10);
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 1280px) {
+  .rg-dashboard-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rg-dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .rg-dashboard-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .rg-chart-card__header {
+    flex-direction: column;
+  }
+
+  .rg-dashboard-filter {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .rg-dashboard-filter .ts-wrapper,
+  .rg-dashboard-filter .ts-wrapper:nth-of-type(2),
+  .rg-dashboard-filter__button {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  .rg-chart-card__canvas,
+  .rg-chart-card__canvas--medium,
+  .rg-chart-card__canvas--large {
+    height: 280px;
+  }
+}

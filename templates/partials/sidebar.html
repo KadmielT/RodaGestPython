@@ -14,6 +14,23 @@
 
     {% with p=request.rg_permissoes %}
 
+      {% if request.user.is_superuser or p.acesso_clientes or p.acesso_estoque_rodas or p.acesso_estoque_insumos or p.acesso_servicos or p.acesso_vendas or p.acesso_despesas or p.acesso_usuarios %}
+        <details class="rg-group" open>
+          <summary class="rg-group__title">
+            <span class="rg-group__label">Painel</span>
+            <span class="rg-group__chev" aria-hidden="true">›</span>
+          </summary>
+
+          <div class="rg-group__items">
+            <a class="rg-nav-item {% if request.resolver_match.namespace == 'dashboard' %}is-active{% endif %}"
+               href="{% url 'dashboard:home' %}">
+              <span class="rg-nav-item__icon">📊</span>
+              <span class="rg-nav-item__text">Dashboard</span>
+            </a>
+          </div>
+        </details>
+      {% endif %}
+
       {% if request.user.is_superuser or p.acesso_clientes or p.acesso_estoque_rodas or p.acesso_estoque_insumos %}
         <details class="rg-group" open>
           <summary class="rg-group__title">
@@ -91,7 +108,7 @@
 
             {% if request.user.is_superuser or p.acesso_despesas %}
               <a class="rg-nav-item {% if request.resolver_match.namespace == 'despesas' %}is-active{% endif %}"
-                href="{% url 'despesas:despesa_list' %}">
+                 href="{% url 'despesas:despesa_list' %}">
                 <span class="rg-nav-item__icon">💸</span>
                 <span class="rg-nav-item__text">Despesas</span>
               </a>

@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | RodaGest{% endblock %}
+
+{% block content %}
+<div class="rg-dashboard-page">
+
+  <section class="rg-dashboard-kpis">
+
+    {% if pode_clientes %}
+      <article class="rg-kpi-card rg-kpi-card--purple">
+        <div class="rg-kpi-card__top">
+          <span class="rg-kpi-card__label">Clientes</span>
+          <span class="rg-kpi-card__icon">👥</span>
+        </div>
+
+        <strong class="rg-kpi-card__value">{{ total_clientes }}</strong>
+        <span class="rg-kpi-card__hint">clientes cadastrados</span>
+      </article>
+    {% endif %}
+
+    {% if pode_estoque_rodas %}
+      <article class="rg-kpi-card rg-kpi-card--cyan">
+        <div class="rg-kpi-card__top">
+          <span class="rg-kpi-card__label">Rodas</span>
+          <span class="rg-kpi-card__icon">🛞</span>
+        </div>
+
+        <strong class="rg-kpi-card__value">{{ total_rodas_estoque }}</strong>
+        <span class="rg-kpi-card__hint">{{ total_rodas_cadastradas }} modelos cadastrados</span>
+      </article>
+    {% endif %}
+
+    {% if pode_estoque_insumos %}
+      <article class="rg-kpi-card rg-kpi-card--green">
+        <div class="rg-kpi-card__top">
+          <span class="rg-kpi-card__label">Insumos</span>
+          <span class="rg-kpi-card__icon">🧪</span>
+        </div>
+
+        <strong class="rg-kpi-card__value">{{ total_insumos_estoque }}</strong>
+        <span class="rg-kpi-card__hint">{{ total_insumos_cadastrados }} itens cadastrados</span>
+      </article>
+    {% endif %}
+
+    {% if pode_servicos %}
+      <article class="rg-kpi-card rg-kpi-card--blue">
+        <div class="rg-kpi-card__top">
+          <span class="rg-kpi-card__label">Serviços</span>
+          <span class="rg-kpi-card__icon">🛠️</span>
+        </div>
+
+        <strong class="rg-kpi-card__value">{{ servicos_em_aberto }}</strong>
+        <span class="rg-kpi-card__hint">serviços em aberto</span>
+      </article>
+    {% endif %}
+
+    {% if pode_vendas %}
+      <article class="rg-kpi-card rg-kpi-card--pink">
+        <div class="rg-kpi-card__top">
+          <span class="rg-kpi-card__label">Vendas do mês</span>
+          <span class="rg-kpi-card__icon">🛒</span>
+        </div>
+
+        <strong class="rg-kpi-card__value rg-kpi-card__value--money">{{ vendas_mes_formatado }}</strong>
+        <span class="rg-kpi-card__hint">total registrado no mês</span>
+      </article>
+    {% endif %}
+
+    {% if pode_despesas %}
+      <article class="rg-kpi-card rg-kpi-card--orange">
+        <div class="rg-kpi-card__top">
+          <span class="rg-kpi-card__label">Despesas do mês</span>
+          <span class="rg-kpi-card__icon">💸</span>
+        </div>
+
+        <strong class="rg-kpi-card__value rg-kpi-card__value--money">{{ despesas_mes_formatado }}</strong>
+        <span class="rg-kpi-card__hint">total registrado no mês</span>
+      </article>
+    {% endif %}
+
+  </section>
+
+  <section class="rg-dashboard-layout">
+
+    <article class="rg-chart-card rg-chart-card--full">
+      <div class="rg-chart-card__header">
+        <div>
+          <h2>Resumo financeiro</h2>
+          <p>
+            Comparativo entre vendas e despesas
+            {% if mes_resumo %}
+              no mês selecionado de {{ ano_resumo }}.
+            {% else %}
+              durante o ano de {{ ano_resumo }}.
+            {% endif %}
+          </p>
+        </div>
+
+        <form class="rg-dashboard-filter" method="get">
+          <input type="hidden" name="ano_servicos" value="{{ ano_servicos }}">
+
+          {% if mes_servicos %}
+            <input type="hidden" name="mes_servicos" value="{{ mes_servicos }}">
+          {% endif %}
+
+          <select
+            name="mes_resumo"
+            class="js-dashboard-filter-select rg-dashboard-filter__select"
+            aria-label="Filtrar mês do resumo financeiro"
+          >
+            <option value="">Ano completo</option>
+
+            {% for mes in meses_opcoes %}
+              <option value="{{ mes.value }}" {% if mes_resumo == mes.value %}selected{% endif %}>
+                {{ mes.label }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <select
+            name="ano_resumo"
+            class="js-dashboard-filter-select rg-dashboard-filter__select"
+            aria-label="Filtrar ano do resumo financeiro"
+          >
+            {% for ano in anos_opcoes %}
+              <option value="{{ ano }}" {% if ano_resumo == ano %}selected{% endif %}>
+                {{ ano }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <button type="submit" class="rg-dashboard-filter__button">
+            Filtrar
+          </button>
+        </form>
+      </div>
+
+      <div class="rg-chart-card__canvas rg-chart-card__canvas--large">
+        <canvas id="dashboardMainChart"></canvas>
+      </div>
+    </article>
+
+    {% if pode_servicos %}
+      <article class="rg-chart-card rg-chart-card--full">
+        <div class="rg-chart-card__header">
+          <div>
+            <h2>Serviços por período</h2>
+            <p>
+              Quantidade de serviços registrados
+              {% if mes_servicos %}
+                no mês selecionado de {{ ano_servicos }}.
+              {% else %}
+                durante o ano de {{ ano_servicos }}.
+              {% endif %}
+            </p>
+          </div>
+
+          <form class="rg-dashboard-filter" method="get">
+            <input type="hidden" name="ano_resumo" value="{{ ano_resumo }}">
+
+            {% if mes_resumo %}
+              <input type="hidden" name="mes_resumo" value="{{ mes_resumo }}">
+            {% endif %}
+
+            <select
+              name="mes_servicos"
+              class="js-dashboard-filter-select rg-dashboard-filter__select"
+              aria-label="Filtrar mês dos serviços"
+            >
+              <option value="">Ano completo</option>
+
+              {% for mes in meses_opcoes %}
+                <option value="{{ mes.value }}" {% if mes_servicos == mes.value %}selected{% endif %}>
+                  {{ mes.label }}
+                </option>
+              {% endfor %}
+            </select>
+
+            <select
+              name="ano_servicos"
+              class="js-dashboard-filter-select rg-dashboard-filter__select"
+              aria-label="Filtrar ano dos serviços"
+            >
+              {% for ano in anos_opcoes %}
+                <option value="{{ ano }}" {% if ano_servicos == ano %}selected{% endif %}>
+                  {{ ano }}
+                </option>
+              {% endfor %}
+            </select>
+
+            <button type="submit" class="rg-dashboard-filter__button">
+              Filtrar
+            </button>
+          </form>
+        </div>
+
+        <div class="rg-chart-card__canvas rg-chart-card__canvas--medium">
+          <canvas id="dashboardServiceBarChart"></canvas>
+        </div>
+      </article>
+    {% endif %}
+
+    {% if pode_servicos %}
+      <article class="rg-chart-card">
+        <div class="rg-chart-card__header">
+          <div>
+            <h2>Serviços por status</h2>
+            <p>Distribuição atual dos serviços.</p>
+          </div>
+        </div>
+
+        <div class="rg-chart-card__canvas">
+          <canvas id="dashboardStatusChart"></canvas>
+        </div>
+      </article>
+    {% endif %}
+
+    {% if pode_estoque_rodas or pode_estoque_insumos %}
+      <article class="rg-chart-card">
+        <div class="rg-chart-card__header">
+          <div>
+            <h2>Estoque geral</h2>
+            <p>Distribuição entre rodas e insumos.</p>
+          </div>
+        </div>
+
+        <div class="rg-chart-card__canvas">
+          <canvas id="dashboardStockChart"></canvas>
+        </div>
+      </article>
+    {% endif %}
+
+    {% if pode_estoque_rodas or pode_estoque_insumos %}
+      <article class="rg-chart-card">
+        <div class="rg-chart-card__header">
+          <div>
+            <h2>Alertas de estoque baixo</h2>
+            <p>Itens com quantidade menor ou igual a 2.</p>
+          </div>
+        </div>
+
+        <div class="rg-dashboard-alert-block">
+
+          {% if pode_estoque_rodas %}
+            <div class="rg-dashboard-alert-group">
+              <h3>Rodas</h3>
+
+              {% if rodas_baixo_estoque %}
+                <ul class="rg-dashboard-list">
+                  {% for roda in rodas_baixo_estoque %}
+                    <li>
+                      <span>{{ roda.nome }}</span>
+                      <strong>{{ roda.quantidade }}</strong>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="rg-dashboard-empty">Nenhuma roda com estoque baixo.</p>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if pode_estoque_insumos %}
+            <div class="rg-dashboard-alert-group">
+              <h3>Insumos</h3>
+
+              {% if insumos_baixo_estoque %}
+                <ul class="rg-dashboard-list">
+                  {% for insumo in insumos_baixo_estoque %}
+                    <li>
+                      <span>{{ insumo.nome }}</span>
+                      <strong>{{ insumo.quantidade }}</strong>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="rg-dashboard-empty">Nenhum insumo com estoque baixo.</p>
+              {% endif %}
+            </div>
+          {% endif %}
+
+        </div>
+      </article>
+    {% endif %}
+
+  </section>
+
+</div>
+
+{{ dashboard_charts|json_script:"dashboardChartsData" }}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
+{% endblock %}
