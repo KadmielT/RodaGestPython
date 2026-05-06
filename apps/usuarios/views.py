@@ -80,16 +80,16 @@ def get_primeira_rota_permitida(usuario):
         return "usuarios:login"
 
     if usuario.is_superuser:
-        return "clientes:cliente_list"
+        return "dashboard:home"
 
     permissoes = get_permissoes_usuario(usuario)
 
     if not permissoes:
         return "usuarios:perfil"
 
-    for campo, rota in ROTAS_POR_PERMISSAO:
+    for campo, _rota in ROTAS_POR_PERMISSAO:
         if getattr(permissoes, campo, False):
-            return rota
+            return "dashboard:home"
 
     return "usuarios:perfil"
 
