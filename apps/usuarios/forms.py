@@ -257,7 +257,10 @@ class UsuarioAdminCreateForm(forms.ModelForm):
             ("inativo", "Inativo"),
         ],
         initial="ativo",
-        widget=forms.Select(attrs={"class": "rg-input js-tom-select"})
+        widget=forms.Select(attrs={
+            "class": "js-usuario-status-select",
+            "data-placeholder": "Selecione o status",
+        })
     )
 
     password1 = forms.CharField(
