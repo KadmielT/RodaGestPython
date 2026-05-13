@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
-from django.db.models import Q
+from django.db import IntegrityError, transaction
+from django.db.models import F, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -474,9 +474,86 @@ def servico_delete(request, pk):
     servico = get_object_or_404(Servico, pk=pk)
 
     if request.method == 'POST':
+        servico_id = servico.pk
         nome_servico = servico.nome
-        servico.delete()
-        messages.success(request, f'Serviço "{nome_servico}" foi excluído com sucesso.')
+        arquivos_imagens = []
+
+        try:
+            with transaction.atomic():
+                itens_rodas = list(
+                    ItemServicoRoda.objects
+                    .filter(servico_id=servico_id)
+                    .values('roda_id', 'quantidade')
+                )
+
+                itens_insumos = list(
+                    ItemServicoInsumo.objects
+                    .filter(servico_id=servico_id)
+                    .values('insumo_id', 'quantidade')
+                )
+
+                imagens = list(
+                    ImagemServico.objects
+                    .filter(servico_id=servico_id)
+                )
+
+                for imagem in imagens:
+                    if imagem.imagem:
+                        arquivos_imagens.append(imagem.imagem)
+
+                for item in itens_rodas:
+                    Roda.objects.filter(pk=item['roda_id']).update(
+                        quantidade=F('quantidade') + item['quantidade']
+                    )
+
+                for item in itens_insumos:
+                    Insumo.objects.filter(pk=item['insumo_id']).update(
+                        quantidade=F('quantidade') + item['quantidade']
+                    )
+
+                ItemServicoRoda.objects.filter(servico_id=servico_id).delete()
+                ItemServicoInsumo.objects.filter(servico_id=servico_id).delete()
+                ImagemServico.objects.filter(servico_id=servico_id).delete()
+
+                Servico.objects.filter(pk=servico_id).delete()
+
+            for arquivo in arquivos_imagens:
+                arquivo.delete(save=False)
+
+            messages.success(
+                request,
+                f'Serviço "{nome_servico}" foi excluído com sucesso. As rodas e os insumos foram devolvidos ao estoque.'
+            )
+
+        except IntegrityError as erro:
+            print("ERRO AO EXCLUIR SERVIÇO:", erro)
+            print("SERVIÇO ID:", servico_id)
+
+            for rel in Servico._meta.related_objects:
+                model = rel.related_model
+                field_name = rel.field.name
+
+                try:
+                    total = model.objects.filter(**{f"{field_name}_id": servico_id}).count()
+                except Exception:
+                    total = model.objects.filter(**{field_name: servico_id}).count()
+
+                print(
+                    "VÍNCULO ENCONTRADO:",
+                    model._meta.label,
+                    "| campo:",
+                    field_name,
+                    "| registros:",
+                    total,
+                    "| on_delete:",
+                    rel.on_delete,
+                )
+
+            messages.error(
+                request,
+                f'Não foi possível excluir o serviço "{nome_servico}". Ainda existe algum registro vinculado no banco.'
+            )
+
         return redirect('servicos:servico_list')
 
     return redirect('servicos:servico_list')

@@ -34,20 +34,77 @@
         </div>
 
         <div class="rg-form-field rg-form-field--span-4">
-          <label for="{{ form.categoria.id_for_label }}">Categoria</label>
-          {{ form.categoria }}
+          <label for="id_categoria">Categoria</label>
+
+          <select
+            name="categoria"
+            id="id_categoria"
+            class="js-despesa-tom-select"
+            data-despesa-select="categoria"
+            data-placeholder="Selecione uma categoria"
+            data-current="{% if form.is_bound or form.instance.pk %}{{ form.categoria.value|default:'' }}{% endif %}"
+          >
+            <option value="">Selecione uma categoria</option>
+            <option value="agua">Água</option>
+            <option value="energia">Energia</option>
+            <option value="internet">Internet</option>
+            <option value="telefone">Telefone</option>
+            <option value="aluguel">Aluguel</option>
+            <option value="boleto">Boleto</option>
+            <option value="fornecedor">Fornecedor</option>
+            <option value="manutencao">Manutenção</option>
+            <option value="imposto_taxa">Imposto ou taxa</option>
+            <option value="material_consumo">Material de consumo</option>
+            <option value="salario">Salário</option>
+            <option value="transporte">Transporte</option>
+            <option value="outros">Outros</option>
+          </select>
+
           {{ form.categoria.errors }}
         </div>
 
         <div class="rg-form-field rg-form-field--span-4">
-          <label for="{{ form.status.id_for_label }}">Status</label>
-          {{ form.status }}
+          <label for="id_status">Status</label>
+
+          <select
+            name="status"
+            id="id_status"
+            class="js-despesa-tom-select"
+            data-despesa-select="status"
+            data-placeholder="Selecione um status"
+            data-current="{% if form.is_bound or form.instance.pk %}{{ form.status.value|default:'' }}{% endif %}"
+          >
+            <option value="">Selecione um status</option>
+            <option value="pendente">Pendente</option>
+            <option value="paga">Paga</option>
+            <option value="atrasada">Atrasada</option>
+            <option value="cancelada">Cancelada</option>
+          </select>
+
           {{ form.status.errors }}
         </div>
 
         <div class="rg-form-field rg-form-field--span-4">
-          <label for="{{ form.forma_pagamento.id_for_label }}">Forma de pagamento</label>
-          {{ form.forma_pagamento }}
+          <label for="id_forma_pagamento">Forma de pagamento</label>
+
+          <select
+            name="forma_pagamento"
+            id="id_forma_pagamento"
+            class="js-despesa-tom-select"
+            data-despesa-select="forma_pagamento"
+            data-placeholder="Selecione uma forma de pagamento"
+            data-current="{% if form.is_bound or form.instance.pk %}{{ form.forma_pagamento.value|default:'' }}{% endif %}"
+          >
+            <option value="">Selecione uma forma de pagamento</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">Pix</option>
+            <option value="cartao_debito">Cartão de débito</option>
+            <option value="cartao_credito">Cartão de crédito</option>
+            <option value="boleto">Boleto</option>
+            <option value="transferencia">Transferência</option>
+            <option value="outros">Outros</option>
+          </select>
+
           {{ form.forma_pagamento.errors }}
         </div>
 
@@ -100,7 +157,7 @@
           >
 
           <small style="color: var(--muted);">
-            A despesa pode ter até 10 imagens no total. 
+            A despesa pode ter até 10 arquivos no total.
           </small>
         </div>
 

@@ -79,13 +79,6 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td>{{ insumo.data_cadastro|date:"d/m/Y H:i" }}</td>
-          <td><span class="rg-badge rg-badge--info">Cadastro</span></td>
-          <td>{{ insumo.quantidade_inicial }}</td>
-          <td>Insumo cadastrado no sistema.</td>
-        </tr>
-
         {% for movimentacao in movimentacoes %}
           <tr>
             <td>{{ movimentacao.data_cadastro|date:"d/m/Y H:i" }}</td>
@@ -102,6 +95,13 @@
             <td>{{ movimentacao.observacao|default:"-" }}</td>
           </tr>
         {% endfor %}
+
+        <tr>
+          <td>{{ insumo.data_cadastro|date:"d/m/Y H:i" }}</td>
+          <td><span class="rg-badge rg-badge--info">Cadastro</span></td>
+          <td>{{ insumo.quantidade_inicial }}</td>
+          <td>Insumo cadastrado no sistema.</td>
+        </tr>
       </tbody>
     </table>
   </section>

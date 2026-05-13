@@ -77,6 +77,10 @@ class DespesaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.fields['categoria'].choices = Despesa.CategoriaChoices.choices
+        self.fields['status'].choices = Despesa.StatusChoices.choices
+        self.fields['forma_pagamento'].choices = Despesa.FormaPagamentoChoices.choices
+
         self.fields['data_vencimento'].input_formats = ['%Y-%m-%d']
         self.fields['data_pagamento'].input_formats = ['%Y-%m-%d']
 

@@ -39,9 +39,19 @@
 
           {% if modo_edicao %}
             <div class="rg-input rg-input--readonly">{{ roda.quantidade }}</div>
+
+            <input
+              type="hidden"
+              name="{{ form.quantidade.html_name }}"
+              id="{{ form.quantidade.id_for_label }}"
+              value="{{ roda.quantidade }}"
+            >
+
             <small style="color: var(--muted);">
               A quantidade só pode ser alterada por movimentação de estoque.
             </small>
+
+            {{ form.quantidade.errors }}
           {% else %}
             {{ form.quantidade }}
             {{ form.quantidade.errors }}

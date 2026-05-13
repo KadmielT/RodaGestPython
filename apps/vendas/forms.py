@@ -2,6 +2,9 @@ from decimal import Decimal, InvalidOperation
 
 from django import forms
 
+from apps.clientes.models import Cliente
+from apps.estoque_rodas.models import Roda
+
 from .models import Venda, ItemVendaRoda, ImagemVenda
 
 
@@ -46,7 +49,8 @@ class VendaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['cliente'].queryset = self.fields['cliente'].queryset.order_by('nome')
+        self.fields['cliente'].queryset = Cliente.objects.order_by('nome')
+        self.fields['cliente'].empty_label = 'Selecione um cliente'
 
         if self.instance and self.instance.pk and self.instance.valor_total is not None:
             valor_decimal = self.instance.valor_total
@@ -54,6 +58,7 @@ class VendaForm(forms.ModelForm):
             self.initial['valor_total'] = f'R$ {valor_formatado}'
         else:
             valor_inicial = self.initial.get('valor_total')
+
             if valor_inicial not in (None, ''):
                 try:
                     valor_decimal = Decimal(str(valor_inicial))
@@ -66,8 +71,10 @@ class VendaForm(forms.ModelForm):
 
     def clean_nome(self):
         nome = self.cleaned_data.get('nome')
+
         if nome:
             return nome.strip()
+
         return nome
 
     def clean_valor_total(self):
@@ -114,12 +121,14 @@ class ItemVendaRodaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['roda'].queryset = self.fields['roda'].queryset.order_by('nome')
+
+        self.fields['roda'].queryset = Roda.objects.order_by('nome')
+        self.fields['roda'].empty_label = 'Selecione uma roda'
 
 
 class ItemVendaRodaInlineForm(forms.Form):
     roda = forms.ModelChoiceField(
-        queryset=None,
+        queryset=Roda.objects.none(),
         required=False,
         label='Roda',
         widget=forms.Select(attrs={
@@ -141,8 +150,9 @@ class ItemVendaRodaInlineForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        from apps.estoque_rodas.models import Roda
+
         self.fields['roda'].queryset = Roda.objects.order_by('nome')
+        self.fields['roda'].empty_label = 'Selecione uma roda'
 
     def clean(self):
         cleaned_data = super().clean()
