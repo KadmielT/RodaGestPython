@@ -1,4 +1,9 @@
 function initTomSelectInScope(scope = document) {
+  if (typeof window.initRgTomSelects === 'function') {
+    window.initRgTomSelects(scope);
+    return;
+  }
+
   if (typeof TomSelect === 'undefined') {
     return;
   }
@@ -7,6 +12,14 @@ function initTomSelectInScope(scope = document) {
     if (!element.tomselect) {
       new TomSelect(element, {
         create: false,
+        allowEmptyOption: true,
+        maxOptions: null,
+        sortField: [
+          {
+            field: '$order',
+            direction: 'asc',
+          },
+        ],
       });
     }
   });

@@ -3,9 +3,12 @@
   position: relative;
 }
 
-/* Remove o visual duplicado quando o wrapper recebe a classe rg-input */
+/* Remove visual duplicado quando o wrapper herda classes do select original */
 .ts-wrapper.rg-input,
-.ts-wrapper.js-tom-select {
+.ts-wrapper.js-tom-select,
+.ts-wrapper.js-servico-tom-select,
+.ts-wrapper.js-despesa-tom-select,
+.ts-wrapper.js-usuario-status-select {
   background: transparent !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -49,7 +52,7 @@
   color: var(--text) !important;
 }
 
-/* Campo de digitação interno do Tom Select */
+/* Placeholder/input interno */
 .ts-wrapper.single .ts-control input,
 .ts-wrapper .ts-control input {
   color: var(--text) !important;
@@ -70,8 +73,8 @@
   color: var(--muted) !important;
 }
 
-/* Dropdown */
-.ts-wrapper .ts-dropdown {
+/* Dropdown global do Tom Select */
+.ts-dropdown {
   margin-top: 6px !important;
 
   background: #18201c !important;
@@ -79,35 +82,54 @@
   border-radius: 12px !important;
 
   color: var(--text) !important;
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.32) !important;
 
-  overflow: hidden;
-  z-index: 50;
+  overflow: hidden !important;
+  z-index: 99999 !important;
 }
 
-/* Lista interna */
-.ts-wrapper .ts-dropdown-content {
+/* Conteúdo interno do dropdown */
+.ts-dropdown .ts-dropdown-content {
   background: #18201c !important;
+  max-height: 260px !important;
+  overflow-y: auto !important;
+  padding: 4px !important;
 }
 
 /* Opções */
-.ts-wrapper .ts-dropdown .option {
+.ts-dropdown .option,
+.ts-dropdown [data-selectable] {
+  display: block !important;
   color: var(--text) !important;
-  padding: 10px 12px !important;
   background: transparent !important;
+
+  padding: 10px 12px !important;
+  border-radius: 8px !important;
+
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+  cursor: pointer !important;
 }
 
 /* Hover/opção ativa */
-.ts-wrapper .ts-dropdown .option:hover,
-.ts-wrapper .ts-dropdown .active {
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active,
+.ts-dropdown .active,
+.ts-dropdown [data-selectable]:hover {
   background: rgba(36, 193, 107, 0.14) !important;
   color: var(--text) !important;
 }
 
-/* Item selecionado no dropdown */
-.ts-wrapper .ts-dropdown .selected {
+/* Item selecionado dentro do dropdown */
+.ts-dropdown .selected {
   background: rgba(36, 193, 107, 0.20) !important;
   color: var(--text) !important;
+}
+
+/* Mensagem sem resultado */
+.ts-dropdown .no-results {
+  color: var(--muted) !important;
+  padding: 10px 12px !important;
 }
 
 /* Seta */
