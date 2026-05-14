@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}RodaGest{% endblock %}</title>
 
+  <link rel="icon" href="{% static 'img/favicon/favicon.ico' %}" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/favicon/favicon-192x192.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'img/favicon/favicon-192x192.png' %}">
+
   <script>
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
