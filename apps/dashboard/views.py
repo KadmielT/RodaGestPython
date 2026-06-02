@@ -200,6 +200,18 @@ def somar_por_periodo(queryset, model, campos_data_possiveis, campos_valor_possi
     return dados
 
 
+def somar_listas(lista_a, lista_b):
+    tamanho = max(len(lista_a), len(lista_b))
+    resultado = []
+
+    for indice in range(tamanho):
+        valor_a = lista_a[indice] if indice < len(lista_a) else 0
+        valor_b = lista_b[indice] if indice < len(lista_b) else 0
+        resultado.append(valor_a + valor_b)
+
+    return resultado
+
+
 def contar_por_periodo(queryset, model, campos_data_possiveis, ano, mes=None):
     campo_data = primeiro_campo_existente(model, campos_data_possiveis)
 
@@ -283,7 +295,8 @@ def dashboard_home(request):
         )
         return redirect("usuarios:perfil")
 
-    ano_atual = date.today().year
+    hoje = date.today()
+    ano_atual = hoje.year
 
     ano_resumo = limpar_ano(request.GET.get("ano_resumo"), ano_atual)
     mes_resumo = limpar_mes(request.GET.get("mes_resumo"))
@@ -341,12 +354,21 @@ def dashboard_home(request):
     if pode_servicos:
         if model_tem_campo(Servico, "status"):
             servicos_em_aberto = servicos_queryset.exclude(
-                status__in=["finalizado", "finalizada", "cancelado", "cancelada"]
+                status__in=[
+                    "finalizado",
+                    "finalizada",
+                    "finalizada_aguardando_cliente",
+                    "finalizada_entregue",
+                    "cancelado",
+                    "cancelada",
+                ]
             ).count()
         else:
             servicos_em_aberto = servicos_queryset.count()
 
     vendas_mes = Decimal("0.00")
+    servicos_mes = Decimal("0.00")
+    receita_mes = Decimal("0.00")
 
     if pode_vendas:
         if model_tem_campo(Venda, "status"):
@@ -356,13 +378,12 @@ def dashboard_home(request):
 
         campo_data_venda = primeiro_campo_existente(
             Venda,
-            ["data_cadastro", "data_venda", "criado_em", "created_at"]
+            ["data_venda", "data_cadastro", "criado_em", "created_at"]
         )
 
         vendas_do_mes = vendas_queryset
 
         if campo_data_venda:
-            hoje = date.today()
             vendas_do_mes = vendas_do_mes.filter(
                 **{
                     f"{campo_data_venda}__year": hoje.year,
@@ -376,6 +397,37 @@ def dashboard_home(request):
             ["valor_total", "valor", "total"]
         )
 
+    if pode_servicos:
+        servicos_receita_queryset = servicos_queryset
+
+        if model_tem_campo(Servico, "status"):
+            servicos_receita_queryset = servicos_receita_queryset.exclude(
+                status__in=["cancelado", "cancelada"]
+            )
+
+        campo_data_servico = primeiro_campo_existente(
+            Servico,
+            ["data_servico", "data_cadastro", "criado_em", "created_at"]
+        )
+
+        servicos_do_mes = servicos_receita_queryset
+
+        if campo_data_servico:
+            servicos_do_mes = servicos_do_mes.filter(
+                **{
+                    f"{campo_data_servico}__year": hoje.year,
+                    f"{campo_data_servico}__month": hoje.month,
+                }
+            )
+
+        servicos_mes = somar_campo(
+            servicos_do_mes,
+            Servico,
+            ["valor_total", "valor", "total"]
+        )
+
+    receita_mes = vendas_mes + servicos_mes
+
     despesas_mes = Decimal("0.00")
 
     if pode_despesas:
@@ -387,7 +439,6 @@ def dashboard_home(request):
         despesas_do_mes = despesas_queryset
 
         if campo_data_despesa:
-            hoje = date.today()
             despesas_do_mes = despesas_do_mes.filter(
                 **{
                     f"{campo_data_despesa}__year": hoje.year,
@@ -405,6 +456,8 @@ def dashboard_home(request):
     servicos_labels = montar_labels_periodo(ano_servicos, mes_servicos)
 
     chart_vendas = [0 for _ in resumo_labels]
+    chart_servicos_receita = [0 for _ in resumo_labels]
+    chart_receitas = [0 for _ in resumo_labels]
     chart_despesas = [0 for _ in resumo_labels]
     chart_servicos = [0 for _ in servicos_labels]
 
@@ -412,11 +465,23 @@ def dashboard_home(request):
         chart_vendas = somar_por_periodo(
             vendas_queryset,
             Venda,
-            ["data_cadastro", "data_venda", "criado_em", "created_at"],
+            ["data_venda", "data_cadastro", "criado_em", "created_at"],
             ["valor_total", "valor", "total"],
             ano_resumo,
             mes_resumo
         )
+
+    if pode_servicos:
+        chart_servicos_receita = somar_por_periodo(
+            servicos_queryset.exclude(status__in=["cancelado", "cancelada"]),
+            Servico,
+            ["data_servico", "data_cadastro", "criado_em", "created_at"],
+            ["valor_total", "valor", "total"],
+            ano_resumo,
+            mes_resumo
+        )
+
+    chart_receitas = somar_listas(chart_vendas, chart_servicos_receita)
 
     if pode_despesas:
         chart_despesas = somar_por_periodo(
@@ -432,7 +497,7 @@ def dashboard_home(request):
         chart_servicos = contar_por_periodo(
             servicos_queryset,
             Servico,
-            ["data_cadastro", "data_servico", "criado_em", "created_at"],
+            ["data_servico", "data_cadastro", "criado_em", "created_at"],
             ano_servicos,
             mes_servicos
         )
@@ -452,7 +517,7 @@ def dashboard_home(request):
 
     dashboard_charts = {
         "resumoLabels": resumo_labels,
-        "resumoVendas": chart_vendas,
+        "resumoVendas": chart_receitas,
         "resumoDespesas": chart_despesas,
 
         "servicosLabels": servicos_labels,
@@ -489,6 +554,8 @@ def dashboard_home(request):
         "servicos_em_aberto": servicos_em_aberto,
 
         "vendas_mes_formatado": formatar_moeda(vendas_mes),
+        "servicos_mes_formatado": formatar_moeda(servicos_mes),
+        "receita_mes_formatado": formatar_moeda(receita_mes),
         "despesas_mes_formatado": formatar_moeda(despesas_mes),
 
         "rodas_baixo_estoque": rodas_baixo_estoque,

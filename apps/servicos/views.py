@@ -159,7 +159,11 @@ class ServicoListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = Servico.objects.select_related('cliente').order_by('-data_cadastro')
+        queryset = Servico.objects.select_related('cliente').order_by(
+            '-data_servico',
+            '-data_cadastro'
+        )
+
         q = self.request.GET.get('q', '').strip()
 
         if q:

@@ -33,7 +33,8 @@ class RodaForm(forms.ModelForm):
                 'inputmode': 'numeric',
             }),
             'estado': forms.Select(attrs={
-                'class': 'js-tom-select',
+                'class': 'rg-input js-tom-select',
+                'data-placeholder': 'Selecione o estado',
             }),
             'codigo': forms.TextInput(attrs={
                 'class': 'rg-input',

@@ -95,17 +95,6 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.js-tom-select').forEach(function (element) {
-        if (!element.tomselect) {
-          new TomSelect(element, {
-            create: false
-          });
-        }
-      });
-    });
-  </script>
   <script src="{% static 'estoque_rodas/js/valorUnitarioMask.js' %}"></script>
   <script src="{% static 'estoque_rodas/js/onlyInteger.js' %}"></script>
 {% endblock %}

@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
@@ -26,12 +27,13 @@ class Servico(models.Model):
         choices=StatusChoices.choices,
         default=StatusChoices.ABERTO
     )
+    data_servico = models.DateField(default=date.today)
     data_cadastro = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Serviço'
         verbose_name_plural = 'Serviços'
-        ordering = ['-data_cadastro']
+        ordering = ['-data_servico', '-data_cadastro']
 
     def __str__(self):
         return self.nome

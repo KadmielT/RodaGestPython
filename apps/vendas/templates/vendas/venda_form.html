@@ -26,13 +26,19 @@
       <h2 class="rg-form-section__title">Dados da venda</h2>
 
       <div class="rg-form-grid">
-        <div class="rg-form-field rg-form-field--span-6">
+        <div class="rg-form-field rg-form-field--span-5">
           <label for="{{ form.cliente.id_for_label }}">Cliente</label>
           {{ form.cliente }}
           {{ form.cliente.errors }}
         </div>
 
-        <div class="rg-form-field rg-form-field--span-6">
+        <div class="rg-form-field rg-form-field--span-3">
+          <label for="{{ form.data_venda.id_for_label }}">Data da venda</label>
+          {{ form.data_venda }}
+          {{ form.data_venda.errors }}
+        </div>
+
+        <div class="rg-form-field rg-form-field--span-4">
           <label for="{{ form.status.id_for_label }}">Status</label>
           {{ form.status }}
           {{ form.status.errors }}

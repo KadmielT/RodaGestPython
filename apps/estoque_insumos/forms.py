@@ -33,7 +33,8 @@ class InsumoForm(forms.ModelForm):
                 'inputmode': 'numeric',
             }),
             'unidade_medida': forms.Select(attrs={
-                'class': 'js-tom-select',
+                'class': 'rg-input js-tom-select',
+                'data-placeholder': 'Selecione a unidade',
             }),
             'codigo': forms.TextInput(attrs={
                 'class': 'rg-input',

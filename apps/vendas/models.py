@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
@@ -29,12 +30,13 @@ class Venda(models.Model):
         choices=StatusChoices.choices,
         default=StatusChoices.ORCAMENTO
     )
+    data_venda = models.DateField(default=date.today)
     data_cadastro = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Venda'
         verbose_name_plural = 'Vendas'
-        ordering = ['-data_cadastro']
+        ordering = ['-data_venda', '-data_cadastro']
 
     def __str__(self):
         return self.nome

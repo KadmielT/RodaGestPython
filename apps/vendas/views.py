@@ -111,7 +111,11 @@ class VendaListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = Venda.objects.select_related('cliente').order_by('-data_cadastro')
+        queryset = Venda.objects.select_related('cliente').order_by(
+            '-data_venda',
+            '-data_cadastro'
+        )
+
         q = self.request.GET.get('q', '').strip()
 
         if q:

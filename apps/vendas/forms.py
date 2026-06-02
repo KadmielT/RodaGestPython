@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal, InvalidOperation
 
 from django import forms
@@ -21,7 +22,14 @@ class VendaForm(forms.ModelForm):
 
     class Meta:
         model = Venda
-        fields = ['cliente', 'nome', 'descricao', 'valor_total', 'status']
+        fields = [
+            'cliente',
+            'nome',
+            'data_venda',
+            'descricao',
+            'valor_total',
+            'status',
+        ]
         widgets = {
             'cliente': forms.Select(attrs={
                 'class': 'js-tom-select',
@@ -30,6 +38,13 @@ class VendaForm(forms.ModelForm):
                 'class': 'rg-input',
                 'placeholder': 'Digite o nome da venda',
             }),
+            'data_venda': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'class': 'rg-input',
+                    'type': 'date',
+                }
+            ),
             'descricao': forms.Textarea(attrs={
                 'class': 'rg-input',
                 'rows': 5,
@@ -42,6 +57,7 @@ class VendaForm(forms.ModelForm):
         labels = {
             'cliente': 'Cliente',
             'nome': 'Nome da venda',
+            'data_venda': 'Data da venda',
             'descricao': 'Descrição',
             'status': 'Status',
         }
@@ -51,6 +67,13 @@ class VendaForm(forms.ModelForm):
 
         self.fields['cliente'].queryset = Cliente.objects.order_by('nome')
         self.fields['cliente'].empty_label = 'Selecione um cliente'
+
+        self.fields['data_venda'].input_formats = ['%Y-%m-%d']
+
+        if self.instance and self.instance.pk and self.instance.data_venda:
+            self.initial['data_venda'] = self.instance.data_venda.strftime('%Y-%m-%d')
+        elif not self.initial.get('data_venda'):
+            self.initial['data_venda'] = date.today().strftime('%Y-%m-%d')
 
         if self.instance and self.instance.pk and self.instance.valor_total is not None:
             valor_decimal = self.instance.valor_total

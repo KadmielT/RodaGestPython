@@ -56,15 +56,15 @@
       </article>
     {% endif %}
 
-    {% if pode_vendas %}
+    {% if pode_vendas or pode_servicos %}
       <article class="rg-kpi-card rg-kpi-card--pink">
         <div class="rg-kpi-card__top">
-          <span class="rg-kpi-card__label">Vendas do mês</span>
-          <span class="rg-kpi-card__icon">🛒</span>
+          <span class="rg-kpi-card__label">Receita do mês</span>
+          <span class="rg-kpi-card__icon">💰</span>
         </div>
 
-        <strong class="rg-kpi-card__value rg-kpi-card__value--money">{{ vendas_mes_formatado }}</strong>
-        <span class="rg-kpi-card__hint">total registrado no mês</span>
+        <strong class="rg-kpi-card__value rg-kpi-card__value--money">{{ receita_mes_formatado }}</strong>
+        <span class="rg-kpi-card__hint">vendas + serviços registrados no mês</span>
       </article>
     {% endif %}
 
@@ -89,7 +89,7 @@
         <div>
           <h2>Resumo financeiro</h2>
           <p>
-            Comparativo entre vendas e despesas
+            Comparativo entre receitas e despesas
             {% if mes_resumo %}
               no mês selecionado de {{ ano_resumo }}.
             {% else %}

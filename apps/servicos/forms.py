@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal, InvalidOperation
 
 from django import forms
@@ -18,7 +19,14 @@ class ServicoForm(forms.ModelForm):
 
     class Meta:
         model = Servico
-        fields = ['cliente', 'nome', 'descricao', 'valor_total', 'status']
+        fields = [
+            'cliente',
+            'nome',
+            'data_servico',
+            'descricao',
+            'valor_total',
+            'status',
+        ]
         widgets = {
             'cliente': forms.Select(attrs={
                 'class': 'js-tom-select',
@@ -27,6 +35,13 @@ class ServicoForm(forms.ModelForm):
                 'class': 'rg-input',
                 'placeholder': 'Digite o nome do serviço',
             }),
+            'data_servico': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'class': 'rg-input',
+                    'type': 'date',
+                }
+            ),
             'descricao': forms.Textarea(attrs={
                 'class': 'rg-input',
                 'rows': 5,
@@ -39,6 +54,7 @@ class ServicoForm(forms.ModelForm):
         labels = {
             'cliente': 'Cliente',
             'nome': 'Nome do serviço',
+            'data_servico': 'Data do serviço',
             'descricao': 'Descrição',
             'status': 'Status',
         }
@@ -47,6 +63,12 @@ class ServicoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['cliente'].queryset = self.fields['cliente'].queryset.order_by('nome')
+        self.fields['data_servico'].input_formats = ['%Y-%m-%d']
+
+        if self.instance and self.instance.pk and self.instance.data_servico:
+            self.initial['data_servico'] = self.instance.data_servico.strftime('%Y-%m-%d')
+        elif not self.initial.get('data_servico'):
+            self.initial['data_servico'] = date.today().strftime('%Y-%m-%d')
 
         if self.instance and self.instance.pk and self.instance.valor_total is not None:
             valor_decimal = self.instance.valor_total
@@ -167,7 +189,9 @@ class ItemServicoRodaInlineForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         from apps.estoque_rodas.models import Roda
+
         self.fields['roda'].queryset = Roda.objects.order_by('nome')
 
     def clean(self):
@@ -177,6 +201,7 @@ class ItemServicoRodaInlineForm(forms.Form):
 
         if roda and not quantidade:
             self.add_error('quantidade', 'Informe a quantidade da roda.')
+
         if quantidade and not roda:
             self.add_error('roda', 'Selecione uma roda.')
 
@@ -207,7 +232,9 @@ class ItemServicoInsumoInlineForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         from apps.estoque_insumos.models import Insumo
+
         self.fields['insumo'].queryset = Insumo.objects.order_by('nome')
 
     def clean(self):
@@ -217,6 +244,7 @@ class ItemServicoInsumoInlineForm(forms.Form):
 
         if insumo and not quantidade:
             self.add_error('quantidade', 'Informe a quantidade do insumo.')
+
         if quantidade and not insumo:
             self.add_error('insumo', 'Selecione um insumo.')
 
