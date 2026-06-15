@@ -573,4 +573,4 @@ def dashboard_home(request):
         "mes_servicos": mes_servicos,
     }
 
-    return render(request, "dashboard/dashboard.html", context)
+    return render(request, "dashboard/dashboard.html", context) 

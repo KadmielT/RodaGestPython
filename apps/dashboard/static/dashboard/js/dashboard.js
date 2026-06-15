@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         labels: dashboardData.resumoLabels,
         datasets: [
           {
-            label: "Vendas",
+            label: "Receitas",
             data: dashboardData.resumoVendas,
             borderColor: "#22d3ee",
             backgroundColor: criarGradiente(
